@@ -1,0 +1,544 @@
+PRACTICE-4;
+JOINDATA:o/p--->
+(101,Jay,20000,,101,harish,60000,)
+(102,ajay,50000,,102,mahesh,75000,)
+(103,suresh,10000,,103,dinesh,80000,)
+
+
+ to get spdata:o/p----->
+
+
+GNU nano 2.2.4                                          File: joinscript.pig                                                                                          
+
+firstdata = LOAD 'data1.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+seconddata = LOAD 'data2.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+joindata = JOIN firstdata BY cid , seconddata BY cid;
+
+spdata = FOREACH joindata GENERATE $0,$1,$2,$3;
+
+DUMP spdata;
+
+spdata:o/p----->
+$0,$1,$2;
+(101,Jay,20000,)
+(102,ajay,50000,)
+(103,suresh,10000,)
+
+
+
+
+
+
+
+
+
+//***LEFT,RIGHT,FULL OUTERJOIN
+
+
+
+root@ubuntu:/home/mrinmoy# cat data1.log 
+101	Jay	20000	hyderabad
+102	ajay	50000	Mumbai
+103	suresh	10000	Pune
+104	jayram	60000	Mumbai
+
+root@ubuntu:/home/mrinmoy# cat data2.log 
+101	harish	60000	Mumbai
+202	mahesh	75000	Banglore
+203	dinesh	80000	Kolkata
+
+root@ubuntu:/home/mrinmoy# cat joinscript.pig 
+firstdata = LOAD 'data1.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+seconddata = LOAD 'data2.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+Ljoindata = JOIN firstdata BY cid LEFT , seconddata BY cid;
+Rjoindata = JOIN firstdata BY cid RIGHT , seconddata BY cid;
+Fjoindata = JoIN firstdata BY cid FULL , seconddata BY cid;
+
+--joindata = JOIN firstdata BY cid , seconddata BY cid;
+--spdata = FOREACH joindata GENERATE $0,$1,$2,$3; 
+--DUMP spdata;
+
+store Ljoindata into 'LEFTJOIN43';
+
+store Rjoindata into 'RIGHTJOIN43';
+
+store Fjoindata into 'FULLJOIN43';
+
+	
+root@ubuntu:/home/mrinmoy# pig -x local joinscript.pig
+2014-12-11 20:07:29,430 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418357249429.log
+2014-12-11 20:07:29,581 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+used.
+2014-12-11 20:07:29,996 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 6000: Output Location Validation Failed for: 'file:///home/mrinmoy/RIGHTJOIN42 More info to follow:
+Output directory file:/home/mrinmoy/RIGHTJOIN42 already exists
+Details at logfile: /home/mrinmoy/pig_1418357249429.log
+root@ubuntu:/home/mrinmoy# nano joinscript.pig 
+
+//to execute:::::::::::::*****************
+
+root@ubuntu:/home/mrinmoy# pig -x local joinscript.pig
+2014-12-11 20:08:06,116 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418357286114.log
+2014-12-11 20:08:06,256 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-11 20:08:06,521 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: HASH_JOIN
+2014-12-11 20:08:06,521 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+2014-12-11 20:08:06,708 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - (Name: Rjoindata: Store(file:///home/mrinmoy/2014-12-11 20:08:11,943 [Thread-3] INFO  org.apache.hadoop.util.ProcessTree - setsid exited with exit code 0
+2014-12-11 20:08:12,031 [Thread-3] INFO  org.apache.hadoop.mapred.Task - Task attempt_local_0001_m_000000_0 is allowed to commit now
+2014-12-11 20:08:12,038 [Thread-3] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local_0001_m_000000_0' to file:/tmp/temp1446654231/tmp255859598
+2014-12-11 20:08:12,049 [Thread-3] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2014-12-11 20:08:12,146 [Thread-4] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2014-12-11 20:08:12,146 [Thread-4] INFO  org.apache.hadoop.mapred.Task - Task attempt_local_0002_m_000000_0 is allowed to commit now
+2014-12-11 20:08:12,150 [Thread-4] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local_0002_m_000000_0' to file:/tmp/temp1446654231/tmp-13899084
+2014-12-11 20:08:12,155 [Thread-4] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2014-12-11 20:08:12,155 [Thread-4] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local_0002_m_000000_0' done.
+2014-12-11 20:08:12,538 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local_0002
+2014-12-11 20:08:17,060 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 40% complete
+2014-12-11 20:08:17,069 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2014-12-11 20:08:23,352 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2014-12-11 20:08:23,356 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - BytesPerReducer=1000000000 maxReducers=999 totalInputFileSize=156
+2014-12-11 20:08:23,356 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Neither PARALLEL nor default parallelism is set for this job. Setting number of reducers to 1
+2014-12-11 20:08:23,363 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2014-12-11 20:08:23,363 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 3 map-reduce job(s) waiting for submission.
+2014-12-11 20:08:23,409 [Thread-8] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2014-12-11 20:08:23,409 [Thread-8] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2014-12-11 20:08:23,409 [Thread-8] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2014-12-11 20:08:23,411 [Thread-8] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2014-12-11 20:08:06	2014-12-11 20:08:29	HASH_JOIN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Alias	Feature	Outputs
+job_local_0001	seconddata	MAP_ONLY	
+job_local_0002	firstdata	MAP_ONLY	
+job_local_0003	Fjoindata	HASH_JOIN	file:///home/mrinmoy/FULLJOIN43,
+job_local_0004	Rjoindata	HASH_JOIN	file:///home/mrinmoy/RIGHTJOIN43,
+job_local_0005	Ljoindata	HASH_JOIN	file:///home/mrinmoy/LEFTJOIN43,
+
+Input(s):
+Successfully read records from: "file:///home/mrinmoy/data1.log"
+Successfully read records from: "file:///home/mrinmoy/data2.log"
+
+Output(s):
+Successfully stored records in: "file:///home/mrinmoy/RIGHTJOIN43"
+Successfully stored records in: "file:///home/mrinmoy/FULLJOIN43"
+Successfully stored records in: "file:///home/mrinmoy/LEFTJOIN43"
+
+Job DAG:
+job_local_0002	->	job_local_0005,job_local_0004,job_local_0003,
+job_local_0001	->	job_local_0005,job_local_0004,job_local_0003,
+job_local_0004
+job_local_0003
+job_local_0005
+
+//output:********
+2014-12-11 20:08:29,846 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+root@ubuntu:/home/mrinmoy# cat RIGHTJOIN43/part-r-00000
+101	Jay	20000		101	harish	60000	
+				202	mahesh	75000	
+				203	dinesh	80000	
+							
+root@ubuntu:/home/mrinmoy# cat LEFTJOIN43/part-r-00000
+101	Jay	20000		101	harish	60000	
+102	ajay	50000					
+103	suresh	10000					
+104	jayram	60000					
+root@ubuntu:/home/mrinmoy# cat FULLJOIN43/part-r-00000 
+101	Jay	20000		101	harish	60000	
+102	ajay	50000					
+103	suresh	10000					
+104	jayram	60000					
+				202	mahesh	75000	
+				203	dinesh	80000	
+
+//*****************************************************
+
+
+
+
+
+//****************by using DESCRIBE command
+
+root@ubuntu:/home/mrinmoy# nano crossscript.pig;
+
+ GNU nano 2.2.4                                         File: crossscript.pig                                                                                          
+
+firstdata = LOAD 'data1.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+seconddata = LOAD 'data2.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+
+
+DESCRIBE firstdata;
+
+//*******execute
+
+root@ubuntu:/home/mrinmoy# pig -x local crossscript.pig
+2014-12-11 20:36:49,492 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418359009491.log
+2014-12-11 20:36:49,628 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+firstdata: {cid: int,cname: chararray,sal: int,cloc: int}
+
+
+
+
+//******by using ILLUSTRATE
+//******The default datatype in APACHE PIG is bytearray.
+root@ubuntu:/home/mrinmoy# nano crossscript.pig;
+
+ GNU nano 2.2.4                                         File: crossscript.pig                                                                                          
+
+firstdata = LOAD 'data1.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+seconddata = LOAD 'data2.log' using PigStorage('\t') as (cid:int,cname:chararray,sal:int,cloc:int);
+
+ILLUSTRATE firstdata;
+
+
+root@ubuntu:/home/mrinmoy# pig -x local crossscript.pig
+2014-12-11 20:43:00,546 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418359380544.log
+2014-12-11 20:43:00,680 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-11 20:43:01,048 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-11 20:43:01,234 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2014-12-11 20:43:01,237 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2014-12-11 20:43:01,327 [main] WARN  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library is available
+2014-12-11 20:43:01,328 [main] INFO  org.apache.hadoop.util.NativeCodeLoader - Loaded the native-hadoop library
+2014-12-11 20:43:01,328 [main] INFO  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library loaded
+2014-12-11 20:43:01,370 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [104, 121, 100, 101, 114, 97, 98, 97, 100] in field being converted to int, caught NumberFormatException <For input string: "hyderabad"> field discarded
+2014-12-11 20:43:01,370 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+2014-12-11 20:43:01,370 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [80, 117, 110, 101] in field being converted to int, caught NumberFormatException <For input string: "Pune"> field discarded
+2014-12-11 20:43:01,374 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+2014-12-11 20:43:01,397 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+2014-12-11 20:43:01,398 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+2014-12-11 20:43:01,401 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+2014-12-11 20:43:01,401 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+2014-12-11 20:43:01,402 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+2014-12-11 20:43:01,402 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+java.lang.NullPointerException
+	at org.apache.pig.pen.util.DisplayExamples.ShortenField(DisplayExamples.java:205)
+	at org.apache.pig.pen.util.DisplayExamples.MakeArray(DisplayExamples.java:190)
+	at org.apache.pig.pen.util.DisplayExamples.printTabular(DisplayExamples.java:86)
+	at org.apache.pig.pen.util.DisplayExamples.printTabular(DisplayExamples.java:69)
+	at org.apache.pig.pen.ExampleGenerator.getExamples(ExampleGenerator.java:143)
+	at org.apache.pig.PigServer.getExamples(PigServer.java:1155)
+	at org.apache.pig.tools.grunt.GruntParser.processIllustrate(GruntParser.java:630)
+	at org.apache.pig.tools.pigscript.parser.PigScriptParser.parse(PigScriptParser.java:308)
+	at org.apache.pig.tools.grunt.GruntParser.parseStopOnError(GruntParser.java:168)
+	at org.apache.pig.tools.grunt.GruntParser.parseStopOnError(GruntParser.java:144)
+	at org.apache.pig.tools.grunt.Grunt.exec(Grunt.java:90)
+	at org.apache.pig.Main.run(Main.java:500)
+	at org.apache.pig.Main.main(Main.java:107)
+----------------------------------------------------------------------------------------
+| firstdata     | cid: bytearray | cname: bytearray | sal: bytearray | cloc: bytearray | 
+----------------------------------------------------------------------------------------
+|               | 102            | ajay             | 50000          | Mumbai          | 
+----------------------------------------------------------------------------------------
+
+
+
+
+//****WANT TO USE TEXTLOADER()
+
+root@ubuntu:/home/mrinmoy# nano crossscript2.pig;
+
+ GNU nano 2.2.4                                         File: crossscript2.pig                                                                                         
+
+A = LOAD 'data3.log' using TextLoader() as (line:chararray);
+
+B = FOREACH A GENERATE FLATTEN((line));
+
+store B into 'textout2';
+
+
+root@ubuntu:/home/mrinmoy# nano data3.log
+ GNU nano 2.2.4                                           File: data3.log                                                                                              
+
+HIHOWAREYOUIAM FINE THANK YOU
+//******executing
+root@ubuntu:/home/mrinmoy# pig -x local crossscript2.pig
+2014-12-11 20:43:00,546 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418359380544.log
+2014-12-11 20:43:00,680 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-11 20:43:01,048 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-11 20:43:01,234 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2014-12-11 20:43:01,237 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2014-12-11 20:43:01,327 [main] WARN  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library is available
+2014-12-11 20:43:01,328 [main] INFO  org.apache.hadoop.util.NativeCodeLoader - Loaded the native-hadoop library
+2014-12-11 20:43:01,328 [main] INFO  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library loaded
+2014-12-11 20:43:01,370 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [104, 121, 100, 101, 114, 97, 98, 97, 100] in field being converted to int, caught NumberFormatException <For input string: "hyderabad"> field discarded
+2014-12-11 20:43:01,370 [main] WARN  org.apache.pig.builtin.Utf8StorageConverter - Unable to interpret value [77, 117, 109, 98, 97, 105] in field being converted to int, caught NumberFormatException <For input string: "Mumbai"> field discarded
+
+//output:
+root@ubuntu:/home/mrinmoy# cat textout2/part-m-00000 
+HIHOWAREYOUIAM FINE THANK YOU
+
+
+
+
+//***************************by Using TOKENIZE
+root@ubuntu:/home/mrinmoy# nano data3.log 
+
+ GNU nano 2.2.4                                           File: data3.log                                                                                              
+
+HI      HOW     ARE     YOU     I       AM      FINE    THANK   YOU
+Hadoop is a big data tool
+Hadoop uses master slave architecture
+
+
+//********want to set delimiter as space.
+
+root@ubuntu:/home/mrinmoy# nano crossscript2.pig
+  File: crossscript2.pig                                                                                         
+
+A = LOAD 'data3.log' using PigStorage('\n') as (line:chararray);
+
+--B = FOREACH A GENERATE FLATTEN(TOKENIZE(line));
+
+B = FOREACH A GENERATE TOKENIZE(line);
+
+DUMP B;
+
+
+root@ubuntu:/home/mrinmoy# pig -x local crossscript2.pig
+
+2014-12-11 23:18:14,656 [main] WARN  org.apache.pig.tools.pigstats.PigStatsUtil - Failed to get RunningJob for job job_local_0001
+2014-12-11 23:18:14,659 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2014-12-11 23:18:14,659 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Detected Local mode. Stats reported below may be incomplete
+2014-12-11 23:18:14,661 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2014-12-11 23:18:06	2014-12-11 23:18:14	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Alias	Feature	Outputs
+job_local_0001	A,B	MAP_ONLY	file:/tmp/temp1897406279/tmp-1720256287,
+
+Input(s):
+Successfully read records from: "file:///home/mrinmoy/data3.log"
+
+Output(s):
+Successfully stored records in: "file:/tmp/temp1897406279/tmp-1720256287"
+
+Job DAG:
+job_local_0001
+
+
+2014-12-11 23:18:14,663 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2014-12-11 23:18:14,674 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2014-12-11 23:18:14,674 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+({(HI	HOW	ARE	YOU	I	AM	FINE	THANK	YOU)})
+({(Hadoop),(is),(a),(big),(data),(tool)})
+({(Hadoop),(uses),(master),(slave),(architecture)})
+()
+
+
+
+//**want want data in one by one line format.
+
+
+root@ubuntu:/home/mrinmoy# nano crossscript2.pig
+ GNU nano 2.2.4                                         File: crossscript2.pig                                                                                         
+
+A = LOAD 'data3.log' using PigStorage('\n') as (line:chararray);
+
+B = FOREACH A GENERATE FLATTEN(TOKENIZE(line));
+
+
+DUMP B;
+
+
+root@ubuntu:/home/mrinmoy# pig -x local crossscript2.pig
+2014-12-11 23:25:49,066 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418369149065.log
+2014-12-11 23:25:49,200 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-11 23:25:49,475 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2014-12-11 23:25:49,475 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2014-12-11 23:25:49	2014-12-11 23:25:57	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Alias	Feature	Outputs
+job_local_0001	A,B	MAP_ONLY	file:/tmp/temp-1542423957/tmp1019804553,
+
+Input(s):
+Successfully read records from: "file:///home/mrinmoy/data3.log"
+
+Output(s):
+Successfully stored records in: "file:/tmp/temp-1542423957/tmp1019804553"
+
+Job DAG:
+job_local_0001
+
+
+2014-12-11 23:25:57,707 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2014-12-11 23:25:57,717 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2014-12-11 23:25:57,717 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(HI	HOW	ARE	YOU	I	AM	FINE	THANK	YOU)
+(Hadoop)
+(is)
+(a)
+(big)
+(data)
+(tool)
+(Hadoop)
+(uses)
+(master)
+(slave)
+(architecture)
+()
+
+
+in hdfs-->
+root@ubuntu:/home/mrinmoy# nano crossscript2.pig
+ 
+GNU nano 2.2.4                                         File: crossscript2.pig                                                                                         
+
+A = LOAD '/PIG43/data3.log' using PigStorage('\n') as (line:chararray);
+
+B = FOREACH A GENERATE FLATTEN(TOKENIZE(line));
+
+
+DUMP B;
+
+
+
+
+
+ 
+
+root@ubuntu:/home/mrinmoy# pig crossscript2.pig 
+
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTIme	AvgMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	Alias	Feature	Outputs
+job_201412111847_0002	1	0	3	3	3	0	0	0	A,B	MAP_ONLY	hdfs://localhost:8020/tmp/temp794244612/tmp517138944,
+
+Input(s):
+Successfully read 4 records (455 bytes) from: "/PIG43/data3.log"
+
+Output(s):
+Successfully stored 13 records (189 bytes) in: "hdfs://localhost:8020/tmp/temp794244612/tmp517138944"
+
+Counters:
+Total records written : 13
+Total bytes written : 189
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_201412111847_0002
+
+
+2014-12-11 23:34:29,227 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2014-12-11 23:34:29,235 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2014-12-11 23:34:29,235 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(HI	HOW	ARE	YOU	I	AM	FINE	THANK	YOU)
+(Hadoop)
+(is)
+(a)
+(big)
+(data)
+(tool)
+(Hadoop)
+(uses)
+(master)
+(slave)
+(architecture)
+
+
+
+
+//*************BY USING GROUP
+
+root@ubuntu:/home/mrinmoy# nano groupscript.log
+ GNU nano 2.2.4                                         File: groupscript.log                                                                                          
+
+A = LOAD 'data3.log' using PigStorage (' ') as (cid:int,cname:chararray,noe:int,cloc:chararray);
+
+B = GROUP A BY cid;
+store B into 'FLATOUT';
+
+root@ubuntu:/home/mrinmoy# cat data3.log 
+101 INFOSYS 20000 HYDERABAD
+102 CAPGEMINI 220000 PUNE
+103 HERO 500000 Pune
+
+
+
+root@ubuntu:/home/mrinmoy# pig -x local groupscript.log
+2014-12-12 00:07:54,934 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418371674933.log
+2014-12-12 00:07:55,050 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-12 00:07:55,271 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1000: Error during parsing. Lexical error at line 5, column 0.  Encountered: <EOF> after : ""
+Details at logfile: /home/mrinmoy/pig_1418371674933.log
+root@ubuntu:/home/mrinmoy# nano groupscript.log
+root@ubuntu:/home/mrinmoy# pig -x local groupscript.log
+2014-12-12 00:08:16,948 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418371696945.log
+root@ubuntu:/home/mrinmoy# cat FLATOUT/part-r-00000
+101	{(101,INFOSYS,20000,HYDERABAD)}
+102	{(102,CAPGEMINI,220000,PUNE)}
+103	{(103,HERO,500000,Pune)}
+
+
+
+//--*****Want to count the particular data;
+
+
+
+root@ubuntu:/home/mrinmoy# nano groupscript.log
+
+  GNU nano 2.2.4                                         File: groupscript.log                                                                                          
+
+inidata = LOAD 'data3.log' using PigStorage (' ') as (cid:int,cname:chararray,noe:int,cloc:chararray);
+
+grpdata = GROUP inidata BY cid;
+
+cntdata = FOREACH grpdata GENERATE group , COUNT(inidata);
+
+store cntdata into 'FLATOUT2';
+
+
+
+root@ubuntu:/home/mrinmoy# pig -x local groupscript.log
+2014-12-12 00:19:05,093 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418372345091.log
+2014-12-12 00:19:05,211 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-12 00:19:05,446 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1000: Error during parsing. Unrecognized alias indata
+Details at logfile: /home/mrinmoy/pig_1418372345091.log
+root@ubuntu:/home/mrinmoy# pig -x local groupscript.log
+2014-12-12 00:19:10,611 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418372350610.log
+2014-12-12 00:19:10,747 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2014-12-12 00:19:10,962 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1000: Error during parsing. Unrecognized alias indata
+Details at logfile: /home/mrinmoy/pig_1418372350610.log
+root@ubuntu:/home/mrinmoy# nano groupscript.log
+root@ubuntu:/home/mrinmoy# pig -x local groupscript.log
+2014-12-12 00:19:24,236 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1418372364234.log
+2014-12-12 00:19:24,377 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+Success!
+
+Job Stats (time in seconds):
+JobId	Alias	Feature	Outputs
+job_local_0001	cntdata,grpdata,inidata	GROUP_BY,COMBINER	file:///home/mrinmoy/FLATOUT2,
+
+Input(s):
+Successfully read records from: "file:///home/mrinmoy/data3.log"
+
+Output(s):
+Successfully stored records in: "file:///home/mrinmoy/FLATOUT2"
+
+Job DAG:
+job_local_0001
+
+
+2014-12-12 00:20:21,729 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+root@ubuntu:/home/mrinmoy# cat FLATOUT2/part-r-00000
+101	1
+102	1
+103	1
+
+
+

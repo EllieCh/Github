@@ -1,0 +1,231 @@
+----------------------------EPOCH-------------------------------
+root@ubuntu:/home/mrinmoy# nano san
+
+
+//REGISTER epoch.jar
+inidata = LOAD 'timedata.txt' as (timedata:chararray);
+convertdate = FOREACH inidata GENERATE timedata,Epoch(timedata);
+STORE convertdate INTO 'sankar1';
+root@ubuntu:/home/mrinmoy# pig -x local san
+
+2015-02-16 14:50:23,891 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1424078423890.log
+2015-02-16 14:50:24,021 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2015-02-16 14:50:24,264 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1000: Error during parsing. Unable to find alias convertdata
+Details at logfile: /home/mrinmoy/pig_1424078423890.log
+root@ubuntu:/home/mrinmoy# nano san
+root@ubuntu:/home/mrinmoy# pig -x local san
+2015-02-16 14:50:54,934 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1424078454932.log
+2015-02-16 14:50:55,076 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2015-02-16 14:50:55,350 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2015-02-16 14:50:55,350 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+2015-02-16 14:50:55,496 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - (Name: convertdate: Store(file:///home/mrinmoy/sankar1:org.apache.pig.builtin.PigStorage) - scope-11 Operator Key: scope-11)
+2015-02-16 14:50:55,506 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2015-02-16 14:50:55,536 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2015-02-16 14:50:55,536 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2015-02-16 14:50:55,551 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2015-02-16 14:50:55,566 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig script settings are added to the job
+2015-02-16 14:50:55,590 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2015-02-16 14:50:57,837 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2015-02-16 14:50:57,874 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2015-02-16 14:50:57,875 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2015-02-16 14:50:57,883 [Thread-2] INFO  org.apache.hadoop.util.NativeCodeLoader - Loaded the native-hadoop library
+2015-02-16 14:50:58,085 [Thread-2] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-02-16 14:50:58,086 [Thread-2] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-02-16 14:50:58,095 [Thread-2] WARN  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library is available
+2015-02-16 14:50:58,095 [Thread-2] INFO  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library loaded
+2015-02-16 14:50:58,098 [Thread-2] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2015-02-16 14:50:58,377 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local_0001
+2015-02-16 14:50:58,377 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2015-02-16 14:50:58,416 [Thread-3] INFO  org.apache.hadoop.util.ProcessTree - setsid exited with exit code 0
+2015-02-16 14:50:58,421 [Thread-3] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorPlugin : org.apache.hadoop.util.LinuxResourceCalculatorPlugin@1f8d244
+2015-02-16 14:50:58,464 [Thread-3] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local_0001_m_000000_0 is done. And is in the process of commiting
+2015-02-16 14:50:58,467 [Thread-3] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2015-02-16 14:50:58,472 [Thread-3] INFO  org.apache.hadoop.mapred.Task - Task attempt_local_0001_m_000000_0 is allowed to commit now
+2015-02-16 14:50:58,475 [Thread-3] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local_0001_m_000000_0' to file:/home/mrinmoy/sankar1
+2015-02-16 14:50:58,476 [Thread-3] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2015-02-16 14:50:58,476 [Thread-3] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local_0001_m_000000_0' done.
+2015-02-16 14:51:03,408 [main] WARN  org.apache.pig.tools.pigstats.PigStatsUtil - Failed to get RunningJob for job job_local_0001
+2015-02-16 14:51:03,413 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2015-02-16 14:51:03,413 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Detected Local mode. Stats reported below may be incomplete
+2015-02-16 14:51:03,425 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2015-02-16 14:50:55	2015-02-16 14:51:03	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Alias	Feature	Outputs
+job_local_0001	convertdate,inidata	MAP_ONLY	file:///home/mrinmoy/sankar1,
+
+Input(s):
+Successfully read records from: "file:///home/mrinmoy/timedata.txt"
+
+Output(s):
+Successfully stored records in: "file:///home/mrinmoy/sankar1"
+
+Job DAG:
+job_local_0001
+
+
+2015-02-16 14:51:03,426 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+root@ubuntu:/home/mrinmoy# ls sankar1
+part-m-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat sankar1/part-m-00000 
+12946472	1970-01-01:22
+12942346	1970-01-01:21
+12946412	1970-01-01:22
+12923462	1970-01-01:16
+12245734	1969-12-24:19
+134998034	1970-01-22:16
+190874678	1970-01-23:04
+23123455	1970-01-20:07
+5674466	1970-01-17:04
+34556	1970-01-01:15
+123445556	1969-12-19:09
+----------------------------------------------------UPPERDATA---------------------------------------------
+
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/Downloads/jk/* .
+root@ubuntu:/home/mrinmoy# ls /home/mrinmoy/Downloads/jk
+Upper.jar
+root@ubuntu:/home/mrinmoy# nano upperinput.txt
+root@ubuntu:/home/mrinmoy# nano san1
+
+root@ubuntu:/home/mrinmoy# cat san1
+REGISTER Upper.jar
+iniData =LOAD 'upperinput.txt' using PigStorage('|') as (id:int,name:chararray);
+convertData =FOREACH iniData GENERATE id,UpperUdf(name);
+STORE convertData INTO 'kiran412';
+
+root@ubuntu:/home/mrinmoy# pig -x local san1
+
+2015-02-16 15:03:32,707 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/mrinmoy/pig_1424079212705.log
+2015-02-16 15:03:32,835 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2015-02-16 15:03:33,093 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2015-02-16 15:03:33,093 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+2015-02-16 15:03:33,265 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - (Name: convertData: Store(file:///home/mrinmoy/kiran412:org.apache.pig.builtin.PigStorage) - scope-9 Operator Key: scope-9)
+2015-02-16 15:03:33,275 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2015-02-16 15:03:33,295 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2015-02-16 15:03:33,295 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2015-02-16 15:03:33,332 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2015-02-16 15:03:33,348 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig script settings are added to the job
+2015-02-16 15:03:33,367 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2015-02-16 15:03:35,854 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2015-02-16 15:03:35,899 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2015-02-16 15:03:35,902 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2015-02-16 15:03:35,914 [Thread-2] INFO  org.apache.hadoop.util.NativeCodeLoader - Loaded the native-hadoop library
+2015-02-16 15:03:36,197 [Thread-2] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-02-16 15:03:36,197 [Thread-2] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-02-16 15:03:36,207 [Thread-2] WARN  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library is available
+2015-02-16 15:03:36,207 [Thread-2] INFO  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library loaded
+2015-02-16 15:03:36,209 [Thread-2] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2015-02-16 15:03:36,407 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2015-02-16 15:03:36,575 [Thread-3] INFO  org.apache.hadoop.util.ProcessTree - setsid exited with exit code 0
+2015-02-16 15:03:36,579 [Thread-3] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorPlugin : org.apache.hadoop.util.LinuxResourceCalculatorPlugin@1185844
+2015-02-16 15:03:36,624 [Thread-3] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local_0001_m_000000_0 is done. And is in the process of commiting
+2015-02-16 15:03:36,632 [Thread-3] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2015-02-16 15:03:36,632 [Thread-3] INFO  org.apache.hadoop.mapred.Task - Task attempt_local_0001_m_000000_0 is allowed to commit now
+2015-02-16 15:03:36,635 [Thread-3] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local_0001_m_000000_0' to file:/home/mrinmoy/kiran412
+2015-02-16 15:03:36,635 [Thread-3] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2015-02-16 15:03:36,636 [Thread-3] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local_0001_m_000000_0' done.
+2015-02-16 15:03:37,005 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local_0001
+2015-02-16 15:03:41,533 [main] WARN  org.apache.pig.tools.pigstats.PigStatsUtil - Failed to get RunningJob for job job_local_0001
+2015-02-16 15:03:41,535 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2015-02-16 15:03:41,536 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Detected Local mode. Stats reported below may be incomplete
+2015-02-16 15:03:41,538 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2015-02-16 15:03:33	2015-02-16 15:03:41	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Alias	Feature	Outputs
+job_local_0001	convertData,iniData	MAP_ONLY	file:///home/mrinmoy/kiran412,
+
+Input(s):
+Successfully read records from: "file:///home/mrinmoy/upperinput.txt"
+
+Output(s):
+Successfully stored records in: "file:///home/mrinmoy/kiran412"
+
+Job DAG:
+job_local_0001
+
+
+INPUT:5678 kiran
+      3425 sankar
+      3408 ramu
+
+
+2015-02-16 15:03:41,539 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+root@ubuntu:/home/mrinmoy# ls san1
+san1
+root@ubuntu:/home/mrinmoy# ls kiran412
+part-m-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat kiran412/part-m-00000 
+5678	KIRAN
+3425	SANKAR
+3408	RAMU
+
+
+
+
+
+
+
+
+            ------------WORDCOUNT------------
+
+root@ubuntu:/home/mrinmoy# nano Wordcount.pig
+
+inputData =load 'Input-Big.txt' as (line:chararray);
+Words =FOREACH inputData GENERATE FLATTEN(TOKENIZE(line)) AS word;
+filtered_Words =FILTER Words BY word MATCHES '\\w+';
+word_Groups =GROUP filtered_Words BY word;
+word_Count =FOREACH word_Groups GENERATE group AS word,COUNT(filtered_Words) AS count;
+ordered_word_count =ORDER word_Count BY count DESC;
+dump filtered_Words;
+dump  ordered_word_count;
+
+root@ubuntu:/home/mrinmoy# pig -x local Wordcount.pig
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Alias	Feature	Outputs
+job_local_0002	Words,filtered_Words,inputData,word_Count,word_Groups	GROUP_BY,COMBINER	
+job_local_0003	ordered_word_count	SAMPLER	
+job_local_0004	ordered_word_count	ORDER_BY	file:/tmp/temp-348481295/tmp-1408709474,
+
+Input(s):
+Successfully read records from: "file:///home/mrinmoy/Input-Big.txt"
+
+Output(s):
+Successfully stored records in: "file:/tmp/temp-348481295/tmp-1408709474"
+
+Job DAG:
+job_local_0002	->	job_local_0003,
+job_local_0003	->	job_local_0004,
+job_local_0004
+
+
+2015-02-14 02:21:41,005 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2015-02-14 02:21:41,008 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-02-14 02:21:41,008 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(is,4312)
+(good,4312)
+(hadoop,4312)
+(market,3234)
+(now,2156)
+(having,2156)
+(the,1078)
+(learn,1078)
+(leader,1078)
+(people,1078)
+(knowledge,1078)
+
+
+
+
+

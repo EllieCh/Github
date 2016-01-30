@@ -1,0 +1,196 @@
+root@ubuntu:/home/mrinmoy# cat f1
+1234|abcd|4567|xyza
+5342|xyza|3456|abcd
+5332|adbc|5677|bgtd
+2121|keud|6654|gtrd
+root@ubuntu:/home/mrinmoy# cat f2
+1234|aycd|4367|xyza
+5342|xyya|3472|abcd
+5332|adyc|5675|bgtd
+2121|keyd|6655|gtrd
+
+hive> create table kk1(id int,name string,code int,loc string) 
+    > row format delimited                                     
+    > fields terminated by '|'                                 
+    > stored as textfile;                                      
+OK
+Time taken: 3.738 seconds
+hive> load data local inpath 'f1' into table kk1;              
+Copying data from file:/home/mrinmoy/f1
+Copying file: file:/home/mrinmoy/f1
+Loading data to table default.kk1
+OK
+Time taken: 0.338 seconds
+hive> select * from kk1;
+OK
+1234	abcd	4567	xyza
+5342	xyza	3456	abcd
+5332	adbc	5677	bgtd
+2121	keud	6654	gtrd
+
+
+hive> create table kk3(cid int,cname string,ccode int,cloc string)                    
+    > row format delimited                                                            
+    > fields terminated by '|'                                                        
+    > stored as textfile;                                                             
+OK
+Time taken: 0.093 seconds
+hive> load data local inpath 'f2' into table kk3;                                     
+Copying data from file:/home/mrinmoy/f2
+Copying file: file:/home/mrinmoy/f2
+Loading data to table default.kk3
+OK
+Time taken: 0.147 seconds
+hive> select * from kk3;                                                              
+OK
+1234	aycd	4367	xyza
+5342	xyya	3472	abcd
+5332	adyc	5675	bgtd
+2121	keyd	6655	gtrd
+
+hive> create table mergetab as select id,name,loc from kk1 n JOIN kk3 b ON(n.id=b.cid);
+hive> select * from mergetab;
+OK
+1234	abcd	xyza
+2121	keud	gtrd
+5332	adbc	bgtd
+5342	xyza	abcd
+hive> create table mergetab2 as select id,name,loc from kk1 n LEFT OUTER JOIN kk3 b ON(n.id=b.cid); // Here tab1 came as it is and matched fields in tab2 join
+hive> select * from mergetab2;                                                                     
+OK
+1234	abcd	xyza
+2121	keud	gtrd
+5332	adbc	bgtd
+5342	xyza	abcd
+
+hive> create table mergetab3 as select id,name,loc from kk1 n RIGHT OUTER JOIN kk3 b ON(n.id=b.cid);// Here tab2 came as it is and matched fields in tab1 join
+hive> select * from mergetab3;                                                                      
+OK
+1234	abcd	xyza
+2121	keud	gtrd
+5332	adbc	bgtd
+5342	xyza	abcd
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /user/hive/warehouse/mergetab3
+Found 1 items
+-rw-r--r--   1 root supergroup         60 2015-01-23 01:43 /user/hive/warehouse/mergetab3/000000_0
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /user/hive/warehouse/mergetab3/000000_0
+1234abcdxyza
+2121keudgtrd
+5332adbcbgtd
+5342xyzaabcd
+
+-------------------------------------------------
+hive> select * from kk1;                                                                            
+OK
+1234	abcd	4567	xyza
+5342	xyza	3456	abcd
+5332	adbc	5677	bgtd
+2121	keud	6654	gtrd
+Time taken: 0.093 seconds
+hive> select * from kk1 ORDER BY id;
+Ended Job = job_201501230107_0006
+OK
+1234	abcd	4567	xyza
+2121	keud	6654	gtrd
+5332	adbc	5677	bgtd
+5342	xyza	3456	abcd
+
+
+
+hive> select * from kk1 SORT BY id; 
+OK
+1234	abcd	4567	xyza
+2121	keud	6654	gtrd
+5332	adbc	5677	bgtd
+5342	xyza	3456	abcd
+
+hive> select * from kk1 DISTRIBUTE BY id;                               
+Ended Job = job_201501230107_0009
+OK
+1234	abcd	4567	xyza
+5342	xyza	3456	abcd
+5332	adbc	5677	bgtd
+2121	keud	6654	gtrd
+
+hive> select * from kk1 GROUP BY id; 
+Ended Job = job_201501230107_0011
+OK
+1234
+2121
+5332
+5342
+
+
+
+hive> select * from kk1 DISTRIBUTE BY id SORT BY id; 
+
+Ended Job = job_201501230107_0010
+OK
+1234	abcd	4567	xyza
+2121	keud	6654	gtrd
+5332	adbc	5677	bgtd
+5342	xyza	3456	abcd
+
+hive> select * from bk1 DISTRIBUTE BY cid SORT BY cname;         
+
+Ended Job = job_201501230107_0015
+OK
+5332	adyc	5675	bgtd
+1234	aycd	4367	xyza
+2121	keyd	6655	gtrd
+1234	xyya	3472	abcd
+
+
+   hive> select * from bk1 SORT BY cid DISTRIBUTE BY cid;  (NOT ACCESSABLE ERROR COME )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

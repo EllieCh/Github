@@ -1,0 +1,343 @@
+SQOOP SAVED JOBS
+================
+
+mrinmoy@ubuntu:~$ su root
+Password: 
+root@ubuntu:/home/mrinmoy# cd ..
+root@ubuntu:/home# clear
+
+root@ubuntu:/home# sqoop job --create IncreSqoopJob import --connect jdbc:mysql://localhost/Gopal_Lab --table emp --target-dir /GopalSavedJobs -m 1 --append;
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Error parsing arguments for job:
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: import
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: jdbc:mysql://localhost/Gopal_Lab
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: emp
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: --target-dir
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: /GopalSavedJobs
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: -m
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: 1
+13/08/06 04:32:54 ERROR tool.BaseSqoopTool: Unrecognized argument: --append
+
+Try --help for usage instructions.
+usage: sqoop job [GENERIC-ARGS] [JOB-ARGS] [-- [<tool-name>] [TOOL-ARGS]]
+
+Job management arguments:
+   --create <job-id>            Create a new saved job
+   --delete <job-id>            Delete a saved job
+   --exec <job-id>              Run a saved job
+   --help                       Print usage instructions
+   --list                       List saved jobs
+   --meta-connect <jdbc-uri>    Specify JDBC connect string for the
+                                metastore
+   --show <job-id>              Show the parameters for a saved job
+   --verbose                    Print more information while working
+
+Generic Hadoop command-line arguments:
+(must preceed any tool-specific arguments)
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+root@ubuntu:/home# hadoop fs -rmr /user/root/*
+Deleted hdfs://localhost:8020/user/root/student
+Deleted hdfs://localhost:8020/user/root/tcsemp
+root@ubuntu:/home# sqoop job --create IncreSqoopJob import --connect jdbc:mysql://localhost/Gopal_Lab --table emp --append;
+13/08/06 04:33:53 ERROR tool.BaseSqoopTool: Error parsing arguments for job:
+13/08/06 04:33:53 ERROR tool.BaseSqoopTool: Unrecognized argument: import
+13/08/06 04:33:53 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect
+13/08/06 04:33:53 ERROR tool.BaseSqoopTool: Unrecognized argument: jdbc:mysql://localhost/Gopal_Lab
+13/08/06 04:33:53 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+13/08/06 04:33:53 ERROR tool.BaseSqoopTool: Unrecognized argument: emp
+13/08/06 04:33:53 ERROR tool.BaseSqoopTool: Unrecognized argument: --append
+
+Try --help for usage instructions.
+usage: sqoop job [GENERIC-ARGS] [JOB-ARGS] [-- [<tool-name>] [TOOL-ARGS]]
+
+Job management arguments:
+   --create <job-id>            Create a new saved job
+   --delete <job-id>            Delete a saved job
+   --exec <job-id>              Run a saved job
+   --help                       Print usage instructions
+   --list                       List saved jobs
+   --meta-connect <jdbc-uri>    Specify JDBC connect string for the
+                                metastore
+   --show <job-id>              Show the parameters for a saved job
+   --verbose                    Print more information while working
+
+Generic Hadoop command-line arguments:
+(must preceed any tool-specific arguments)
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+root@ubuntu:/home# sqoop job --create IncreSqoopJob import --connect jdbc:mysql://localhost/Gopal_Lab --table emp ;
+13/08/06 04:34:02 ERROR tool.BaseSqoopTool: Error parsing arguments for job:
+13/08/06 04:34:02 ERROR tool.BaseSqoopTool: Unrecognized argument: import
+13/08/06 04:34:02 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect
+13/08/06 04:34:02 ERROR tool.BaseSqoopTool: Unrecognized argument: jdbc:mysql://localhost/Gopal_Lab
+13/08/06 04:34:02 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+13/08/06 04:34:02 ERROR tool.BaseSqoopTool: Unrecognized argument: emp
+
+Try --help for usage instructions.
+usage: sqoop job [GENERIC-ARGS] [JOB-ARGS] [-- [<tool-name>] [TOOL-ARGS]]
+
+Job management arguments:
+   --create <job-id>            Create a new saved job
+   --delete <job-id>            Delete a saved job
+   --exec <job-id>              Run a saved job
+   --help                       Print usage instructions
+   --list                       List saved jobs
+   --meta-connect <jdbc-uri>    Specify JDBC connect string for the
+                                metastore
+   --show <job-id>              Show the parameters for a saved job
+   --verbose                    Print more information while working
+
+Generic Hadoop command-line arguments:
+(must preceed any tool-specific arguments)
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+root@ubuntu:/home# sqoop job --create IncreSqoopJob --import --connect jdbc:mysql://localhost/Gopal_Lab --table emp --target-dir /GopalSavedJobs -m 1 --append  ;
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Error parsing arguments for job:
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: --import
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: jdbc:mysql://localhost/Gopal_Lab
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: emp
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: --target-dir
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: /GopalSavedJobs
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: -m
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: 1
+13/08/06 04:35:25 ERROR tool.BaseSqoopTool: Unrecognized argument: --append
+
+Try --help for usage instructions.
+usage: sqoop job [GENERIC-ARGS] [JOB-ARGS] [-- [<tool-name>] [TOOL-ARGS]]
+
+Job management arguments:
+   --create <job-id>            Create a new saved job
+   --delete <job-id>            Delete a saved job
+   --exec <job-id>              Run a saved job
+   --help                       Print usage instructions
+   --list                       List saved jobs
+   --meta-connect <jdbc-uri>    Specify JDBC connect string for the
+                                metastore
+   --show <job-id>              Show the parameters for a saved job
+   --verbose                    Print more information while working
+
+Generic Hadoop command-line arguments:
+(must preceed any tool-specific arguments)
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+root@ubuntu:/home# sqoop job --create IncreSqoopJob --import --connect jdbc:mysql://localhost/Gopal_Lab --table emp;
+13/08/06 04:35:37 ERROR tool.BaseSqoopTool: Error parsing arguments for job:
+13/08/06 04:35:37 ERROR tool.BaseSqoopTool: Unrecognized argument: --import
+13/08/06 04:35:37 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect
+13/08/06 04:35:37 ERROR tool.BaseSqoopTool: Unrecognized argument: jdbc:mysql://localhost/Gopal_Lab
+13/08/06 04:35:37 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+13/08/06 04:35:37 ERROR tool.BaseSqoopTool: Unrecognized argument: emp
+
+Try --help for usage instructions.
+usage: sqoop job [GENERIC-ARGS] [JOB-ARGS] [-- [<tool-name>] [TOOL-ARGS]]
+
+Job management arguments:
+   --create <job-id>            Create a new saved job
+   --delete <job-id>            Delete a saved job
+   --exec <job-id>              Run a saved job
+   --help                       Print usage instructions
+   --list                       List saved jobs
+   --meta-connect <jdbc-uri>    Specify JDBC connect string for the
+                                metastore
+   --show <job-id>              Show the parameters for a saved job
+   --verbose                    Print more information while working
+
+Generic Hadoop command-line arguments:
+(must preceed any tool-specific arguments)
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+root@ubuntu:/home# clear
+
+root@ubuntu:/home# cd Gopal/
+root@ubuntu:/home/Gopal# clear
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+root@ubuntu:/home/Gopal# sqoop job --create IncreSqoopJob -- import --connect jdbc:mysql://localhost/Gopal_Lab --table emp;
+
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# sqoop job --list;
+Available jobs:
+  GopalNewJob
+  IncreSqoopJob
+
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# sqoop job --show IncreSqoopJob;
+Job: IncreSqoopJob
+Tool: import
+Options:
+----------------------------
+db.clear.staging.table = false
+direct.import = false
+db.batch = false
+codegen.input.delimiters.record = 0
+hive.fail.table.exists = false
+hdfs.append.dir = false
+codegen.auto.compile.dir = true
+db.table = emp
+codegen.output.delimiters.enclose.required = false
+codegen.output.delimiters.field = 44
+import.max.inline.lob.size = 16777216
+codegen.input.delimiters.enclose.required = false
+import.direct.split.size = 0
+hbase.create.table = false
+codegen.output.delimiters.record = 10
+hive.overwrite.table = false
+db.connect.string = jdbc:mysql://localhost/Gopal_Lab
+codegen.output.dir = .
+codegen.output.delimiters.enclose = 0
+codegen.input.delimiters.escape = 0
+enable.compression = false
+export.new.update = UpdateOnly
+mapreduce.num.mappers = 4
+hdfs.file.format = TextFile
+db.require.password = false
+hive.import = false
+incremental.mode = None
+codegen.input.delimiters.field = 0
+import.fetch.size = null
+hive.drop.delims = false
+codegen.compile.dir = /tmp/sqoop-root/compile/73f154f1cd5ab6c30525cb8abea70c76
+codegen.output.delimiters.escape = 0
+codegen.input.delimiters.enclose = 0
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# 
+
+root@ubuntu:/home/Gopal# sqoop job --exec IncreSqoopJob;
+13/08/06 04:41:23 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+13/08/06 04:41:23 INFO tool.CodeGenTool: Beginning code generation
+13/08/06 04:41:23 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+13/08/06 04:41:23 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+13/08/06 04:41:23 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+13/08/06 04:41:23 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+13/08/06 04:41:27 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/a34b59c71101ac1890fc6e529cd4b775/emp.jar
+13/08/06 04:41:27 WARN manager.MySQLManager: It looks like you are importing from mysql.
+13/08/06 04:41:27 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+13/08/06 04:41:27 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+13/08/06 04:41:27 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+13/08/06 04:41:27 INFO mapreduce.ImportJobBase: Beginning import of emp
+13/08/06 04:41:30 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`empid`), MAX(`empid`) FROM `emp`
+13/08/06 04:41:31 INFO mapred.JobClient: Running job: job_201308060426_0001
+13/08/06 04:41:32 INFO mapred.JobClient:  map 0% reduce 0%
+13/08/06 04:41:54 INFO mapred.JobClient:  map 50% reduce 0%
+13/08/06 04:42:02 INFO mapred.JobClient:  map 75% reduce 0%
+13/08/06 04:42:03 INFO mapred.JobClient:  map 100% reduce 0%
+13/08/06 04:42:06 INFO mapred.JobClient: Job complete: job_201308060426_0001
+13/08/06 04:42:06 INFO mapred.JobClient: Counters: 16
+13/08/06 04:42:06 INFO mapred.JobClient:   Job Counters 
+13/08/06 04:42:06 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=54120
+13/08/06 04:42:06 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/08/06 04:42:06 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/08/06 04:42:06 INFO mapred.JobClient:     Launched map tasks=4
+13/08/06 04:42:06 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+13/08/06 04:42:06 INFO mapred.JobClient:   FileSystemCounters
+13/08/06 04:42:06 INFO mapred.JobClient:     HDFS_BYTES_READ=434
+13/08/06 04:42:06 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=282468
+13/08/06 04:42:06 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=282
+13/08/06 04:42:06 INFO mapred.JobClient:   Map-Reduce Framework
+13/08/06 04:42:06 INFO mapred.JobClient:     Map input records=15
+13/08/06 04:42:06 INFO mapred.JobClient:     Physical memory (bytes) snapshot=514682880
+13/08/06 04:42:06 INFO mapred.JobClient:     Spilled Records=0
+13/08/06 04:42:06 INFO mapred.JobClient:     CPU time spent (ms)=9460
+13/08/06 04:42:06 INFO mapred.JobClient:     Total committed heap usage (bytes)=151388160
+13/08/06 04:42:06 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1824280576
+13/08/06 04:42:06 INFO mapred.JobClient:     Map output records=15
+13/08/06 04:42:06 INFO mapred.JobClient:     SPLIT_RAW_BYTES=434
+13/08/06 04:42:06 INFO mapreduce.ImportJobBase: Transferred 282 bytes in 38.8896 seconds (7.2513 bytes/sec)
+13/08/06 04:42:06 INFO mapreduce.ImportJobBase: Retrieved 15 records.
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# 
+

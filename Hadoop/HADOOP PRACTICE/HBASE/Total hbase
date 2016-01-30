@@ -1,0 +1,363 @@
+root@ubuntu:/home/mrinmoy/kiran# jps
+1866 TaskTracker
+957 DataNode
+1611 NameNode
+2326 Jps
+1905 QuorumPeerMain
+1772 SecondaryNameNode
+1319 JobTracker
+root@ubuntu:/home/mrinmoy/kiran# kill 1905
+root@ubuntu:/home/mrinmoy/kiran# jps
+1866 TaskTracker
+957 DataNode
+1611 NameNode
+2343 Jps
+1772 SecondaryNameNode
+1319 JobTracker
+root@ubuntu:/home/mrinmoy/kiran# cd /usr/lib/hbase/bin/
+root@ubuntu:/usr/lib/hbase/bin# ls
+add_table.rb      hbase-config.sh   local-master-backup.sh  rename_table.rb            start-hbase.sh
+check_meta.rb     hbase-daemon.sh   local-regionservers.sh  replication                stop-hbase.sh
+copy_table.rb     hbase-daemons.sh  master-backup.sh        rolling-restart.sh         zookeepers.sh
+graceful_stop.sh  hirb.rb           region_mover.rb         set_meta_block_caching.rb
+hbase             loadtable.rb      regionservers.sh        set_meta_memstore_size.rb
+root@ubuntu:/usr/lib/hbase/bin# ./start-hbase.sh
+starting master, logging to /usr/lib/hbase/bin/../logs/hbase-root-master-ubuntu.out
+root@ubuntu:/usr/lib/hbase/bin# hbase shell
+HBase Shell; enter 'help<RETURN>' for list of supported commands.
+Type "exit<RETURN>" to leave the HBase Shell
+Version 0.90.6-cdh3u5, r, Fri Oct  5 17:35:30 PDT 2012
+
+hbase(main):001:0> create 'jk','col'
+0 row(s) in 0.5450 seconds
+hbase(main):005:0> put 'jk','row1','col:HELLO','GOOD MORNING'
+0 row(s) in 0.1220 seconds
+
+hbase(main):006:0> put 'jk','row2','col:HAI','GOOD MORNING'  
+0 row(s) in 0.0230 seconds
+
+hbase(main):007:0> put 'jk','row3','col:HELLO','GOOD AFTERNOON'
+0 row(s) in 0.0110 seconds
+
+hbase(main):008:0> put 'jk','row4','col:HELLO','GOOD EVENING'  
+0 row(s) in 0.0110 seconds
+
+hbase(main):009:0> put 'jk','row5','col:HAI','GOOD EVENING'  
+0 row(s) in 0.0110 seconds
+
+hbase(main):010:0> put 'jk','row6','col:HELLO','GOOD NIGHT'  
+0 row(s) in 0.0100 seconds
+
+hbase(main):011:0> put 'jk','row7','col:HAI','GOOD NIGHT'  
+0 row(s) in 0.0220 seconds
+
+hbase(main):012:0> scan 'jk'
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HELLO, timestamp=1423455277354, value=GOOD MORNING               
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=col:HELLO, timestamp=1423455328332, value=GOOD AFTERNOON             
+ row4                      column=col:HELLO, timestamp=1423455353961, value=GOOD EVENING               
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+7 row(s) in 0.0490 seconds
+
+hbase(main):013:0> get 'jk','col:HAI'
+COLUMN                     CELL                    {HERE WE SHOULD SPECIFY ROW NO. COMPULSORY}                                                     
+0 row(s) in 0.0180 seconds
+
+hbase(main):014:0> get 'jk','col:HELLO'
+COLUMN                     CELL                                                                        
+0 row(s) in 0.0090 seconds
+
+hbase(main):015:0> get 'jk','row4'     
+COLUMN                     CELL                                                                        
+ col:HELLO                 timestamp=1423455353961, value=GOOD EVENING                                 
+1 row(s) in 0.0200 seconds
+
+hbase(main):016:0> alter 'jk','col'
+
+ERROR: Table jk is enabled. Disable it first before altering.
+
+hbase(main):017:0> is_enabled 'jk'
+true                                                                                                   
+0 row(s) in 0.0090 seconds
+
+hbase(main):018:0> disable 'jk'
+0 row(s) in 2.0450 seconds
+
+hbase(main):019:0> alter 'jk',{NAME=>col,VERSIONS=>5}
+NameError: undefined local variable or method `col' for #<Object:0xf690e4>
+
+hbase(main):020:0> alter 'jk',{NAME=>'col',VERSIONS=>5}
+0 row(s) in 0.0630 seconds
+
+hbase(main):021:0> put 'jk','row1','col:HDFS','For Storing Data'
+
+ERROR: org.apache.hadoop.hbase.client.RetriesExhaustedWithDetailsException: Failed 1 action: NotServingRegionException: 1 time, servers with issues: ubuntu:59592, 
+
+Here is some help for this command:
+Put a cell 'value' at specified table/row/column and optionally
+timestamp coordinates.  To put a cell value into table 't1' at
+row 'r1' under column 'c1' marked with the time 'ts1', do:
+
+  hbase> put 't1', 'r1', 'c1', 'value', ts1
+
+
+hbase(main):022:0> enable 'jk'                  {FOR VERSIONING ROW NAME,COL NAME SHOULD BE SAME ONLY COLUMN VALUE SHOULD BE CHANGE}
+0 row(s) in 2.0490 seconds
+
+hbase(main):023:0> put 'jk','row1','col:HDFS','For Storing Data'
+0 row(s) in 0.0390 seconds
+
+hbase(main):024:0> put 'jk','row1','col:Map Reduse','For Processing Data'
+0 row(s) in 0.0100 seconds
+
+hbase(main):025:0> put 'jk','row1','col:PIG','For Tabler information rowwise'
+0 row(s) in 0.0110 seconds
+
+hbase(main):026:0> put 'jk','row1','col:HIVE','For Tabler information columnwise'
+0 row(s) in 0.0070 seconds
+
+hbase(main):027:0> put 'jk','row1','col:HBASE','For Versioning the Data'          
+0 row(s) in 0.0140 seconds
+
+hbase(main):028:0> scan 'jk'
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HBASE, timestamp=1423456134043, value=For Versioning the Data    
+ row1                      column=col:HDFS, timestamp=1423456011118, value=For Storing Data            
+ row1                      column=col:HELLO, timestamp=1423455277354, value=GOOD MORNING               
+ row1                      column=col:HIVE, timestamp=1423456107025, value=For Tabler information colum
+                           nwise                                                                       
+ row1                      column=col:Map Reduse, timestamp=1423456034901, value=For Processing Data   
+ row1                      column=col:PIG, timestamp=1423456087272, value=For Tabler information rowwis
+                           e                                                                           
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=col:HELLO, timestamp=1423455328332, value=GOOD AFTERNOON             
+ row4                      column=col:HELLO, timestamp=1423455353961, value=GOOD EVENING               
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+7 row(s) in 0.0490 seconds
+
+hbase(main):029:0> scan 'jk',VERSIONS=>4
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HBASE, timestamp=1423456134043, value=For Versioning the Data    
+ row1                      column=col:HDFS, timestamp=1423456011118, value=For Storing Data            
+ row1                      column=col:HELLO, timestamp=1423455277354, value=GOOD MORNING               
+ row1                      column=col:HIVE, timestamp=1423456107025, value=For Tabler information colum
+                           nwise                                                                       
+ row1                      column=col:Map Reduse, timestamp=1423456034901, value=For Processing Data   
+ row1                      column=col:PIG, timestamp=1423456087272, value=For Tabler information rowwis
+                           e                                                                           
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=col:HELLO, timestamp=1423455328332, value=GOOD AFTERNOON             
+ row4                      column=col:HELLO, timestamp=1423455353961, value=GOOD EVENING               
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+7 row(s) in 0.0440 seconds
+hbase(main):042:0> list 'jk'
+TABLE                                                                                                  
+jk                                                                                                     
+1 row(s) in 0.0220 seconds
+
+hbase(main):043:0> get 'jk','row4'
+COLUMN                     CELL                                                                        
+ col:HELLO                 timestamp=1423455353961, value=GOOD EVENING                                 
+1 row(s) in 0.0150 seconds
+
+hbase(main):044:0> get 'jk','row1'
+COLUMN                     CELL                                                                        
+ col:HBASE                 timestamp=1423456134043, value=For Versioning the Data                      
+ col:HDFS                  timestamp=1423456011118, value=For Storing Data                             
+ col:HELLO                 timestamp=1423455277354, value=GOOD MORNING                                 
+ col:HIVE                  timestamp=1423456107025, value=For Tabler information columnwise            
+ col:Map Reduse            timestamp=1423456034901, value=For Processing Data                          
+ col:PIG                   timestamp=1423456087272, value=For Tabler information rowwise               
+6 row(s) in 0.0170 seconds
+
+hbase(main):050:0> put 'jk','row1','colfam:Hadoop','Is a big data tool'
+0 row(s) in 0.0180 seconds
+
+hbase(main):051:0> put 'jk','row1','colfam:Hadoop','can store huge data'
+0 row(s) in 0.0170 seconds
+
+hbase(main):052:0> put 'jk','row1','colfam:Hadoop','can process huge data'
+0 row(s) in 0.0170 seconds
+
+hbase(main):053:0> scan 'jk',VERSIONS=>2
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HBASE, timestamp=1423456134043, value=For Versioning the Data    
+ row1                      column=col:HDFS, timestamp=1423456011118, value=For Storing Data            
+ row1                      column=col:HELLO, timestamp=1423455277354, value=GOOD MORNING               
+ row1                      column=col:HIVE, timestamp=1423456107025, value=For Tabler information colum
+                           nwise                                                                       
+ row1                      column=col:Map Reduse, timestamp=1423456034901, value=For Processing Data   
+ row1                      column=col:PIG, timestamp=1423456087272, value=For Tabler information rowwis
+                           e                                                                           
+ row1                      column=colfam:Hadoop, timestamp=1423456880231, value=can process huge data  
+ row1                      column=colfam:Hadoop, timestamp=1423456870186, value=can store huge data    
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=col:HELLO, timestamp=1423455328332, value=GOOD AFTERNOON             
+ row4                      column=col:HELLO, timestamp=1423455353961, value=GOOD EVENING               
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+7 row(s) in 0.0440 seconds
+
+hbase(main):054:0> delete 'jk','row1','col:HAI'
+0 row(s) in 0.0330 seconds
+
+hbase(main):055:0> delete 'jk','row1','col:HELLO'
+0 row(s) in 0.0090 seconds
+
+hbase(main):056:0> delete 'jk','row1','col:HIVE' 
+0 row(s) in 0.0120 seconds
+
+hbase(main):057:0> delete 'jk','row1','col:PIG' 
+0 row(s) in 0.0110 seconds
+
+hbase(main):058:0> delete 'jk','row1','colfam:Hadoop'
+0 row(s) in 0.0110 seconds
+
+hbase(main):059:0> scan 'jk'
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HBASE, timestamp=1423456134043, value=For Versioning the Data    
+ row1                      column=col:HDFS, timestamp=1423456011118, value=For Storing Data            
+ row1                      column=col:Map Reduse, timestamp=1423456034901, value=For Processing Data   
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=col:HELLO, timestamp=1423455328332, value=GOOD AFTERNOON             
+ row4                      column=col:HELLO, timestamp=1423455353961, value=GOOD EVENING               
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+7 row(s) in 0.0340 seconds
+
+hbase(main):060:0> delete 'jk','row3','col:HELLO'    
+0 row(s) in 0.0140 seconds
+
+hbase(main):061:0> delete 'jk','row4','col:HELLO'
+0 row(s) in 0.0160 seconds
+
+hbase(main):062:0> scan 'jk'                     
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HBASE, timestamp=1423456134043, value=For Versioning the Data    
+ row1                      column=col:HDFS, timestamp=1423456011118, value=For Storing Data            
+ row1                      column=col:Map Reduse, timestamp=1423456034901, value=For Processing Data   
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+5 row(s) in 0.0360 seconds
+
+
+hbase(main):063:0> disable 'jk'                      
+0 row(s) in 2.0620 seconds
+
+hbase(main):064:0> alter 'jk','row3',{NAME=>'colf',VERSIONS=>5}
+0 row(s) in 0.0630 seconds
+
+hbase(main):065:0> enable 'jk'                                              {FOR VERSIONING ROW NAME,COL NAME SHOULD BE SAME ONLY COLUMN VALUE SHOULD BE CHANGE}
+0 row(s) in 2.0690 seconds
+
+hbase(main):066:0> put 'jk','row3','colf:HYD','Capital of telangana'
+0 row(s) in 0.0180 seconds
+
+hbase(main):067:0> put 'jk','row3','colf:HYD','Previous Capital of andhra'   
+0 row(s) in 0.0130 seconds
+
+hbase(main):068:0> put 'jk','row3','colf:HYD','Is in Rangareddy District' 
+0 row(s) in 0.0110 seconds
+
+hbase(main):069:0> scan 'jk'
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HBASE, timestamp=1423456134043, value=For Versioning the Data    
+ row1                      column=col:HDFS, timestamp=1423456011118, value=For Storing Data            
+ row1                      column=col:Map Reduse, timestamp=1423456034901, value=For Processing Data   
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=colf:HYD, timestamp=1423457837796, value=Is in Rangareddy District   
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+6 row(s) in 0.0380 seconds
+
+hbase(main):070:0> scan 'jk',VERSIONS=>2                                     
+ROW                        COLUMN+CELL                                                                 
+ row1                      column=col:HBASE, timestamp=1423456134043, value=For Versioning the Data    
+ row1                      column=col:HDFS, timestamp=1423456011118, value=For Storing Data            
+ row1                      column=col:Map Reduse, timestamp=1423456034901, value=For Processing Data   
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=colf:HYD, timestamp=1423457837796, value=Is in Rangareddy District   
+ row3                      column=colf:HYD, timestamp=1423457813338, value=Previous Capital of andhra  
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row6                      column=col:HELLO, timestamp=1423455383507, value=GOOD NIGHT                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+6 row(s) in 0.0370 seconds                                                                 //AFTER DELETING SOME ROWS
+
+hbase(main):078:0> scan 'jk'
+ROW                        COLUMN+CELL                                                                 
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=colf:HYD, timestamp=1423457837796, value=Is in Rangareddy District   
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+4 row(s) in 0.0280 seconds
+
+hbase(main):079:0> scan 'jk',VERSIONS=>3
+ROW                        COLUMN+CELL                                                                 
+ row2                      column=col:HAI, timestamp=1423455306917, value=GOOD MORNING                 
+ row3                      column=colf:HYD, timestamp=1423457837796, value=Is in Rangareddy District   
+ row3                      column=colf:HYD, timestamp=1423457813338, value=Previous Capital of andhra  
+ row3                      column=colf:HYD, timestamp=1423457795215, value=Capital of telangana        
+ row5                      column=col:HAI, timestamp=1423455367430, value=GOOD EVENING                 
+ row7                      column=col:HAI, timestamp=1423455394027, value=GOOD NIGHT                   
+4 row(s) in 0.0310 seconds
+
+hbase(main):080:0> disable 'jk'
+0 row(s) in 2.0570 seconds
+
+hbase(main):082:0> alter 'jk',{NAME=>'col',METHOD=>'delete'}
+0 row(s) in 0.0570 seconds
+
+hbase(main):086:0> is_disabled 'jk'                //ONLY 'COL' FIELDS WILL BE DELETED
+true                                                                                                   
+0 row(s) in 0.0080 seconds
+
+hbase(main):087:0> enable 'jk'
+0 row(s) in 2.0530 seconds
+
+hbase(main):088:0> scan 'jk'
+ROW                        COLUMN+CELL                                                                 
+ row3                      column=colf:HYD, timestamp=1423457837796, value=Is in Rangareddy District   
+1 row(s) in 0.0200 seconds
+
+hbase(main):089:0> scan 'jk',VERSIONS=>3 
+ROW                        COLUMN+CELL                                                                 
+ row3                      column=colf:HYD, timestamp=1423457837796, value=Is in Rangareddy District   
+ row3                      column=colf:HYD, timestamp=1423457813338, value=Previous Capital of andhra  
+ row3                      column=colf:HYD, timestamp=1423457795215, value=Capital of telangana        
+1 row(s) in 0.0290 seconds
+
+hbase(main):092:0> disable 'jk'                              
+0 row(s) in 2.0530 seconds
+
+hbase(main):093:0> alter 'jk',{NAME=>'colf',METHOD=>'delete'}
+0 row(s) in 0.0580 seconds
+
+hbase(main):094:0> enable 'jk'                               
+0 row(s) in 2.0450 seconds
+
+hbase(main):095:0> scan 'jk'
+ROW                        COLUMN+CELL                                                                 
+0 row(s) in 0.0150 seconds
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,299 @@
+--------------------WORDCOUNT--------------------------
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/Downloads/kiran/* .
+                         # ls /home/mrinmoy/Downloads/kiran
+
+
+root@ubuntu:/home/mrinmoy# hadoop fs -put Input-Big.txt jbkk
+                         # jar -xvf wc1.jar
+root@ubuntu:/home/mrinmoy# hadoop jar WC1.jar Wordcou jbkk jbkk1
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls jbkk1
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2015-02-13 18:44 /user/root/jbkk1/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-02-13 18:44 /user/root/jbkk1/_logs
+-rw-r--r--   1 root supergroup        122 2015-02-13 18:44 /user/root/jbkk1/part-r-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat jbkk1/part-r-00000
+
+
+good	4312
+hadoop	4312
+having	2156
+is	4312
+knowledge	1078
+leader	1078
+learn	1078
+market	3234
+now	2156
+people	1078
+the	1078
+------------------------STATIC WORDCOUNT----------------
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/Downloads/kiran/* .
+
+root@ubuntu:/home/mrinmoy# hadoop fs -put Input-Big.txt zk
+root@ubuntu:/home/mrinmoy# hadoop jar wcstat.jar Wordcoustat zk zk1
+root@ubuntu:/home/mrinmoy# hadoop fs -ls zk1
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2015-02-13 18:56 /user/root/zk1/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-02-13 18:56 /user/root/zk1/_logs
+-rw-r--r--   1 root supergroup         12 2015-02-13 18:56 /user/root/zk1/part-r-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat zk1/part-r-00000
+
+hadoop	4312
+
+
+
+
+-------------------DYNAMIC WORDCOUNT---------------------
+
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/Downloads/kiran/* .
+root@ubuntu:/home/mrinmoy# ls /home/mrinmoy/Downloads/kiran
+Dyn.jar  Input-Big.txt
+root@ubuntu:/home/mrinmoy# hadoop fs -put Input-Big.txt kiran
+
+root@ubuntu:/home/mrinmoy# jar -xvf Dyn.jar
+ inflated: META-INF/MANIFEST.MF
+ inflated: Dynamic$Map.class
+ inflated: Dynamic$Reduce.class
+ inflated: Dynamic.class
+root@ubuntu:/home/mrinmoy# 
+
+root@ubuntu:/home/mrinmoy# hadoop jar Dyn.jar Dynamic kiran kiran1 'market'
+
+15/02/14 05:39:15 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+15/02/14 05:39:15 INFO input.FileInputFormat: Total input paths to process : 1
+15/02/14 05:39:15 WARN snappy.LoadSnappy: Snappy native library is available
+15/02/14 05:39:15 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+15/02/14 05:39:15 INFO snappy.LoadSnappy: Snappy native library loaded
+15/02/14 05:39:15 INFO mapred.JobClient: Running job: job_201502132155_0003
+15/02/14 05:39:16 INFO mapred.JobClient:  map 0% reduce 0%
+15/02/14 05:39:21 INFO mapred.JobClient:  map 100% reduce 0%
+15/02/14 05:39:28 INFO mapred.JobClient:  map 100% reduce 33%
+15/02/14 05:39:29 INFO mapred.JobClient:  map 100% reduce 100%
+15/02/14 05:39:29 INFO mapred.JobClient: Job complete: job_201502132155_0003
+15/02/14 05:39:29 INFO mapred.JobClient: Counters: 26
+
+15/02/14 05:39:29 INFO mapred.JobClient:     Map output records=3234
+root@ubuntu:/home/mrinmoy# hadoop fs -ls kiran1
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2015-02-14 05:39 /user/root/kiran1/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-02-14 05:39 /user/root/kiran1/_logs
+-rw-r--r--   1 root supergroup         12 2015-02-14 05:39 /user/root/kiran1/part-r-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat kiran1/part-r-00000
+ market	3234
+
+root@ubuntu:/home/mrinmoy# hadoop jar Dyn.jar Dynamic kiran kiran2 'people'
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls kiran2
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2015-02-14 05:48 /user/root/kiran2/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-02-14 05:47 /user/root/kiran2/_logs
+-rw-r--r--   1 root supergroup         12 2015-02-14 05:48 /user/root/kiran2/part-r-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat kiran2/part-r-00000
+ people	1078
+
+root@ubuntu:/home/mrinmoy# hadoop jar Dyn.jar Dynamic kiran kiran3 'kiran'
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls kiran3
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2015-02-14 05:49 /user/root/kiran3/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-02-14 05:48 /user/root/kiran3/_logs
+-rw-r--r--   1 root supergroup          0 2015-02-14 05:49 /user/root/kiran3/part-r-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat kiran3/part-r-00000
+   (kiran does not exist in Input)
+
+
+
+
+-----------------COMPRESSION---------------------------
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/Downloads/jk/* .
+root@ubuntu:/home/mrinmoy# ls /home/mrinmoy/Downloads/jk
+Batsman_Scores.txt  COMPRESSCODEC.jar
+root@ubuntu:/home/mrinmoy# hadoop fs -put Batsman_Scores.txt bk2
+root@ubuntu:/home/mrinmoy# jar -xvf COMPRESSCODEC.jar
+ 
+inflated: META-INF/MANIFEST.MF
+ inflated: com/gopal/compressTest/MyMapper.class
+ inflated: com/gopal/compressTest/Driver.class
+ inflated: com/gopal/compressTest/MyReducer.class
+ inflated: .classpath
+ inflated: .project
+
+root@ubuntu:/home/mrinmoy# ls /home/mrinmoy/Downloads/jk
+Batsman_Scores.txt  COMPRESSCODEC.jar
+
+root@ubuntu:/home/mrinmoy# cat               /home/mrinmoy/Downloads/jk/Batsman_Scores.txt
+
+Sachin 20 against Australia on 22/02/2011
+Dravid 45 against SouthAfrica on 18/03/2011
+Ponting 65 against India on 21/03/2011
+Sachin 148 against Australia on 05/02/2011
+Laxman 281 against Australia on 07/03/2011
+Lara 400 against England on 17/03/2011
+Hayden 123 against Pakistan on 17/03/2011
+Dravid 105 against SriLanka on 15/02/2011
+Sachin 13 against Australia on 05/03/2011
+Laxman 31 against Pakistan on 06/02/2011
+Sachin 25 against England on 25/02/2011
+Dravid 11 against WestIndies on 22/02/2011
+Inzamam 55 against India on 01/03/2011
+Kallis 69 against SriLanka on 15/03/2011
+Kallis 75 against Australia on 06/03/2011
+Hayden 1 against Bangladesh on 08/03/2011
+
+root@ubuntu:/home/mrinmoy# hadoop jar COMPRESSCODEC.jar com.gopal.compressTest.Driver bk2 bk3
+
+15/02/11 21:08:06 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+15/02/11 21:08:07 WARN snappy.LoadSnappy: Snappy native library is available
+15/02/11 21:08:07 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+15/02/11 21:08:07 INFO snappy.LoadSnappy: Snappy native library loaded
+15/02/11 21:08:07 INFO mapred.FileInputFormat: Total input paths to process : 1
+15/02/11 21:08:07 INFO mapred.JobClient: Running job: job_201502112020_0003
+15/02/11 21:08:08 INFO mapred.JobClient:  map 0% reduce 0%
+15/02/11 21:08:13 INFO mapred.JobClient:  map 100% reduce 0%
+15/02/11 21:08:21 INFO mapred.JobClient:  map 100% reduce 33%
+15/02/11 21:08:22 INFO mapred.JobClient:  map 100% reduce 100%
+15/02/11 21:08:22 INFO mapred.JobClient:     Map output records=16
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls bk3
+Found 3 items
+-rw-r--r--   3 root supergroup          0 2015-02-11 21:08 /user/root/bk3/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-02-11 21:08 /user/root/bk3/_logs
+-rw-r--r--   3 root supergroup        101 2015-02-11 21:08 /user/root/bk3/part-00000.gz
+root@ubuntu:/home/mrinmoy# hadoop fs -cat bk3/part-00000.gz
+?A@0???i:?????	~Th????z?E? ?????X??((?=w?9$?q???s(Uby??L?P?<bZ??5?????,Vroot@ubuntu:/home/mrinmoy# 
+root@ubuntu:/home/mrinmoy# 
+root@ubuntu:/home/mrinmoy# hadoop fs -text bk3/part-00000.gz
+Dravid	161
+Hayden	124
+Inzamam	55
+Kallis	144
+Lara	400
+Laxman	312
+Ponting	65
+Sachin	206
+
+
+-------------------------------PARTITIONING--------------------------------
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/Downloads/jk/* .
+root@ubuntu:/home/mrinmoy# ls /home/mrinmoy/Downloads/jk
+CUSTOM-PARTITIONER.jar  Input_Partitioner.log
+root@ubuntu:/home/mrinmoy# hadoop fs -put Input_Partitioner.log bk4
+root@ubuntu:/home/mrinmoy# jar -xvf CUSTOM-PARTITIONER.jar
+ inflated: META-INF/MANIFEST.MF
+ inflated: com/mapred/partiexam/SamplePartitioner$AgePartitioner.class
+ inflated: com/mapred/partiexam/SamplePartitioner$ParitionReducer.class
+ inflated: com/mapred/partiexam/SamplePartitioner$PartitionMapper.class
+ inflated: com/mapred/partiexam/SamplePartitioner.class
+ inflated: .classpath
+ inflated: .project
+
+root@ubuntu:/home/mrinmoy# cat /home/mrinmoy/Downloads/jk/Input_Partitioner.log
+Alice	23	female	45
+Bob	34	male	89
+Chris	67	male	97
+Krish	38	female	53
+Connor	25	male	27
+Daniel	78	male	95
+
+root@ubuntu:/home/mrinmoy# hadoop jar CUSTOM-PARTITIONER.jar com/mapred/partiexam/SamplePartitioner bk4 bk5
+
+15/02/11 21:15:25 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+15/02/11 21:15:25 INFO input.FileInputFormat: Total input paths to process : 1
+15/02/11 21:15:25 WARN snappy.LoadSnappy: Snappy native library is available
+15/02/11 21:15:25 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+15/02/11 21:15:25 INFO snappy.LoadSnappy: Snappy native library loaded
+15/02/11 21:15:25 INFO mapred.JobClient: Running job: job_201502112020_0004
+15/02/11 21:15:26 INFO mapred.JobClient:  map 0% reduce 0%
+15/02/11 21:15:30 INFO mapred.JobClient:  map 100% reduce 0%
+15/02/11 21:15:38 INFO mapred.JobClient:  map 100% reduce 22%
+15/02/11 21:15:39 INFO mapred.JobClient:  map 100% reduce 44%
+15/02/11 21:15:40 INFO mapred.JobClient:  map 100% reduce 66%
+15/02/11 21:15:46 INFO mapred.JobClient:  map 100% reduce 77%
+15/02/11 21:15:48 INFO mapred.JobClient:  map 100% reduce 100%
+15/02/11 21:15:48 INFO mapred.JobClient:     Map output records=6
+root@ubuntu:/home/mrinmoy# hadoop fs -ls bk4
+Found 1 items
+-rw-r--r--   3 root supergroup        112 2015-02-11 21:14 /user/root/bk4
+root@ubuntu:/home/mrinmoy# hadoop fs -cat bk4
+Alice	23	female	45
+Bob	34	male	89
+Chris	67	male	97
+Krish	38	female	53
+Connor	25	male	27
+Daniel	78	male	95
+
+
+
+
+-------------WORDS PER LINE-------------
+
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/downloads/jk/* .
+cp: cannot stat `/home/mrinmoy/downloads/jk/*': No such file or directory
+root@ubuntu:/home/mrinmoy# cp /home/mrinmoy/Downloads/jk/* .
+root@ubuntu:/home/mrinmoy# ls /home/mrinmoy/Downloads/jk
+inputData.log  WPL.jar
+root@ubuntu:/home/mrinmoy# hadoop fs -put inputData.log mn
+root@ubuntu:/home/mrinmoy# jar -xvf WPL.jar
+ inflated: META-INF/MANIFEST.MF
+ inflated: Words$MapperClass.class
+ inflated: Words$ReducerClass.class
+ inflated: Words.class
+
+root@ubuntu:/home/mrinmoy# hadoop jar WPL.jar Words mn mn1
+15/02/12 18:38:40 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+15/02/12 18:38:40 INFO input.FileInputFormat: Total input paths to process : 1
+15/02/12 18:38:40 WARN snappy.LoadSnappy: Snappy native library is available
+15/02/12 18:38:40 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+15/02/12 18:38:40 INFO snappy.LoadSnappy: Snappy native library loaded
+15/02/12 18:38:41 INFO mapred.JobClient: Running job: job_201502121731_0003
+15/02/12 18:38:42 INFO mapred.JobClient:  map 0% reduce 0%
+15/02/12 18:38:54 INFO mapred.JobClient:  map 100% reduce 0%
+15/02/12 18:39:01 INFO mapred.JobClient:  map 100% reduce 33%
+15/02/12 18:39:03 INFO mapred.JobClient:  map 100% reduce 100%
+15/02/12 18:39:03 INFO mapred.JobClient: Job complete: job_201502121731_0003
+15/02/12 18:39:03 INFO mapred.JobClient: Counters: 26
+15/02/12 18:39:03 INFO mapred.JobClient:   Job Counters 
+15/02/12 18:39:03 INFO mapred.JobClient:     Launched reduce tasks=1
+15/02/12 18:39:03 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=11506
+15/02/12 18:39:03 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+15/02/12 18:39:03 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+15/02/12 18:39:03 INFO mapred.JobClient:     Launched map tasks=1
+15/02/12 18:39:03 INFO mapred.JobClient:     Data-local map tasks=1
+15/02/12 18:39:03 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=8602
+15/02/12 18:39:03 INFO mapred.JobClient:   FileSystemCounters
+15/02/12 18:39:03 INFO mapred.JobClient:     FILE_BYTES_READ=774
+15/02/12 18:39:03 INFO mapred.JobClient:     HDFS_BYTES_READ=465
+15/02/12 18:39:03 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=121270
+15/02/12 18:39:03 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=52
+15/02/12 18:39:03 INFO mapred.JobClient:   Map-Reduce Framework
+15/02/12 18:39:03 INFO mapred.JobClient:     Map input records=6
+15/02/12 18:39:03 INFO mapred.JobClient:     Reduce shuffle bytes=774
+15/02/12 18:39:03 INFO mapred.JobClient:     Spilled Records=128
+15/02/12 18:39:03 INFO mapred.JobClient:     Map output bytes=640
+15/02/12 18:39:03 INFO mapred.JobClient:     CPU time spent (ms)=8500
+15/02/12 18:39:03 INFO mapred.JobClient:     Total committed heap usage (bytes)=183238656
+15/02/12 18:39:03 INFO mapred.JobClient:     Combine input records=0
+15/02/12 18:39:03 INFO mapred.JobClient:     SPLIT_RAW_BYTES=99
+15/02/12 18:39:03 INFO mapred.JobClient:     Reduce input records=64
+15/02/12 18:39:03 INFO mapred.JobClient:     Reduce input groups=6
+15/02/12 18:39:03 INFO mapred.JobClient:     Combine output records=0
+15/02/12 18:39:03 INFO mapred.JobClient:     Physical memory (bytes) snapshot=375193600
+15/02/12 18:39:03 INFO mapred.JobClient:     Reduce output records=6
+15/02/12 18:39:03 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=936284160
+15/02/12 18:39:03 INFO mapred.JobClient:     Map output records=64
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls mn1
+Found 3 items
+-rw-r--r--   3 root supergroup          0 2015-02-12 18:39 /user/root/mn1/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-02-12 18:38 /user/root/mn1/_logs
+-rw-r--r--   3 root supergroup         52 2015-02-12 18:39 /user/root/mn1/part-r-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat mn1/part-r-00000
+line1	8
+line2	11
+line3	13
+line4	13
+line5	9
+line6	10
+
+
+

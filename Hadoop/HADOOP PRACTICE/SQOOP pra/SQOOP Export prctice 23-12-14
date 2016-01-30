@@ -1,0 +1,39 @@
+
+root@ubuntu:/home/mrinmoy# mysql -u root -p;
+Enter password: 
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Chaitu_Lab         |
+| Gopal_Lab          |
+| NewYearDB          |
+| RK                 |
+| Roja               |
+| aaa                |
+| b41                |
+| b42                |
+| batch17            |
+| batch42            |
+| mysql              |
+| p1                 |
++--------------------+
+13 rows in set (0.00 sec)
+
+mysql> use p1;
+Database changed
+mysql> create table exporttab(id int primarykey,name varchar(50),sal int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primarykey,name varchar(50),sal int)' at line 1
+mysql> create table exporttab(id int primary key,name varchar(50),sal int);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show tables;
++--------------+
+| Tables_in_p1 |
++--------------+
+| exporttab    |
++--------------+
+

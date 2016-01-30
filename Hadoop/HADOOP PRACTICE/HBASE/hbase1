@@ -1,0 +1,147 @@
+-----------HBASE--------------------
+root@ubuntu:/home/mrinmoy# jps
+1957 QuorumPeerMain
+1325 JobTracker
+4715 Jps
+1572 SecondaryNameNode
+1467 NameNode
+977 DataNode
+1863 TaskTracker
+
+root@ubuntu:/home/mrinmoy# kill 1957   //Inorder to enter into hbase we have to kill QuorumPeerMain and get HMaster
+root@ubuntu:/home/mrinmoy# jps
+1325 JobTracker
+1572 SecondaryNameNode
+1467 NameNode
+977 DataNode
+4729 Jps
+1863 TaskTracker
+
+root@ubuntu:/home/mrinmoy# cd /usr/lib/hbase/bin/
+root@ubuntu:/usr/lib/hbase/bin# ./start-hbase.sh 
+starting master, logging to /usr/lib/hbase/bin/../logs/hbase-root-master-ubuntu.out
+root@ubuntu:/usr/lib/hbase/bin# jps
+4916 Jps
+1325 JobTracker
+1572 SecondaryNameNode
+1467 NameNode
+977 DataNode
+4820 HMaster           //we have to get this HMaster to get into hbase                                                                                                               
+1863 TaskTracker
+
+root@ubuntu:/usr/lib/hbase/bin# cd ~
+root@ubuntu:~# cd /home
+root@ubuntu:/home# hbase shell
+HBase Shell; enter 'help<RETURN>' for list of supported commands.
+Type "exit<RETURN>" to leave the HBase Shell
+Version 0.90.6-cdh3u5, r, Fri Oct  5 17:35:30 PDT 2012
+
+hbase(main):001:0> create 'kiran12','colfam1'
+0 row(s) in 0.9270 seconds
+
+hbase(main):002:0> describe kiran12
+NameError: undefined local variable or method `kiran12' for #<Object:0x1781288>
+
+hbase(main):003:0> describe 'kiran12'
+DESCRIPTION                                                                                                  ENABLED                                                    
+ {NAME => 'kiran12', FAMILIES => [{NAME => 'colfam1', BLOOMFILTER => 'NONE', REPLICATION_SCOPE => '0', COMPR true                                                       
+ ESSION => 'NONE', VERSIONS => '3', TTL => '2147483647', BLOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCA                                                            
+ CHE => 'true'}]}                                                                                                                                                       
+1 row(s) in 0.0580 seconds
+
+hbase(main):004:0> put 'kiran12','first row','colfam1:hdfs','FOR STORAGE'
+0 row(s) in 0.1960 seconds
+
+hbase(main):005:0> describe 'kiran12'                                    
+DESCRIPTION                                                                                                  ENABLED                                                    
+ {NAME => 'kiran12', FAMILIES => [{NAME => 'colfam1', BLOOMFILTER => 'NONE', REPLICATION_SCOPE => '0', COMPR true                                                       
+ ESSION => 'NONE', VERSIONS => '3', TTL => '2147483647', BLOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCA                                                            
+ CHE => 'true'}]}                                                                                                                                                       
+1 row(s) in 0.0790 seconds
+
+hbase(main):006:0> scan 'kiran12'
+ROW                                         COLUMN+CELL                                                                                                                 
+ first row                                  column=colfam1:hdfs, timestamp=1424032131698, value=FOR STORAGE                                                             
+1 row(s) in 0.0960 seconds
+
+hbase(main):014:0> version
+0.90.6-cdh3u5, r, Fri Oct  5 17:35:30 PDT 2012
+
+hbase(main):015:0> status
+1 servers, 0 dead, 19.0000 average load
+
+hbase(main):016:0> status 'detailed'
+
+version 0.90.6-cdh3u5
+0 regionsInTransition
+1 live servers
+    ubuntu:34641 1424031786688
+        requests=0, regions=19, usedHeap=34, maxHeap=996
+        sample,,1415267560305.e83b0a2daa39463201f45602d2fb6057.
+            stores=1, storefiles=1, storefileSizeMB=0, memstoreSizeMB=0, storefileIndexSizeMB=0
+        RK,,1357823843109.81ca6cac3627b15df0d6113a595083c3.
+            stores=1, storefiles=1, storefileSizeMB=0, memstoreSizeMB=0, storefileIndexSizeMB=0
+        .META.,,1
+            stores=1, storefiles=2, storefileSizeMB=0, memstoreSizeMB=0, storefileIndexSizeMB=0
+        hbase37,,1411628811057.e4eda9107714a8afa88f90ba9e44abf3.
+            stores=1, storefiles=1, storefileSizeMB=0, memstoreSizeMB=0, storefileIndexSizeMB=0
+        hbase33,,1411632260944.097c881c8db4502660ff8a449d4e7725.
+            stores=2, storefiles=0, storefileSizeMB=0, memstoreSizeMB=0, storefileIndexSizeMB=0
+        hbase39,,1414850838008.3916cb98950eec0ecfbb142bc61f31ce.
+            stores=2, storefiles=2, storefileSizeMB=0, memstoreSizeMB=0, storefileIndexSizeMB=0
+
+
+hbase(main):020:0> list 'kiran12'
+TABLE                                                                                                                                                                   
+kiran12                                                                                                                                                                 
+1 row(s) in 0.0330 seconds
+
+--------------------------------------------------
+hbase(main):027:0> create 'jk','colfam'       
+0 row(s) in 1.1700 seconds
+
+hbase(main):028:0> put 'jk','firstrow','colfam:Hyderabad','Capital of Telangana'
+0 row(s) in 0.0270 seconds
+
+hbase(main):029:0> put 'jk','secondrow','colfam:Vijayawada','Capital of Andhrapradesh'
+0 row(s) in 0.0470 seconds
+
+hbase(main):030:0> put 'jk','thirdrow','colfam:Chennai','Capital of Tamilnadu'        
+0 row(s) in 0.0170 seconds
+
+hbase(main):031:0> put 'jk','fourthrow','colfam:Trivendram','Capital of Kerala'   
+0 row(s) in 0.0270 seconds
+
+hbase(main):032:0> describe 'jk'
+DESCRIPTION                                                                                                  ENABLED                                                    
+ {NAME => 'jk', FAMILIES => [{NAME => 'colfam', BLOOMFILTER => 'NONE', REPLICATION_SCOPE => '0', COMPRESSION true                                                       
+  => 'NONE', VERSIONS => '3', TTL => '2147483647', BLOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCACHE =>                                                            
+  'true'}]}                                                                                                                                                             
+1 row(s) in 0.0360 seconds
+
+hbase(main):033:0> scan 'jk'
+ROW                                         COLUMN+CELL                                                                                                                 
+ firstrow                                   column=colfam:Hyderabad, timestamp=1424034065801, value=Capital of Telangana                                                
+ fourthrow                                  column=colfam:Trivendram, timestamp=1424034167256, value=Capital of Kerala                                                  
+ secondrow                                  column=colfam:Vijayawada, timestamp=1424034099045, value=Capital of Andhrapradesh                                           
+ thirdrow                                   column=colfam:Chennai, timestamp=1424034127541, value=Capital of Tamilnadu                                                  
+4 row(s) in 0.0480 seconds
+
+hbase(main):039:0> scan 'jk',VERSIONS => 2                                          
+ROW                                         COLUMN+CELL                                                                                                                 
+ firstrow                                   column=colfam:Hyderabad, timestamp=1424034065801, value=Capital of Telangana                                                
+ fourthrow                                  column=colfam:Trivendram, timestamp=1424034167256, value=Capital of Kerala                                                  
+ secondrow                                  column=colfam:Vijayawada, timestamp=1424034099045, value=Capital of Andhrapradesh                                           
+ thirdrow                                   column=colfam:Chennai, timestamp=1424034127541, value=Capital of Tamilnadu                                                  
+4 row(s) in 0.0580 seconds
+
+hbase(main):040:0> scan 'jk',VERSIONS => 4
+ROW                                         COLUMN+CELL                                                                                                                 
+ firstrow                                   column=colfam:Hyderabad, timestamp=1424034065801, value=Capital of Telangana                                                
+ fourthrow                                  column=colfam:Trivendram, timestamp=1424034167256, value=Capital of Kerala                                                  
+ secondrow                                  column=colfam:Vijayawada, timestamp=1424034099045, value=Capital of Andhrapradesh                                           
+ thirdrow                                   column=colfam:Chennai, timestamp=1424034127541, value=Capital of Tamilnadu                                                  
+4 row(s) in 0.0460 seconds
+
+
+

@@ -1,0 +1,60 @@
+STATIC WORDCOUNT - TRACE
+----------------
+
+BY PASSING THE PARTICULAR WORD THROUGH CODE AND FINDING HOW MANY TIMES ITS BEEN REPETED IN THE GIVEN INPUT DATA
+===============================================================================================================
+
+root@ubuntu:/home/Gopal/MapReduce/STATIC-WC# hadoop jar STATIC-WORDCOUNT.jar com.staticwordcount.mapred.CountOfOneWord /DynamicInput/Input-Big.txt /StaticWCOutputPath
+14/04/14 07:38:38 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+14/04/14 07:38:38 INFO input.FileInputFormat: Total input paths to process : 1
+14/04/14 07:38:38 WARN snappy.LoadSnappy: Snappy native library is available
+14/04/14 07:38:38 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+14/04/14 07:38:38 INFO snappy.LoadSnappy: Snappy native library loaded
+14/04/14 07:38:40 INFO mapred.JobClient: Running job: job_201404140649_0006
+14/04/14 07:38:41 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/14 07:38:55 INFO mapred.JobClient:  map 100% reduce 0%
+14/04/14 07:39:04 INFO mapred.JobClient:  map 100% reduce 33%
+14/04/14 07:39:06 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/14 07:39:08 INFO mapred.JobClient: Job complete: job_201404140649_0006
+14/04/14 07:39:08 INFO mapred.JobClient: Counters: 26
+14/04/14 07:39:08 INFO mapred.JobClient:   Job Counters 
+14/04/14 07:39:08 INFO mapred.JobClient:     Launched reduce tasks=1
+14/04/14 07:39:08 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=15571
+14/04/14 07:39:08 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/14 07:39:08 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/14 07:39:08 INFO mapred.JobClient:     Launched map tasks=1
+14/04/14 07:39:08 INFO mapred.JobClient:     Data-local map tasks=1
+14/04/14 07:39:08 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=10291
+14/04/14 07:39:08 INFO mapred.JobClient:   FileSystemCounters
+14/04/14 07:39:08 INFO mapred.JobClient:     FILE_BYTES_READ=56062
+14/04/14 07:39:08 INFO mapred.JobClient:     HDFS_BYTES_READ=153383
+14/04/14 07:39:08 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=231644
+14/04/14 07:39:08 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=12
+14/04/14 07:39:08 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/14 07:39:08 INFO mapred.JobClient:     Map input records=5487
+14/04/14 07:39:08 INFO mapred.JobClient:     Reduce shuffle bytes=56062
+14/04/14 07:39:08 INFO mapred.JobClient:     Spilled Records=8624
+14/04/14 07:39:08 INFO mapred.JobClient:     Map output bytes=47432
+14/04/14 07:39:08 INFO mapred.JobClient:     CPU time spent (ms)=13060
+14/04/14 07:39:08 INFO mapred.JobClient:     Total committed heap usage (bytes)=197197824
+14/04/14 07:39:08 INFO mapred.JobClient:     Combine input records=0
+14/04/14 07:39:08 INFO mapred.JobClient:     SPLIT_RAW_BYTES=113
+14/04/14 07:39:08 INFO mapred.JobClient:     Reduce input records=4312
+14/04/14 07:39:08 INFO mapred.JobClient:     Reduce input groups=1
+14/04/14 07:39:08 INFO mapred.JobClient:     Combine output records=0
+14/04/14 07:39:08 INFO mapred.JobClient:     Physical memory (bytes) snapshot=293261312
+14/04/14 07:39:08 INFO mapred.JobClient:     Reduce output records=1
+14/04/14 07:39:08 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=883425280
+14/04/14 07:39:08 INFO mapred.JobClient:     Map output records=4312
+root@ubuntu:/home/Gopal/MapReduce/STATIC-WC# 
+root@ubuntu:/home/Gopal/MapReduce/STATIC-WC# 
+root@ubuntu:/home/Gopal/MapReduce/STATIC-WC# hadoop fs -ls /StaticWCOutputPath
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2014-04-14 07:39 /StaticWCOutputPath/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2014-04-14 07:38 /StaticWCOutputPath/_logs
+-rw-r--r--   1 root supergroup         12 2014-04-14 07:39 /StaticWCOutputPath/part-r-00000
+root@ubuntu:/home/Gopal/MapReduce/STATIC-WC# 
+root@ubuntu:/home/Gopal/MapReduce/STATIC-WC# hadoop fs -cat /StaticWCOutputPath/part-r-00000
+hadoop	4312
+root@ubuntu:/home/Gopal/MapReduce/STATIC-WC# 
+

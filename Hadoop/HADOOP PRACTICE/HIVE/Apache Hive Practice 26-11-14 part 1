@@ -1,0 +1,620 @@
+::::::::::::::::APACHE HIVE::::::::::::::::
+1)2 TABLES in our hive context
+
+A)MANAGED TABLES--->
+
+b)eXTERNAL TABLES
+
+
+A)MANAGED TABLES
+SYNTAX:
+syntax:create table<tablename>
+       row format  delimited
+       fields terminated by<delimiter>
+       lines terminated  by<delimiter>
+       Stored  as<filefomat>
+eg.
+//here  in lfs file we create one HIve directory
+root@ubuntu:/home/mrinmoy# mkdir Hive
+
+root@ubuntu:/home/mrinmoy# cd Hive/
+
+root@ubuntu:/home/mrinmoy/Hive# nano empdata.log
+
+         File: empdata.log                                                                                            
+
+10201|Infosys|40000|Hyderabad
+10301|Capgemini|50000|Pune
+10401|TCS|65000|Ahmedabad
+10502|Polaris|70000|Nagpur
+10601|Accenture|80000|Hyderabad
+
+root@ubuntu:/home/mrinmoy/Hive# cp empdata.log part-r-00000
+
+root@ubuntu:/home/mrinmoy/Hive# ls
+empdata.log  part-r-00000			//twofiles are created in Hive directory.
+
+
+root@ubuntu:/home/mrinmoy/Hive# hive
+Hive history file=/tmp/root/hive_job_log_root_201412252201_1457795882.txt
+
+hive> show tables;                                                                 
+OK
+arrays
+ogdata
+managedtable_examp
+mantab42
+Time taken: 0.098 seconds
+
+//if want to perform a opration on it take any 1 from it or create new table in hive!
+
+hive> create table mantab42(cid int,cname string,cheadcnt int,cloc string)         
+    > row format delimited                                                         
+    > fields terminated by '|'                                                     
+    > lines terminated by '\n'                                                     
+    > stored as textfile;   
+                                                       
+hive> select * from mantab42;                
+
+(NULL	NULL	NULL	NULL)
+Time taken: 5.494 seconds
+
+//we should load data in ('mantab42') in hive table.
+hive> load data local inpath '/home/mrinmoy/Hive/part-r-00000' into table mantab42;
+Copying data from file:/home/mrinmoy/Hive/part-r-00000
+Copying file: file:/home/mrinmoy/Hive/part-r-00000
+Loading data to table default.mantab42
+OK
+Time taken: 0.398 seconds
+
+
+hive> select * from mantab42;                
+OK
+10201	Infosys	40000	Hyderabad
+10301	Capgemini	50000	Pune
+10401	TCS	65000	Ahmedabad
+10502	Polaris	70000	Nagpur
+10601	Accenture	80000	Hyderabad
+NULL	NULL	NULL	NULL
+Time taken: 5.494 seconds
+
+hive> desc mantab42;                                                               
+OK
+cid	int	
+cname	string	
+cheadcnt	int	
+cloc	string	
+Time taken: 0.104 seconds
+
+hive> select * from mantab42 where cid like '%10%';
+
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412252200_0001, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412252200_0001
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412252200_0001
+2014-12-25 22:05:00,101 Stage-1 map = 0%,  reduce = 0%
+2014-12-25 22:05:04,154 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412252200_0001
+OK
+10201	Infosys	40000	Hyderabad
+10301	Capgemini	50000	Pune
+10401	TCS	65000	Ahmedabad
+10502	Polaris	70000	Nagpur
+10601	Accenture	80000	Hyderabad
+Time taken: 8.167 seconds
+
+hive> select * from mantab42 where cid like '%103%';
+
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412252200_0002, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412252200_0002
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412252200_0002
+2014-12-25 22:05:27,304 Stage-1 map = 0%,  reduce = 0%
+2014-12-25 22:05:30,323 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412252200_0002
+OK
+10301	Capgemini	50000	Pune
+Time taken: 6.551 seconds
+
+hive> select * from mantab42 where cloc=='Hyderabad';
+
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412252200_0003, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412252200_0003
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412252200_0003
+2014-12-25 22:06:08,498 Stage-1 map = 0%,  reduce = 0%
+2014-12-25 22:06:12,526 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412252200_0003
+OK
+10201	Infosys	40000	Hyderabad
+10601	Accenture	80000	Hyderabad
+
+//if we are going to the same table again then it wil crated with another part-r-00000-copy_1
+after creating table in hive where exactly we see the table?
+Answer is------>
+root@ubuntu:/home/mrinmoy/Hive# hadoop fs -ls /user/hive/warehouseFound 25 items
+drwxr-xr-x   - root supergroup          0 2012-12-07 05:50 /user/hive/warehouse/arrays
+drwxr-xr-x   - root supergroup          0 2012-12-04 09:45 /user/hive/warehouse/bucketed_users
+drwxr-xr-x   - root supergroup          0 2014-12-25 22:25 /user/hive/warehouse/mantab42
+
+root@ubuntu:/home/mrinmoy/Hive# hadoop fs -ls /user/hive/warehouse/mantab42
+Found 2 items
+-rw-r--r--   1 root supergroup        143 2014-12-25 19:40 /user/hive/warehouse/mantab42/part-r-00000
+-rw-r--r--   1 root supergroup        143 2014-12-25 22:25 /user/hive/warehouse/mantab42/part-r-00000_copy_1
+
+//in Hive architecture Driver,Compiler and Executor are part of metastore(Driver only connected to metastore)
+
+select * from mantab42 where cid1 like '%103%';                //because cid like is exist(cd1XXX)                    
+FAILED: Error in semantic analysis: Line 1:29 Invalid table alias or column reference cid1
+hive> 
+
+//HOw Many records in particular table.
+hive> select COUNT(*) from maintab4;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_201412260051_0001, Tracking URL =
+http://localhost:50030/jobdetails.jsp?jobid=job_201412260051_0001
+Kill Command = /usr/lib/hadoop/bin/hadoop job
+-Dmapred.job.tracker=localhost:8021 -kill job_201412260051_0001
+2014-12-26 01:17:09,915 Stage-1 map = 0%,  reduce = 0%
+2014-12-26 01:17:11,962 Stage-1 map = 100%,  reduce = 0%
+2014-12-26 01:17:19,058 Stage-1 map = 100%,  reduce = 33%
+2014-12-26 01:17:20,074 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412260051_0001
+OK
+5
+Time taken: 16.421 seconds
+
+
+
+
+//WANT TO see the METADATA
+
+//becoz we created hive in /home/mrinmoy' therefore derby.log file must be same.
+
+root@ubuntu:/home/mrinmoy# ls
+data1.log          id                pig_1369123412623.log  pig_1418219346610.log  pig_1418552424413.log  pig_1418734532693.log  sqoopprocess.sh
+data2.log          in                pig_1369124082463.log  pig_1418278345808.log  pig_1418552453920.log  pig_1418734547651.log  sqoopprocess.sh.save
+data3.log          join              pig_1369125095105.log  pig_1418278433166.log  pig_1418552625349.log  pig_1418734552157.log  sukku
+dept.java          join1             pig_1369127561961.log  pig_1418278553252.log  pig_1418552647865.log  pig_1418734556652.log  suman
+derby.log 
+
+
+root@ubuntu:/home/mrinmoy# cat derby.log 
+----------------------------------------------------------------
+2014-12-26 06:02:22.890 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.4.2.0 - (689064): instance a816c00e-014a-8530-4b9f-000001b4f300
+on database directory /var/lib/hive/metastore/metastore_db  			//now to see the metadata in metastore 
+ 
+
+Database Class Loader started - derby.database.classpath=''
+
+
+root@ubuntu:/# cd /var/lib/hive/metastore/metastore_db/
+root@ubuntu:/var/lib/hive/metastore/metastore_db# ls
+dbex.lck  db.lck  log  seg0  service.properties  tmp
+root@ubuntu:/var/lib/hive/metastore/metastore_db# cd log
+root@ubuntu:/var/lib/hive/metastore/metastore_db/log# ls
+log2.dat  log.ctrl  logmirror.ctrl
+root@ubuntu:/var/lib/hive/metastore/metastore_db/log# cat log2.dat
+	
+           R�I�kDQ�R=�A���7a�A�������=7��I�
+NUCLEUS_ASCIIF                                                    �������A��f��A���c�A���e�"@G_G@G&$80000000-00d2-b38f-4cda-000a0a412c00
+cM��A���e�@�_1@�&$582f8014-014a-849f-9f6b-000002723108
+Mc��A���e�@�_G@�&$80000000-00d2-b38f-4cda-000a0a412c00SQL141225192422210
+cU�A���e�
+��A��� ��A�����
+@`u ��A���o�<��A��fB�A���g�
+'
+NUCLEUS_ASCII &$80000000-00d2-b38f-4cda-000a0a412c00 64org.datanucleus.store.rdbms.adapter.DerbySQLFunction F F  \�asciiINTEGER
+NUCLEUS_ASCIIFSQL141225220224060Bcq�A���e�#@G_G@G&$80000000-00d2-b38f-4cda-000a0a412c00
+cn��A���m�$@G_R 
+
+NUCLEUS_ASCIIF-b38f-4cda-000a0a412c00
+nb�A���L��A���j�@@@�1@�&$e03f4017-014a-8471-357c-0000018211f8	LK��A���j�?@�1@�&$e03f4017-014a-1a3b-82cd-00000175ead0	KK=�A���j�>@�1@�&$e03f4017-014a-1a37-ba2d-0000017186d0KK��A���j�@�1@�&$582f8014-014a-8471-357c-0000018211f8KK��A���j�	@ 1@&$582f8014-014a-1a3b-82cd-00000175ead0KKN�A���j�
+@�1@�&$582f8014-014a-1a37-ba2d-0000017186d0K��A��fO��A���g�
+                                                                           @�_3@� &$582f8014-014a-8530-4b9f-000001b4f300 
+Of)�A���g� @�_	J@� &$80000000-00d2-b38f-4cda-000a0a412c00 SQL141225220224060 
+fe��A���e�%@H_I@H&$80000000-00d2-b38f-4cda-000a0a412c00NUCLEUS_MATCHESF
+                                                                                  eM	�A���e�
+                                                                                                   @�_<1@�&$e03f4017-014a-849f-9f6b-000002723108
+                                                                                                                                                    Mc	q�A���e�!@�G@�&$80000000-00d2-b38f-4cda-000a0a412c00SQL141225192422220
+                                                               c	��A���e�
+                                                                                   t
+�A���g�
+          Y
+              	 &$e03f4017-014a-8530-4b9f-000001b4f300 NUCLEUS_MATCHES &$80000000-00d2-b38f-4cda-000a0a412c00 64org.datanucleus.store.rdbms.adapter.DerbySQLFunction F F  ��matchesINTEGER
+TEXTPATTERNVARCHAR@VARCHAR@ SQL141225220224070te
+                                                                   ��A���e�&@H_I@H&$80000000-00d2-b38f-4cda-000a0a412c00NUCLEUS_MATCHESF
+                                                                                                                                                   ep
+                                                                                                                                                     
+
+
+
+
+
+//BY USING EXTERNAL TABLE
+hive> create external table extnt42(cid int,cname string,chead int,cloc string)    
+    > 
+    > row format delimited
+    > fields terminated by '|'
+    > stored as textfile location '/extnloc42';
+OK
+Time taken: 0.222 seconds
+
+//so your schema is created thn after we need to load the data in inthis schema
+hive> load data local inpath '/home/mrinmoy/Hive/part-r-00000' into table extnt42;  
+Copying data from file:/home/mrinmoy/Hive/part-r-00000
+Copying file: file:/home/mrinmoy/Hive/part-r-00000
+Loading data to table default.extnt42
+OK
+Time taken: 0.266 seconds
+hive> 
+
+
+root@ubuntu:/home/mrinmoy/Hive# hadoop fs -ls /extnloc42;
+Found 1 items
+-rw-r--r--   1 root supergroup        143 2014-12-26 03:14 /extnloc42/part-r-00000
+root@ubuntu:/home/mrinmoy/Hive# hadoop fs -cat /extnloc42/part-r-00000;
+10201|Infosys|40000|Hyderabad
+10301|Capgemini|50000|Pune
+10401|TCS|65000|Ahmedabad
+10502|Polaris|70000|Nagpur
+10601|Accenture|80000|Hyderabad
+
+
+
+
+//ALTERNATING HIVE TABLES::
+
+//HERE WHEN WHEN WE ALTER(RENAME THE TABLE THE PRIVIOUS TABLE DATA MOVED FROM SOURCE COMPLETLY,AND COPY TO DESTINATION PATH ONLY.(NOT EXIST AT ORIGINAL ONE.
+//FOR EG:
+//WE ARE CREATING THE TABLE mantab421.i.e___|
+
+hive> create external table mantab421(cid int,cname string,cheadcnt int,cloc string)
+    > row format delimited                                                          
+    > fields terminated by '|'                                                      
+    > Stored as textfile location '/ciscoout1';                                     
+OK
+time taken: 0.156 seconds
+//after loadinng the data
+hive> load data local inpath '/home/mrinmoy/Hive/part-r-00000' into table mantab421;
+Loading data to table default.mantab421
+OK
+Time taken: 0.212 seconds
+
+hive> select * from mantab421;
+OK
+10201	Infosys	40000	Hyderabad
+10301	Capgemini	50000	Pune
+10401	TCS	65000	Ahmedabad
+10502	Polaris	70000	Nagpur
+10601	Accenture	80000	Hyderabad
+NULL	NULL	NULL	NULL
+Time taken: 0.148 seconds
+//now it contains the data
+//now after performing alter opreation.see carefully
+hive> alter table mantab421 rename to  mantab42new;
+OK
+Time taken: 0.202 seconds
+hive> select * from mantab421;  
+FAILED: Error in semantic analysis: Line 1:14 Table not found mantab421
+
+
+
+hive> select * from mantab42new;
+OK
+10201	Infosys	40000	Hyderabad
+10301	Capgemini	50000	Pune
+10401	TCS	65000	Ahmedabad
+10502	Polaris	70000	Nagpur
+10601	Accenture	80000	Hyderabad
+NULL	NULL	NULL	NULL
+Time taken: 0.148 seconds
+______________________________________________________________________________________________________-
+
+//OVERWRITE
+////IN ABOVE ABOVE EXAMPLE CREATED SCHEMA WE ARE GOING TO OVERWRITE
+
+hive> load data local inpath '/home/mrinmoy/Hive/testdata.log' overwrite into table mantab42new;
+Copying data from file:/home/mrinmoy/Hive/testdata.log
+Copying file: file:/home/mrinmoy/Hive/testdata.log
+Loading data to table default.mantab42new
+Deleted hdfs://localhost:8020/ciscoout1
+OK
+Time taken: 0.176 seconds
+
+root@ubuntu:/home/mrinmoy/Hive# hadoop fs -ls /ciscoout2/
+not exist
+
+
+root@ubuntu:/home/mrinmoy/Hive# hadoop fs -cat /ciscoout1/testdata.log;
+10201|Infosys|40000|Hyderabad
+10301|Capgemini|50000|Pune
+10401|TCS|65000|Ahmedabad
+10502|Polaris|70000|Nagpur
+10601|Accenture|80000|Hyderabad
+
+
+
+
+
+//CTAS(Creating table as a select)
+--based on existing file if we want ot cearte new table by selecting one or more colums from existing gr;
+hive> create table mantab2 as select cid,cname,cloc from mantab42new;   
+Total MapReduce jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412252200_0004, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412252200_0004
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412252200_0004
+2014-12-26 04:34:37,290 Stage-1 map = 0%,  reduce = 0%
+2014-12-26 04:34:39,322 Stage-1 map = 100%,  reduce = 0%
+2014-12-26 04:34:41,370 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412252200_0004
+Ended Job = -729152723, job is filtered out (removed at runtime).
+Moving data to: hdfs://localhost:8020/tmp/hive-root/hive_2014-12-26_04-34-33_441_2764577104365948071/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/mantab2
+6 Rows loaded to hdfs://localhost:8020/tmp/hive-root/hive_2014-12-26_04-34-33_441_2764577104365948071/-ext-10000
+OK
+Time taken: 8.009 seconds
+//AS PER OUR CTAS new  TABLE
+
+hive> select * from mantab2;
+OK
+10201	Infosys	Hyderabad
+10301	Capgemini	Pune
+10401	TCS	Ahmedabad
+10502	Polaris	Nagpur
+10601	Accenture	Hyderabad
+NULL	NULL	NULL
+Time taken: 0.101 seconds
+
+
+//THROUGH CTAS,if we want to create new table(join table) by innerjoin by 1 and 2 table ;
+//then;
+//here we created m3,m4(USING AS PER FOLLOWING TABLE table ------>/ciscoout4  and /ciscoout3 respectively
+//loading data in part-r-00000 and testdata.log respectively
+
+emp				dept
+___                          ___________
+empid				deptid
+ename				deptname
+esal				deptloc
+				deptid
+
+hive> create table empdep as select e.empid,ename,esal,deptid,deptloc
+    > from m3 e JOIN m4 d ON(e.empid==d.empid);
+exe....                      
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_201412252200_0005, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412252200_0005
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412252200_0005
+2014-12-26 04:57:44,772 Stage-1 map = 0%,  reduce = 0%
+2014-12-26 04:58:03,112 Stage-1 map = 100%,  reduce = 0%
+2014-12-26 04:58:11,160 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412252200_0005
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/empdep
+6 Rows loaded to hdfs://localhost:8020/tmp/hive-root/hive_2014-12-26_04-57-39_078_6465731526633316492/-ext-10000
+OK
+Time taken: 34.164 seconds
+
+
+root@ubuntu:/home/mrinmoy/Hive# hadoop fs -cat /user/hive/warehouse/empdep/000000_0
+10201Suresh400001020140000
+10201Suresh400001020140000
+10301Capi500001030150000
+10301Capi500001030150000
+10401Tina6500001040165000
+10401Tina6500001040165000
+
+//PARTITIONING IN HIVE
+
+//we do partitioning on diif 3 .log files
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_NN_Data.log 
+10201|_SBA_NM|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_NM|SBA_Daily_BankReport|$23000
+10401|_SBA_NM|SBA_Monthly_BankReport|$89000
+10101|_SBA_NM|SBA_Weekly_BankReport|$12300 
+
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# ls
+SBA_NN_Data.log  SBA_NO_Data.log  SBA_UG_Data.log
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_NN_Data.log 
+10201|_SBA_NM|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_NM|SBA_Daily_BankReport|$23000
+10401|_SBA_NM|SBA_Monthly_BankReport|$89000
+10101|_SBA_NM|SBA_Weekly_BankReport|$12300 
+
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_NO_Data.log 
+10201|_SBA_NG|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_NG|SBA_Daily_BankReport|$23000
+10401|_SBA_NG|SBA_Monthly_BankReport|$89000
+10101|_SBA_NG|SBA_Weekly_BankReport|$12300 
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_UG_Data.log 
+10201|_SBA_UG|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_UG|SBA_Daily_BankReport|$23000
+10401|_SBA_UG|SBA_Monthly_BankReport|$89000
+10101|_SBA_UG|SBA_Weekly_BankReport|$12300 
+
+//load data in hive table from local path '/home/mrinmoy/Hive/mantabq'
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_NN_Data.log 
+10201|_SBA_NM|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_NM|SBA_Daily_BankReport|$23000
+10401|_SBA_NM|SBA_Monthly_BankReport|$89000
+10101|_SBA_NM|SBA_Weekly_BankReport|$12300 
+
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# ls
+SBA_NN_Data.log  SBA_NO_Data.log  SBA_UG_Data.log
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_NN_Data.log 
+10201|_SBA_NM|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_NM|SBA_Daily_BankReport|$23000
+10401|_SBA_NM|SBA_Monthly_BankReport|$89000
+10101|_SBA_NM|SBA_Weekly_BankReport|$12300 
+
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_NO_Data.log 
+10201|_SBA_NG|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_NG|SBA_Daily_BankReport|$23000
+10401|_SBA_NG|SBA_Monthly_BankReport|$89000
+10101|_SBA_NG|SBA_Weekly_BankReport|$12300 
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat SBA_UG_Data.log 
+10201|_SBA_UG|SBA_Weekly_Bank_Report|$12300
+10301|_SBA_UG|SBA_Daily_BankReport|$23000
+10401|_SBA_UG|SBA_Monthly_BankReport|$89000
+10101|_SBA_UG|SBA_Weekly_BankReport|$12300 
+
+//creating table in hive
+hive> create table stab4(bankid string,bankrepname string,bankover string)
+    > PARTITIONED BY(country string)                                      
+    > row format delimited                                                
+    > fields terminated by '|'                                            
+    > stored as textfile;                                                 
+OK
+Time taken: 0.066 seconds
+//loading 3 files in 1 table here
+hive> load data local inpath '/home/mrinmoy/Hive/mantabq/SBA_NN_Data.log' into table 
+    > stab4 PARTITION(country = 'NIGERIA');                   
+
+hive> load data local inpath '/home/mrinmoy/Hive/mantabq/SBA_NN_Data.log' into table 
+    > stab4 PARTITION(country = 'NAMBIA');     
+
+hive> load data local inpath '/home/mrinmoy/Hive/mantabq/SBA_UG_Data.log' into table 
+    > stab4 PARTITION(country = 'UGANDA'); 
+
+hive> select * from stab4;                                                           
+OK
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+	NULL	NULL	NAMBIA
+	NULL	NULL	NAMBIA
+10201	_SBA_NG	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NG	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NG	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NG	SBA_Weekly_BankReport	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NIGERIA
+10301	_SBA_NM	SBA_Daily_BankReport	NIGERIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NIGERIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NIGERIA
+	NULL	NULL	NIGERIA
+	NULL	NULL	NIGERIA
+10201	_SBA_UG	SBA_Weekly_Bank_Report	UGANDA
+10301	_SBA_UG	SBA_Daily_BankReport	UGANDA
+10401	_SBA_UG	SBA_Monthly_BankReport	UGANDA
+10101	_SBA_UG	SBA_Weekly_BankReport	UGANDA
+	NULL	NULL	UGANDA
+	NULL	NULL	UGANDA
+Time taken: 0.192 seconds
+
+
+hive> select * from stab4 where bankid like '%10%'; 
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0002, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0002
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0002
+2014-12-26 20:16:19,652 Stage-1 map = 0%,  reduce = 0%
+2014-12-26 20:16:21,662 Stage-1 map = 100%,  reduce = 0%
+2014-12-26 20:16:23,674 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0002
+OK
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+10201	_SBA_NG	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NG	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NG	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NG	SBA_Weekly_BankReport	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NIGERIA
+10301	_SBA_NM	SBA_Daily_BankReport	NIGERIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NIGERIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NIGERIA
+10201	_SBA_UG	SBA_Weekly_Bank_Report	UGANDA
+10301	_SBA_UG	SBA_Daily_BankReport	UGANDA
+10401	_SBA_UG	SBA_Monthly_BankReport	UGANDA
+10101	_SBA_UG	SBA_Weekly_BankReport	UGANDA
+Time taken: 6.691 seconds
+hive> select * from stab4 where country = 'NAMBIA'; 
+OK
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+	NULL	NULL	NAMBIA
+	NULL	NULL	NAMBIA
+10201	_SBA_NG	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NG	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NG	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NG	SBA_Weekly_BankReport	NAMBIA
+Time taken: 0.12 seconds
+
+
+hive> select * from stab4 where country = 'NAMBIA' and bankrepname like '%_SBA_NM%';
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0004, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0004
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0004
+2014-12-26 20:19:35,943 Stage-1 map = 0%,  reduce = 0%
+2014-12-26 20:19:37,953 Stage-1 map = 100%,  reduce = 0%
+2014-12-26 20:19:39,964 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0004
+OK
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+Time taken: 6.402 seconds
+
+
+
+//REPORT TYPE:
+
+//creating table in hive
+hive> create table stab4new(bankid string,bankrepname string,bankover string)
+    > partitioned by(country string,reptype string)
+    > row format delimited
+    > fields terminated by '|'
+    > stored as textfile;
+OK
+Time taken: 0.044 seconds
+
+hive> load data local inpath '/home/mrinmoy/Hive/mantabq/SBA_NN_Data.log' into table 
+    > stab4new PARTITION(country = 'NIGERIA' , reptype = 'Weekly');
+Copying data from file:/home/mrinmoy/Hive/mantabq/SBA_NN_Data.log
+Copying file: file:/home/mrinmoy/Hive/mantabq/SBA_NN_Data.log
+Loading data to table default.stab4new partition (country=NIGERIA, reptype=Weekly)
+OK
+Time taken: 0.168 seconds
+
+hive> select * from stab4new;                         
+OK
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NIGERIA	Weekly
+10301	_SBA_NM	SBA_Daily_BankReport	NIGERIA	Weekly
+10401	_SBA_NM	SBA_Monthly_BankReport	NIGERIA	Weekly
+10101	_SBA_NM	SBA_Weekly_BankReport	NIGERIA	Weekly
+	NULL	NULL	NIGERIA	Weekly
+	NULL	NULL	NIGERIA	Weekly
+Time taken: 0.094 seconds
+
+	

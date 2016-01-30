@@ -1,0 +1,160 @@
+root@ubuntu:/home/mrinmoy# cd jk
+root@ubuntu:/home/mrinmoy/jk# cp /home/mrinmoy/Downloads/mongodb/* .
+root@ubuntu:/home/mrinmoy/jk# ll
+total 53920
+drwxr-xr-x   2 root    root        4096 2015-02-24 03:07 ./
+drwxr-xr-x 116 mrinmoy mrinmoy    20480 2015-02-24 03:04 ../
+-rwxr--r--   1 root    root    55183629 2015-02-24 03:07 mongodb-linux-i686-2.2.7.tar*
+root@ubuntu:/home/mrinmoy/jk# tar -xzvf mongodb-linux-i686-2.2.7.tar
+mongodb-linux-i686-2.2.7/README
+mongodb-linux-i686-2.2.7/THIRD-PARTY-NOTICES
+mongodb-linux-i686-2.2.7/GNU-AGPL-3.0
+mongodb-linux-i686-2.2.7/bin/mongodump
+mongodb-linux-i686-2.2.7/bin/mongorestore
+mongodb-linux-i686-2.2.7/bin/mongoexport
+mongodb-linux-i686-2.2.7/bin/mongoimport
+mongodb-linux-i686-2.2.7/bin/mongostat
+mongodb-linux-i686-2.2.7/bin/mongotop
+mongodb-linux-i686-2.2.7/bin/mongooplog
+mongodb-linux-i686-2.2.7/bin/mongofiles
+mongodb-linux-i686-2.2.7/bin/bsondump
+mongodb-linux-i686-2.2.7/bin/mongoperf
+mongodb-linux-i686-2.2.7/bin/mongosniff
+mongodb-linux-i686-2.2.7/bin/mongod
+mongodb-linux-i686-2.2.7/bin/mongos
+mongodb-linux-i686-2.2.7/bin/mongo
+root@ubuntu:/home/mrinmoy/jk# rm -r /data/db/
+root@ubuntu:/home/mrinmoy/jk# mkdir -p /data/db/
+root@ubuntu:/home/mrinmoy/jk# chmod -R 777 /data/*
+root@ubuntu:/home/mrinmoy/jk# ll
+total 53924
+drwxr-xr-x   3 root    root        4096 2015-02-24 03:08 ./
+drwxr-xr-x 116 mrinmoy mrinmoy    20480 2015-02-24 03:04 ../
+drwxr-xr-x   3 root    root        4096 2015-02-24 03:08 mongodb-linux-i686-2.2.7/
+-rwxr--r--   1 root    root    55183629 2015-02-24 03:07 mongodb-linux-i686-2.2.7.tar*
+root@ubuntu:/home/mrinmoy/jk# cd mongodb-linux-i686-2.2.7/
+root@ubuntu:/home/mrinmoy/jk/mongodb-linux-i686-2.2.7# ll
+total 72
+drwxr-xr-x 3 root root  4096 2015-02-24 03:08 ./
+drwxr-xr-x 3 root root  4096 2015-02-24 03:08 ../
+drwxr-xr-x 2 root root  4096 2015-02-24 03:08 bin/
+-rw------- 1  500  500 34520 2012-08-12 17:45 GNU-AGPL-3.0
+-rw------- 1  500  500  1359 2012-08-12 17:52 README
+-rw------- 1  500  500 16787 2013-01-08 00:57 THIRD-PARTY-NOTICES
+root@ubuntu:/home/mrinmoy/jk/mongodb-linux-i686-2.2.7# cd bin/
+root@ubuntu:/home/mrinmoy/jk/mongodb-linux-i686-2.2.7/bin# ll
+total 131788
+drwxr-xr-x 2 root root     4096 2015-02-24 03:08 ./
+drwxr-xr-x 3 root root     4096 2015-02-24 03:08 ../
+-rwxr-xr-x 1 root root 10328676 2014-01-12 17:29 bsondump*
+-rwxr-xr-x 1 root root  4092928 2014-01-12 17:30 mongo*
+-rwxr-xr-x 1 root root 10378592 2014-01-12 17:30 mongod*
+-rwxr-xr-x 1 root root 10385444 2014-01-12 17:27 mongodump*
+-rwxr-xr-x 1 root root 10344484 2014-01-12 17:27 mongoexport*
+-rwxr-xr-x 1 root root 10382608 2014-01-12 17:29 mongofiles*
+-rwxr-xr-x 1 root root 10357348 2014-01-12 17:28 mongoimport*
+-rwxr-xr-x 1 root root 10332196 2014-01-12 17:28 mongooplog*
+-rwxr-xr-x 1 root root 10336260 2014-01-12 17:29 mongoperf*
+-rwxr-xr-x 1 root root 10390212 2014-01-12 17:27 mongorestore*
+-rwxr-xr-x 1 root root  6585432 2014-01-12 17:30 mongos*
+-rwxr-xr-x 1 root root 10299380 2014-01-12 17:30 mongosniff*
+-rwxr-xr-x 1 root root 10373220 2014-01-12 17:28 mongostat*
+-rwxr-xr-x 1 root root 10332100 2014-01-12 17:28 mongotop*
+root@ubuntu:/home/mrinmoy/jk/mongodb-linux-i686-2.2.7/bin# ./mongod
+
+./mongod --help for help and startup options
+Tue Feb 24 03:10:23 
+Tue Feb 24 03:10:23 warning: 32-bit servers don't have journaling enabled by default. Please use --journal if you want durability.
+Tue Feb 24 03:10:23 
+Tue Feb 24 03:10:23 [initandlisten] MongoDB starting : pid=4373 port=27017 dbpath=/data/db/ 32-bit host=ubuntu
+Tue Feb 24 03:10:23 [initandlisten] 
+Tue Feb 24 03:10:23 [initandlisten] ** NOTE: when using MongoDB 32 bit, you are limited to about 2 gigabytes of data
+Tue Feb 24 03:10:23 [initandlisten] **       see http://blog.mongodb.org/post/137788967/32-bit-limitations
+Tue Feb 24 03:10:23 [initandlisten] **       with --journal, the limit is lower
+Tue Feb 24 03:10:23 [initandlisten] 
+Tue Feb 24 03:10:23 [initandlisten] db version v2.2.7, pdfile version 4.5
+Tue Feb 24 03:10:23 [initandlisten] git version: 6c2023ca359ed31407d999edcbe8cd7bd1d433b3
+Tue Feb 24 03:10:23 [initandlisten] build info: Linux bs-linux32.10gen.cc 2.6.21.7-2.fc8xen #1 SMP Fri Feb 15 12:39:36 EST 2008 i686 BOOST_LIB_VERSION=1_49
+Tue Feb 24 03:10:23 [initandlisten] options: {}
+Tue Feb 24 03:10:23 [initandlisten] Unable to check for journal files due to: boost::filesystem::basic_directory_iterator constructor: No such file or directory: "/data/db/journal"
+Tue Feb 24 03:10:24 [initandlisten] ERROR: listen(): bind() failed errno:98 Address already in use for socket: 0.0.0.0:27017
+Tue Feb 24 03:10:24 [initandlisten] ERROR:   addr already in use
+Tue Feb 24 03:10:24 [initandlisten] now exiting
+Tue Feb 24 03:10:24 dbexit: 
+Tue Feb 24 03:10:24 [initandlisten] shutdown: going to close listening sockets...
+Tue Feb 24 03:10:24 [initandlisten] shutdown: going to flush diaglog...
+Tue Feb 24 03:10:24 [initandlisten] shutdown: going to close sockets...
+Tue Feb 24 03:10:24 [TTLMonitor] ERROR: Client::shutdown not called: TTLMonitor
+Tue Feb 24 03:10:24 [websvr] ERROR: listen(): bind() failed errno:98 Address already in use for socket: 0.0.0.0:28017
+Tue Feb 24 03:10:24 [websvr] ERROR:   addr already in use
+Tue Feb 24 03:10:24 [initandlisten] shutdown: waiting for fs preallocator...
+Tue Feb 24 03:10:24 [initandlisten] shutdown: closing all files...
+Tue Feb 24 03:10:24 [initandlisten] closeAllFiles() finished
+Tue Feb 24 03:10:24 [initandlisten] shutdown: removing fs lock...
+Tue Feb 24 03:10:24 dbexit: really exiting now
+
+OPEN ANOTHER TERMINAL OTHERWISE PROGRAMS WILL NOT BE SAVED-------------------------------------------
+
+mrinmoy@ubuntu:~$ su root
+Password: 
+root@ubuntu:/home/mrinmoy# cd mongodb-linux-i686-2.2.7/
+root@ubuntu:/home/mrinmoy/mongodb-linux-i686-2.2.7# bin/mongo
+MongoDB shell version: 2.2.7
+ 
+connecting to: test
+> show dbs;
+local	(empty)
+> use kirandb
+switched to db kirandb
+> show dbs
+local	(empty)
+> obj1 ={name:'KIRAN',lastname:'JAYANTHI'}
+{ "name" : "KIRAN", "lastname" : "JAYANTHI" }
+> obj2 ={address:'SRNAGAR',city:'HYDERABAD',state:'TELANGANA'}
+{ "address" : "SRNAGAR", "city" : "HYDERABAD", "state" : "TELANGANA" }
+> db.coll.save(obj1)
+> db.coll.save(obj2)
+> db.coll.find();
+{ "_id" : ObjectId("54ec5ea59a2aa91edeb69785"), "name" : "KIRAN", "lastname" : "JAYANTHI" }
+{ "_id" : ObjectId("54ec5eaa9a2aa91edeb69786"), "address" : "SRNAGAR", "city" : "HYDERABAD", "state" : "TELANGANA" }
+> show dbs
+kirandb	0.0625GB
+local	(empty)
+> db.coll.insert({name:'BALA',last:'KRISHNA'})
+> db.coll.find();
+{ "_id" : ObjectId("54ec5ea59a2aa91edeb69785"), "name" : "KIRAN", "lastname" : "JAYANTHI" }
+{ "_id" : ObjectId("54ec5eaa9a2aa91edeb69786"), "address" : "SRNAGAR", "city" : "HYDERABAD", "state" : "TELANGANA" }
+{ "_id" : ObjectId("54ec62189a2aa91edeb69787"), "name" : "BALA", "last" : "KRISHNA" }
+> bd.coll.find({name:'SRNAGAR'})
+Tue Feb 24 03:36:54 ReferenceError: bd is not defined (shell):1
+> bd.coll.find({name:'KIRAN'})
+Tue Feb 24 03:37:09 ReferenceError: bd is not defined (shell):1
+> bd.coll.find({name:'KIRAN'});
+Tue Feb 24 03:37:19 ReferenceError: bd is not defined (shell):1
+> 
+> db.coll.count();
+3
+> db.coll.find();
+{ "_id" : ObjectId("54ec5ea59a2aa91edeb69785"), "name" : "KIRAN", "lastname" : "JAYANTHI" }
+{ "_id" : ObjectId("54ec5eaa9a2aa91edeb69786"), "address" : "SRNAGAR", "city" : "HYDERABAD", "state" : "TELANGANA" }
+{ "_id" : ObjectId("54ec62189a2aa91edeb69787"), "name" : "BALA", "last" : "KRISHNA" }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

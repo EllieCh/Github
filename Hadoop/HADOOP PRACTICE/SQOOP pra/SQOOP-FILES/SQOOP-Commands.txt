@@ -1,0 +1,46 @@
+1.sqoop eval --connect jdbc:mysql://db.example.com/corp \
+    --query "SELECT * FROM employees LIMIT 10"
+
+
+
+2.sqoop eval --connect jdbc:mysql://db.example.com/corp \
+    -e "INSERT INTO foo VALUES(42, 'bar')"
+
+3.sqoop list-databases --connect jdbc:mysql://database.example.com/
+
+4.sqoop list-tables --connect jdbc:mysql://database.example.com/corp
+
+
+5.sqoop import \
+  --query 'SELECT a.*, b.* FROM a JOIN b on (a.id == b.id) WHERE $CONDITIONS' \
+  -m 1 --target-dir /user/foo/joinresults
+
+NOTE: If you want to import the results of a query in parallel, then each map task will need to execute a copy of the query, with results partitioned by bounding conditions inferred by Sqoop. Your query must include the token $CONDITIONS which each Sqoop process will replace with a unique condition expression.
+
+5. sqoop-codegen
+
+  The codegen tool generates Java classes which encapsulate and interpret imported records. 
+The Java definition of a record is instantiated as part of the import process, but can also be 
+performed separately. For example, if Java source is lost, it can be recreated. New versions of 
+a class can be created which use different delimiters between fields, and so on.
+
+Example:
+
+  sqoop codegen --connect jdbc:mysql://db.example.com/corp \
+    --table employees
+
+
+
+
+
+FOREIGN KEY IN MYSQL
+--------------------
+
+CREATE TABLE DEPT
+(
+Dept_Id int NOT NULL,
+DeptName varchar(100) NOT NULL,
+emp_Id int,
+PRIMARY KEY (Dept_Id),
+FOREIGN KEY (emp_Id) REFERENCES emp(emp_Id)
+)

@@ -1,0 +1,147 @@
+mrinmoy@ubuntu:~$ su root
+Password: 
+root@ubuntu:/home/mrinmoy# cd mongodb-linux-i686-2.2.7/
+root@ubuntu:/home/mrinmoy/mongodb-linux-i686-2.2.7# bin/mongo
+MongoDB shell version: 2.2.7
+connecting to: test
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+	http://docs.mongodb.org/
+Questions? Try the support group
+	http://groups.google.com/group/mongodb-user
+
+> show dbs;
+local	(empty)
+> use kirandb;
+switched to db kirandb
+> obj1={name:'Balakrishna',lastname:'kiran'}
+{ "name" : "Balakrishna", "lastname" : "kiran" }
+> obj2={Address:'RJY',state:'Andhrapradesh',pincode:'533125'}
+{ "Address" : "RJY", "state" : "Andhrapradesh", "pincode" : "533125" }
+> show dbs;
+local	(empty)
+> obj.kiran.save(obj1);
+Thu Feb 19 06:47:01 ReferenceError: obj is not defined (shell):1
+> db.kiran.save(obj1);
+> db.kiran.save(obj2);
+> show dbs;
+kirandb	0.0625GB
+local	(empty)
+
+
+> db.coll.find();
+> db.kiran.find();
+{ "_id" : ObjectId("54e53999e2c9bf11a79a743f"), "name" : "Balakrishna", "lastname" : "kiran" }
+{ "_id" : ObjectId("54e5399ee2c9bf11a79a7440"), "Address" : "RJY", "state" : "Andhrapradesh", "pincode" : "533125" }
+> db.kiran.insert({First:'OM',second:'SRI',third:'JAi'})
+> bd.kiran.insert({first:'Good Morning',second:'Good Afternoon',third:'Good Evening'})
+Thu Feb 19 06:50:11 ReferenceError: bd is not defined (shell):1
+> db.kiran.insert({first:'Good Morning',second:'Good Afternoon',third:'Good Evening'})
+
+> db.kiran.find();
+{ "_id" : ObjectId("54e53999e2c9bf11a79a743f"), "name" : "Balakrishna", "lastname" : "kiran" }
+{ "_id" : ObjectId("54e5399ee2c9bf11a79a7440"), "Address" : "RJY", "state" : "Andhrapradesh", "pincode" : "533125" }
+{ "_id" : ObjectId("54e53a04e2c9bf11a79a7441"), "First" : "OM", "second" : "SRI", "third" : "JAi" }
+{ "_id" : ObjectId("54e53a58e2c9bf11a79a7442"), "first" : "Good Morning", "second" : "Good Afternoon", "third" : "Good Evening" }
+> db.kiran.count();
+4
+> show collections;
+kiran
+system.indexes
+
+> show dbs;
+kirandb	0.0625GB
+local	(empty)
+
+> use kirandb;
+switched to db kirandb
+> db.kiran.find();
+{ "_id" : ObjectId("54e53999e2c9bf11a79a743f"), "name" : "Balakrishna", "lastname" : "kiran" }
+{ "_id" : ObjectId("54e5399ee2c9bf11a79a7440"), "Address" : "RJY", "state" : "Andhrapradesh", "pincode" : "533125" }
+{ "_id" : ObjectId("54e53a04e2c9bf11a79a7441"), "First" : "OM", "second" : "SRI", "third" : "JAi" }
+{ "_id" : ObjectId("54e53a58e2c9bf11a79a7442"), "first" : "Good Morning", "second" : "Good Afternoon", "third" : "Good Evening" }
+> db.kiran.insert({_id:1,name:'Hadoop',nature:'Big Data Tool'})
+> db.kiran.find();
+{ "_id" : ObjectId("54e53999e2c9bf11a79a743f"), "name" : "Balakrishna", "lastname" : "kiran" }
+{ "_id" : ObjectId("54e5399ee2c9bf11a79a7440"), "Address" : "RJY", "state" : "Andhrapradesh", "pincode" : "533125" }
+{ "_id" : ObjectId("54e53a04e2c9bf11a79a7441"), "First" : "OM", "second" : "SRI", "third" : "JAi" }
+{ "_id" : ObjectId("54e53a58e2c9bf11a79a7442"), "first" : "Good Morning", "second" : "Good Afternoon", "third" : "Good Evening" }
+{ "_id" : 1, "name" : "Hadoop", "nature" : "Big Data Tool" }
+> db.kiran.update({_id:1},{$set:{name:'CLOUD'}})
+> db.kiran.find();
+{ "_id" : ObjectId("54e53999e2c9bf11a79a743f"), "name" : "Balakrishna", "lastname" : "kiran" }
+{ "_id" : ObjectId("54e5399ee2c9bf11a79a7440"), "Address" : "RJY", "state" : "Andhrapradesh", "pincode" : "533125" }
+{ "_id" : ObjectId("54e53a04e2c9bf11a79a7441"), "First" : "OM", "second" : "SRI", "third" : "JAi" }
+{ "_id" : ObjectId("54e53a58e2c9bf11a79a7442"), "first" : "Good Morning", "second" : "Good Afternoon", "third" : "Good Evening" }
+{ "_id" : 1, "name" : "CLOUD", "nature" : "Big Data Tool" }
+> db.kiran.find({_id:1});
+{ "_id" : 1, "name" : "CLOUD", "nature" : "Big Data Tool" }
+> db.kiran.update({_id:1},{$unset:{name:'CLOUD'}})
+> db.kiran.find({_id:1});
+{ "_id" : 1, "nature" : "Big Data Tool" }
+
+--------------------UPDATING--------------------
+
+> show collections;
+kiran
+system.indexes
+> use jk
+switched to db jk
+> db.jk.find();
+> db.jk.insert({_id:1,name:'HI',matter:'Good Morning'}
+... )
+> db.jk.find();
+{ "_id" : 1, "name" : "HI", "matter" : "Good Morning" }
+> db.jk.insert({_id:2,name:'HI',matter:'Good Afternoon'})
+> db.jk.insert({_id:3,name:'HI',matter:'Good Evening'})
+> db.jk.insert({_id:4,name:'HI',matter:'Good Night'})
+> 
+> db.jk.find();
+{ "_id" : 1, "name" : "HI", "matter" : "Good Morning" }
+{ "_id" : 2, "name" : "HI", "matter" : "Good Afternoon" }
+{ "_id" : 3, "name" : "HI", "matter" : "Good Evening" }
+{ "_id" : 4, "name" : "HI", "matter" : "Good Night" }
+
+> 
+> db.jk.update({_id:1},{$set{name:'HELLO'}})
+Thu Feb 19 07:11:09 SyntaxError: missing : after property id (shell):1
+> db.jk.update({_id:1},{$set:{name:'HELLO'}})
+> db.jk.update({_id:2},{$set:{name:'HAI'}})
+> db.jk.find();
+{ "_id" : 2, "matter" : "Good Afternoon", "name" : "HAI" }
+{ "_id" : 3, "name" : "HI", "matter" : "Good Evening" }
+{ "_id" : 4, "name" : "HI", "matter" : "Good Night" }
+{ "_id" : 1, "matter" : "Good Morning", "name" : "HELLO" }
+
+> 
+> db.jk.update({_id:1},{$unset:{name:'HELLO'}})
+> db.jk.update({_id:3},{$unset:{name:'HI'}})
+> db.jk.find();
+{ "_id" : 2, "matter" : "Good Afternoon", "name" : "HAI" }
+{ "_id" : 3, "matter" : "Good Evening" }
+{ "_id" : 4, "name" : "HI", "matter" : "Good Night" }
+{ "_id" : 1, "matter" : "Good Morning" }
+> show collections;
+jk
+system.indexes
+
+> db.kiran.find();
+> db.jk.find();
+{ "_id" : 2, "matter" : "Good Afternoon", "name" : "HAI" }
+{ "_id" : 3, "matter" : "Good Evening" }
+{ "_id" : 4, "name" : "HI", "matter" : "Good Night" }
+{ "_id" : 1, "matter" : "Good Morning" }
+> use kirandb;
+switched to db kirandb
+
+> db.kiran.find();
+{ "_id" : ObjectId("54e53999e2c9bf11a79a743f"), "name" : "Balakrishna", "lastname" : "kiran" }
+{ "_id" : ObjectId("54e5399ee2c9bf11a79a7440"), "Address" : "RJY", "state" : "Andhrapradesh", "pincode" : "533125" }
+{ "_id" : ObjectId("54e53a04e2c9bf11a79a7441"), "First" : "OM", "second" : "SRI", "third" : "JAi" }
+{ "_id" : ObjectId("54e53a58e2c9bf11a79a7442"), "first" : "Good Morning", "second" : "Good Afternoon", "third" : "Good Evening" }
+{ "_id" : 1, "nature" : "Big Data Tool" }
+> 
+
+
+

@@ -1,0 +1,513 @@
+drwxr-xr-x 2 root    root    4096 2014-10-18 03:21 hkalesh
+drwxr-xr-x 2 root    root    4096 2014-10-19 20:07 srinu
+drwxr-xr-x 2 root    root    4096 2014-10-21 20:37 HIVE
+drwxr-xr-x 3 mrinmoy mrinmoy 4096 2014-10-29 07:56 Desktop
+drwxr-xr-x 5 root    root    4096 2014-11-03 04:04 kalesha
+drwxrwxrwx 3 mrinmoy mrinmoy 4096 2014-11-25 19:36 Downloads
+drwxr-xr-x 2 root    root    4096 2014-12-02 05:17 Batch42
+drwxr-xr-x 2 mrinmoy mrinmoy 4096 2014-12-08 21:42 batch43
+-rw-r--r-- 1 mrinmoy mrinmoy   56 2014-12-08 21:58 madhav
+mrinmoy@ubuntu:~$ hadoop fs -put madhav /hdfs/batch43/
+mrinmoy@ubuntu:~$ hadoop fs -put madhav /hdfs/batch43new/
+mrinmoy@ubuntu:~$ hadoop fs -cp /hdfs/batch43/madhav /hdfs/batch43new/
+mrinmoy@ubuntu:~$ hsitory
+hsitory: command not found
+mrinmoy@ubuntu:~$ history
+    1  su root
+    2  su root
+    3  mysql
+    4  cd ..
+    5  mysql -u
+    6  mysql -u root
+    7  cd ..
+    8  mysql -u root -p
+    9  mysql -u root -p root
+   10  mysql -u root -p
+   11  mysql -u root -p
+   12  mysql -u root -p
+   13  mysql -u root -p
+   14  mysql -u root -p
+   15  mysql -u root -p
+   16  mysql -u root -p
+   17  mysql -u root -p
+   18  mysql -u root -p
+   19  mysql -u root -p
+   20  mysql -u root -p
+   21  mysql -u root -p
+   22  su root
+   23  su root
+   24  sqoop help
+   25  sqoop help
+   26  sqoop version
+   27  sqoop help
+   28  sqoop help
+   29  sqoop version
+   30  sqoop import --connect jdbc:mysql://local host/batch39 -- table emp;
+   31  su root
+   32  su root
+   33  su root
+   34  su root
+   35  su root
+   36  su root
+   37  su root
+   38  hadoop fs -ls /user/root
+   39  hadoop fs -ls
+   40  hadoop fs -ls /
+   41  hadoop fs -ls /rajesh
+   42  hadoop fs -cat /rajesh
+   43  hadoop fs -rmr /rajesh
+   44  hadoop fs -ls /
+   45  hadoop fs -ls /var
+   46  hadoop fs -cat /var
+   47  hadoop fs -rmr -var
+   48  hadoop fs -rmr /var
+   49  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table emp --target-dir /rajesh/emp -m 1 --fields-terminated-by '\t'
+   50  hadoop fs -ls /
+   51  hadoop fs -ls /rajesh
+   52  hadoop fs -cat /rajesh
+   53  hadoop fs -rmr /rajesh
+   54  su root
+   55  mysql -u root -p
+   56  su root
+   57  su root
+   58  exit
+   59  su root
+   60  exit
+   61  cd srinu
+   62  su root
+   63  exit
+   64  su root
+   65  nano ~/.bashrc
+   66  su root
+   67  su root
+   68  sudo su
+   69  su sudo
+   70  sudo su
+   71  su root
+   72  su root
+   73  su root
+   74  hadoop fs -ls
+   75  hadoop fs -ls *
+   76  pig
+   77  jps
+   78  su root
+   79  su root
+   80  su root
+   81  sudo su
+   82  su root
+   83  su root
+   84  exit
+   85  sudo su
+   86  hostname
+   87  su root
+   88  hostname
+   89  su root
+   90  sudo su
+   91  sudo su
+   92  su root
+   93  su root
+   94  su root
+   95  cd ..
+   96  sudo su
+   97  su root
+   98  su root
+   99  su root
+  100  su root
+  101  su root
+  102  su root
+  103  su root
+  104  su root
+  105  su root
+  106  ll
+  107  ls
+  108  mkdir batch43
+  109  cd batch43
+  110  cp c:\Users\Guest\Documents\Salesforce .
+  111  cd..
+  112  cd..
+  113  cd/
+  114  cd ..
+  115  hadoop fs -ls
+  116  grep hdfs
+  117  man grep
+  118  hadoop fs -mkdir /hdfs/batch43
+  119  hadoop fs -ls /hdfs/batch43
+  120  ls
+  121  pico madhav
+  122  hadoop fs -mkdir /hdfs/batch43new
+  123  hadoop fs -put documents /hdfs/batch43/
+  124  ls -ltr
+  125  hadoop fs -put madhav /hdfs/batch43/
+  126  hadoop fs -put madhav /hdfs/batch43new/
+  127  hadoop fs -cp /hdfs/batch43/madhav /hdfs/batch43new/
+  128  hsitory
+  129  history
+mrinmoy@ubuntu:~$ ifconfig
+eth7      Link encap:Ethernet  HWaddr 00:0c:29:4a:5b:fa  
+          inet addr:192.168.19.178  Bcast:192.168.19.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe4a:5bfa/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:105 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:173 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:10083 (10.0 KB)  TX bytes:17988 (17.9 KB)
+          Interrupt:19 Base address:0x2000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:16565 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:16565 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:3034505 (3.0 MB)  TX bytes:3034505 (3.0 MB)
+
+mrinmoy@ubuntu:~$ ^C
+mrinmoy@ubuntu:~$ hadoop fsck madhav
+FSCK started by mrinmoy (auth:SIMPLE) from /192.168.19.178 for path madhav at Mon Dec 08 22:13:48 PST 2014
+FSCK ended at Mon Dec 08 22:13:48 PST 2014 in 7 milliseconds
+null
+
+
+Fsck on path 'madhav' FAILED
+mrinmoy@ubuntu:~$ hadoop fsck /hdfs/batch43/madhav
+FSCK started by mrinmoy (auth:SIMPLE) from /192.168.19.178 for path /hdfs/batch43/madhav at Mon Dec 08 22:14:13 PST 2014
+.Status: HEALTHY
+ Total size:	56 B
+ Total dirs:	0
+ Total files:	1
+ Total blocks (validated):	1 (avg. block size 56 B)
+ Minimally replicated blocks:	1 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	1
+ Average block replication:	1.0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+ Number of data-nodes:		1
+ Number of racks:		1
+FSCK ended at Mon Dec 08 22:14:13 PST 2014 in 1 milliseconds
+
+
+The filesystem under path '/hdfs/batch43/madhav' is HEALTHY
+mrinmoy@ubuntu:~$ hadoop fs -gzip /hdfs/batch43/madhav
+gzip: Unknown command
+Usage: java FsShell
+           [-ls <path>]
+           [-lsr <path>]
+           [-df [<path>]]
+           [-du <path>]
+           [-dus <path>]
+           [-count[-q] <path>]
+           [-mv <src> <dst>]
+           [-cp <src> <dst>]
+           [-rm [-skipTrash] <path>]
+           [-rmr [-skipTrash] <path>]
+           [-expunge]
+           [-put <localsrc> ... <dst>]
+           [-copyFromLocal <localsrc> ... <dst>]
+           [-moveFromLocal <localsrc> ... <dst>]
+           [-get [-ignoreCrc] [-crc] <src> <localdst>]
+           [-getmerge <src> <localdst> [addnl]]
+           [-cat <src>]
+           [-text <src>]
+           [-copyToLocal [-ignoreCrc] [-crc] <src> <localdst>]
+           [-moveToLocal [-crc] <src> <localdst>]
+           [-mkdir <path>]
+           [-setrep [-R] [-w] <rep> <path/file>]
+           [-touchz <path>]
+           [-test -[ezd] <path>]
+           [-stat [format] <path>]
+           [-tail [-f] <file>]
+           [-chmod [-R] <MODE[,MODE]... | OCTALMODE> PATH...]
+           [-chown [-R] [OWNER][:[GROUP]] PATH...]
+           [-chgrp [-R] GROUP PATH...]
+           [-help [cmd]]
+
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+mrinmoy@ubuntu:~$ gzip madhav
+mrinmoy@ubuntu:~$ ls
+batch40  Batch42  batch43  Desktop  Documents  Downloads  HIVE	hkalesh  kalesha  madhav.gz  Music  Pictures  rajesh  srinu  Templates	Ubuntu One  Videos
+mrinmoy@ubuntu:~$ hadoop fs -put madhav.gz /hdfs/batch43/
+mrinmoy@ubuntu:~$ gunzip madhav
+mrinmoy@ubuntu:~$ hadoop dfs safemode enter
+afemode: Unknown command
+Usage: java FsShell
+           [-ls <path>]
+           [-lsr <path>]
+           [-df [<path>]]
+           [-du <path>]
+           [-dus <path>]
+           [-count[-q] <path>]
+           [-mv <src> <dst>]
+           [-cp <src> <dst>]
+           [-rm [-skipTrash] <path>]
+           [-rmr [-skipTrash] <path>]
+           [-expunge]
+           [-put <localsrc> ... <dst>]
+           [-copyFromLocal <localsrc> ... <dst>]
+           [-moveFromLocal <localsrc> ... <dst>]
+           [-get [-ignoreCrc] [-crc] <src> <localdst>]
+           [-getmerge <src> <localdst> [addnl]]
+           [-cat <src>]
+           [-text <src>]
+           [-copyToLocal [-ignoreCrc] [-crc] <src> <localdst>]
+           [-moveToLocal [-crc] <src> <localdst>]
+           [-mkdir <path>]
+           [-setrep [-R] [-w] <rep> <path/file>]
+           [-touchz <path>]
+           [-test -[ezd] <path>]
+           [-stat [format] <path>]
+           [-tail [-f] <file>]
+           [-chmod [-R] <MODE[,MODE]... | OCTALMODE> PATH...]
+           [-chown [-R] [OWNER][:[GROUP]] PATH...]
+           [-chgrp [-R] GROUP PATH...]
+           [-help [cmd]]
+
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+mrinmoy@ubuntu:~$ hadoop dfsadmin -safemode enter
+Safe mode is ON
+mrinmoy@ubuntu:~$ hadoop dfsadmin -safemode leave
+Safe mode is OFF
+mrinmoy@ubuntu:~$ hadoop dfsadmin report
+eport: Unknown command
+Usage: java DFSAdmin
+           [-report]
+           [-safemode enter | leave | get | wait]
+           [-saveNamespace]
+           [-refreshNodes]
+           [-finalizeUpgrade]
+           [-upgradeProgress status | details | force]
+           [-metasave filename]
+           [-refreshServiceAcl]
+           [-refreshUserToGroupsMappings]
+           [-refreshSuperUserGroupsConfiguration]
+           [-setQuota <quota> <dirname>...<dirname>]
+           [-clrQuota <dirname>...<dirname>]
+           [-setSpaceQuota <quota> <dirname>...<dirname>]
+           [-clrSpaceQuota <dirname>...<dirname>]
+           [-setBalancerBandwidth <bandwidth in bytes per second>]
+           [-help [cmd]]
+
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+mrinmoy@ubuntu:~$ hadoop dfsadmin -report
+Configured Capacity: 30352158720 (28.27 GB)
+Present Capacity: 25599946819 (23.84 GB)
+DFS Remaining: 25588473856 (23.83 GB)
+DFS Used: 11472963 (10.94 MB)
+DFS Used%: 0.04%
+Under replicated blocks: 32
+Blocks with corrupt replicas: 0
+Missing blocks: 0
+
+-------------------------------------------------
+Datanodes available: 1 (1 total, 0 dead)
+
+Name: 127.0.0.1:50010
+Decommission Status : Normal
+Configured Capacity: 30352158720 (28.27 GB)
+DFS Used: 11472963 (10.94 MB)
+Non DFS Used: 4752211901 (4.43 GB)
+DFS Remaining: 25588473856(23.83 GB)
+DFS Used%: 0.04%
+DFS Remaining%: 84.31%
+Last contact: Mon Dec 08 22:19:09 PST 2014
+
+
+mrinmoy@ubuntu:~$ hadoop fs -text madhav
+text: File does not exist: /user/mrinmoy/madhav
+mrinmoy@ubuntu:~$ hadoop fs -text /hdfs/batch43/madhav.gz
+kgkdlgggg
+dgdg
+gdg
+dg
+dg
+dg
+dg
+dg
+dg
+dtertg
+sdg
+sdgdgds
+mrinmoy@ubuntu:~$ history
+    1  su root
+    2  su root
+    3  mysql
+    4  cd ..
+    5  mysql -u
+    6  mysql -u root
+    7  cd ..
+    8  mysql -u root -p
+    9  mysql -u root -p root
+   10  mysql -u root -p
+   11  mysql -u root -p
+   12  mysql -u root -p
+   13  mysql -u root -p
+   14  mysql -u root -p
+   15  mysql -u root -p
+   16  mysql -u root -p
+   17  mysql -u root -p
+   18  mysql -u root -p
+   19  mysql -u root -p
+   20  mysql -u root -p
+   21  mysql -u root -p
+   22  su root
+   23  su root
+   24  sqoop help
+   25  sqoop help
+   26  sqoop version
+   27  sqoop help
+   28  sqoop help
+   29  sqoop version
+   30  sqoop import --connect jdbc:mysql://local host/batch39 -- table emp;
+   31  su root
+   32  su root
+   33  su root
+   34  su root
+   35  su root
+   36  su root
+   37  su root
+   38  hadoop fs -ls /user/root
+   39  hadoop fs -ls
+   40  hadoop fs -ls /
+   41  hadoop fs -ls /rajesh
+   42  hadoop fs -cat /rajesh
+   43  hadoop fs -rmr /rajesh
+   44  hadoop fs -ls /
+   45  hadoop fs -ls /var
+   46  hadoop fs -cat /var
+   47  hadoop fs -rmr -var
+   48  hadoop fs -rmr /var
+   49  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table emp --target-dir /rajesh/emp -m 1 --fields-terminated-by '\t'
+   50  hadoop fs -ls /
+   51  hadoop fs -ls /rajesh
+   52  hadoop fs -cat /rajesh
+   53  hadoop fs -rmr /rajesh
+   54  su root
+   55  mysql -u root -p
+   56  su root
+   57  su root
+   58  exit
+   59  su root
+   60  exit
+   61  cd srinu
+   62  su root
+   63  exit
+   64  su root
+   65  nano ~/.bashrc
+   66  su root
+   67  su root
+   68  sudo su
+   69  su sudo
+   70  sudo su
+   71  su root
+   72  su root
+   73  su root
+   74  hadoop fs -ls
+   75  hadoop fs -ls *
+   76  pig
+   77  jps
+   78  su root
+   79  su root
+   80  su root
+   81  sudo su
+   82  su root
+   83  su root
+   84  exit
+   85  sudo su
+   86  hostname
+   87  su root
+   88  hostname
+   89  su root
+   90  sudo su
+   91  sudo su
+   92  su root
+   93  su root
+   94  su root
+   95  cd ..
+   96  sudo su
+   97  su root
+   98  su root
+   99  su root
+  100  su root
+  101  su root
+  102  su root
+  103  su root
+  104  su root
+  105  su root
+  106  ll
+  107  ls
+  108  mkdir batch43
+  109  cd batch43
+  110  cp c:\Users\Guest\Documents\Salesforce .
+  111  cd..
+  112  cd..
+  113  cd/
+  114  cd ..
+  115  hadoop fs -ls
+  116  grep hdfs
+  117  man grep
+  118  hadoop fs -mkdir /hdfs/batch43
+  119  hadoop fs -ls /hdfs/batch43
+  120  ls
+  121  pico madhav
+  122  hadoop fs -mkdir /hdfs/batch43new
+  123  hadoop fs -put documents /hdfs/batch43/
+  124  ls -ltr
+  125  hadoop fs -put madhav /hdfs/batch43/
+  126  hadoop fs -put madhav /hdfs/batch43new/
+  127  hadoop fs -cp /hdfs/batch43/madhav /hdfs/batch43new/
+  128  hsitory
+  129  history
+  130  ifconfig
+  131  hadoop fsck madhav
+  132  hadoop fsck /hdfs/batch43/madhav
+  133  hadoop fs -gzip /hdfs/batch43/madhav
+  134  gzip madhav
+  135  ls
+  136  hadoop fs -put madhav.gz /hdfs/batch43/
+  137  gunzip madhav
+  138  hadoop dfs safemode enter
+  139  hadoop dfsadmin -safemode enter
+  140  hadoop dfsadmin -safemode leave
+  141  hadoop dfsadmin report
+  142  hadoop dfsadmin -report
+  143  hadoop fs -text madhav
+  144  hadoop fs -text /hdfs/batch43/madhav.gz
+  145  history
+mrinmoy@ubuntu:~$ 
+

@@ -1,0 +1,50 @@
+root@ubuntu:/home/Gopal# sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table emp --target-dir /ImportToolS --as-sequencefile -m 1;
+13/08/06 05:21:53 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+13/08/06 05:21:53 INFO tool.CodeGenTool: Beginning code generation
+13/08/06 05:21:54 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+13/08/06 05:21:54 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+13/08/06 05:21:54 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+13/08/06 05:21:54 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+13/08/06 05:21:57 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/832a3a22f81af9c3e536f871d63dea00/emp.jar
+13/08/06 05:21:57 WARN manager.MySQLManager: It looks like you are importing from mysql.
+13/08/06 05:21:57 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+13/08/06 05:21:57 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+13/08/06 05:21:57 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+13/08/06 05:21:57 INFO mapreduce.ImportJobBase: Beginning import of emp
+13/08/06 05:22:00 INFO mapred.JobClient: Running job: job_201308060426_0005
+13/08/06 05:22:01 INFO mapred.JobClient:  map 0% reduce 0%
+13/08/06 05:22:12 INFO mapred.JobClient:  map 100% reduce 0%
+13/08/06 05:22:16 INFO mapred.JobClient: Job complete: job_201308060426_0005
+13/08/06 05:22:16 INFO mapred.JobClient: Counters: 16
+13/08/06 05:22:16 INFO mapred.JobClient:   Job Counters 
+13/08/06 05:22:16 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=12725
+13/08/06 05:22:16 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/08/06 05:22:16 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/08/06 05:22:16 INFO mapred.JobClient:     Launched map tasks=1
+13/08/06 05:22:16 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+13/08/06 05:22:16 INFO mapred.JobClient:   FileSystemCounters
+13/08/06 05:22:16 INFO mapred.JobClient:     HDFS_BYTES_READ=87
+13/08/06 05:22:16 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=70071
+13/08/06 05:22:16 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=705
+13/08/06 05:22:16 INFO mapred.JobClient:   Map-Reduce Framework
+13/08/06 05:22:16 INFO mapred.JobClient:     Map input records=18
+13/08/06 05:22:16 INFO mapred.JobClient:     Physical memory (bytes) snapshot=77287424
+13/08/06 05:22:16 INFO mapred.JobClient:     Spilled Records=0
+13/08/06 05:22:16 INFO mapred.JobClient:     CPU time spent (ms)=1380
+13/08/06 05:22:16 INFO mapred.JobClient:     Total committed heap usage (bytes)=39911424
+13/08/06 05:22:16 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=403042304
+13/08/06 05:22:16 INFO mapred.JobClient:     Map output records=18
+13/08/06 05:22:16 INFO mapred.JobClient:     SPLIT_RAW_BYTES=87
+13/08/06 05:22:16 INFO mapreduce.ImportJobBase: Transferred 705 bytes in 18.4587 seconds (38.1933 bytes/sec)
+13/08/06 05:22:16 INFO mapreduce.ImportJobBase: Retrieved 18 records.
+
+
+
+root@ubuntu:/home/Gopal# hadoop fs -cat /ImportToolS/part-m-00000
+SEQ!org.apache.hadoop.io.LongWritableempI��1��ͧbm+X�dGopal'eRavi*�fRajan.�gRajeev2�hNeeraj:�yMadanS��Manohar��Trinath{
+                                                                                                                                  RamyaSri�� GopiNathY�
+!	GopiChand]�
+                   "
+                     GopiKrishnaa�"
+?NewName3�root@ubuntu:/home/Gopal# �|NewName2�!
+

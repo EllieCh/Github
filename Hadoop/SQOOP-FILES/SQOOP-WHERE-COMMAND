@@ -1,0 +1,2 @@
+sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select e.empid,e.ename,e.esal,d.dname from emp e LEFT OUTER JOIN dept1 d ON(e.empid=d.empid) where \$CONDITIONS"   -m 1 --fields-terminated-by '\t' --lines-terminated-by '\n' --target-dir /user/Gopal/sundayTestforFORMAT;
+

@@ -1,0 +1,169 @@
+-----------------------INPUT(f1.pig)-------------------------(SCRIPT MODE LOCAL)
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+11111|NSE_sensex_Daily_Report   | Mumbai    | 29500| 29600| 10| Positive
+22222| BSE_sensex_Weekly_Report | Delhi     | 28000| 27800| 15| Negitive
+33333|CSE_sensex_Monthly_Repoprt| Clifornia |17000 |16900 | 02|Neutral
+
+root@ubuntu:/home/mrinmoy# nano pig1
+a =LOAD 'f1.pig' using PigStorage ('|') as (sensex_id:int,sensex_Report:chararray,loc:chararray,sensex_opening:int,sensex_closing:int,fluctuation:int,impact:chararray);
+b = FOREACH a GENERATE loc;
+STORE b INTO 'pigout1';
+
+root@ubuntu:/home/mrinmoy# pig -x local pig1
+root@ubuntu:/home/mrinmoy# pig -x local pig1
+root@ubuntu:/home/mrinmoy# ls pigout1
+part-m-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat pigout1/part-m-00000
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+ Mumbai    
+ Delhi     
+ Clifornia 
+------------------------------------------------------------
+root@ubuntu:/home/mrinmoy# nano pig1
+a =LOAD 'f1.pig' using PigStorage ('|') as (sensex_id:int,sensex_Report:chararray,loc:chararray,sensex_opening:int,sensex_closing:int,fluctuation:int,impact:chararray);
+b = FILTER a BY loc == 'Mumbai';
+c =LIMIT a 7;
+d =DISTINCT a;
+STORE b INTO 'pigoutfil';STORE c INTO 'pigoutlim';STORE d INTO 'pigoutdis';
+
+root@ubuntu:/home/mrinmoy# pig -x local pig1
+Output(s):
+Successfully stored records in: "file:///home/mrinmoy/pigoutfil"
+Successfully stored records in: "file:///home/mrinmoy/pigoutdis"
+Successfully stored records in: "file:///home/mrinmoy/pigoutlim"
+
+root@ubuntu:/home/mrinmoy# ls pigoutfil
+part-m-00000  _temporary
+root@ubuntu:/home/mrinmoy# cat pigoutfil/part-m-00000
+root@ubuntu:/home/mrinmoy# ls pigoutlim
+part-r-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat pigoutlim/part-r-00000
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral 
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+22222	 BSE_sensex_Weekly_Report 	 Delhi     	28000	27800	15	 Negitive
+22222	 BSE_sensex_Weekly_Report 	 Delhi     	28000	27800	15	 Negitive
+root@ubuntu:/home/mrinmoy# ls pigoutdis
+part-r-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat pigoutdis/part-r-00000
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral 
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+22222	 BSE_sensex_Weekly_Report 	 Delhi     	28000	27800	15	 Negitive
+
+-------------------------------HDFS MODE-------------
+
+
+
+root@ubuntu:/home/mrinmoy# nano f1.pig
+root@ubuntu:/home/mrinmoy# hadoop fs -mkdir hdfsf1.pig
+root@ubuntu:/home/mrinmoy# hadoop fs -put f1.pig hdfsf1.pig
+root@ubuntu:/home/mrinmoy# hadoop fs -ls hdfsf1.pig
+Found 1 items
+-rw-r--r--   3 root supergroup       1961 2015-02-16 18:56 /user/root/hdfsf1.pig/f1.pig
+root@ubuntu:/home/mrinmoy# nano pig1
+a =LOAD 'hdfsf1.pig/f1.pig' using PigStorage ('|') as (sensex_id:int,sensex_Report:chararray,loc:chararray,sensex_opening:int,sensex_closing:int,fluctuation:int,impact:chararray);
+b = FILTER a BY loc == 'Mumbai';
+c =LIMIT a 7;
+d =DISTINCT a;
+STORE b INTO 'hdfsfil';STORE c INTO 'hdfslim';STORE d INTO 'hdfsdis';
+
+
+
+root@ubuntu:/home/mrinmoy# pig pig1
+
+Output(s):
+Successfully stored 0 records in: "hdfs://localhost:8020/user/root/hdfsfil"
+Successfully stored 4 records (274 bytes) in: "hdfs://localhost:8020/user/root/hdfsdis"
+Successfully stored 7 records (485 bytes) in: "hdfs://localhost:8020/user/root/hdfslim"
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls hdfsfil
+Found 1 items
+-rw-r--r--   3 root supergroup          0 2015-02-16 18:58 /user/root/hdfsfil/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -ls hdfsfil/part-m-00000
+Found 1 items
+-rw-r--r--   3 root supergroup          0 2015-02-16 18:58 /user/root/hdfsfil/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat hdfsfil/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat hdfslim/part-r-00000
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral 
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+22222	 BSE_sensex_Weekly_Report 	 Delhi     	28000	27800	15	 Negitive
+22222	 BSE_sensex_Weekly_Report 	 Delhi     	28000	27800	15	 Negitive
+root@ubuntu:/home/mrinmoy# hadoop fs -cat hdfsdis/part-r-00000
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral
+33333	CSE_sensex_Monthly_Repoprt	 Clifornia 	17000	16900	2	Neutral 
+11111	NSE_sensex_Daily_Report   	 Mumbai    	29500	29600	10	 Positive
+22222	 BSE_sensex_Weekly_Report 	 Delhi     	28000	27800	15	 Negitive
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

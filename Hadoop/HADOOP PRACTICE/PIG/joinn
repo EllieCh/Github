@@ -1,0 +1,60 @@
+------------------------------------------JOININNGS------------------------------------
+root@ubuntu:/home/mrinmoy# cat f1
+2323|kiran|45000|rjy
+6453|kumar|42000|hyd
+6452|phani|35000|ong
+7463|karun|30000|ngl
+root@ubuntu:/home/mrinmoy# cat f2
+2323|ramesh|25000|rjy
+7464|mahesh|27000|kkd
+3762|rajesh|25000|mmd
+7463|suresh|18000|sec
+
+grunt> file1 =LOAD 'f1' using PigStorage('|') as (aid:int,aname:chararray,asal:int,aloc:chararray);
+grunt> file2 =LOAD 'f2' using PigStorage('|') as (bid:int,bname:chararray,bsal:int,bloc:chararray);
+grunt> joindata =JOIN file1 BY aid,file2 BY bid;                                                   
+grunt> dump joindata;   
+(2323,kiran,45000,rjy,2323,ramesh,25000,rjy)
+(7463,karun,30000,ngl,7463,suresh,18000,sec)
+
+grunt> lj =JOIN file1 BY aid LEFT,file2 BY bid;   //Left outer means left table comes as it is
+grunt> STORE lj INTO 'leftj'; 
+root@ubuntu:/home/mrinmoy# ls leftj;
+part-r-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat leftj/part-r-00000
+2323	kiran	45000	rjy	2323	ramesh	25000	rjy
+6452	phani	35000	ong				
+6453	kumar	42000	hyd				
+7463	karun	30000	ngl	7463	suresh	18000	sec
+
+grunt> rj =JOIN file1 BY aid RIGHT,file2 BY bid; // Right join means right table comes as it is
+grunt> STORE rj INTO 'rightj';   
+root@ubuntu:/home/mrinmoy# ls rightj
+part-r-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat rightj/part-r-00000
+2323	kiran	45000	rjy	2323	ramesh	25000	rjy
+				3762	rajesh	25000	mmd
+7463	karun	30000	ngl	7463	suresh	18000	sec
+				7464	mahesh	27000	kkd
+
+
+grunt> fj =JOIN file1 BY aid FULL,file2 BY bid;
+grunt> STORE fj INTO 'fullj';
+root@ubuntu:/home/mrinmoy# cat leftj/part-r-00000
+2323	kiran	45000	rjy	2323	ramesh	25000	rjy
+6452	phani	35000	ong				
+6453	kumar	42000	hyd				
+7463	karun	30000	ngl	7463	suresh	18000	sec
+
+root@ubuntu:/home/mrinmoy# ls fullj           //Full join means both tables come as they are 
+part-r-00000  _SUCCESS
+root@ubuntu:/home/mrinmoy# cat fullj/part-r-00000
+2323	kiran	45000	rjy	2323	ramesh	25000	rjy
+				3762	rajesh	25000	mmd
+6452	phani	35000	ong				
+6453	kumar	42000	hyd				
+7463	karun	30000	ngl	7463	suresh	18000	sec
+				7464	mahesh	27000	kkd
+
+
+

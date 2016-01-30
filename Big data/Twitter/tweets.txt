@@ -1,0 +1,25 @@
+TwitterAgent.sources = Twitter
+TwitterAgent.channels = MemChannel
+TwitterAgent.sinks = HDFS
+ 
+TwitterAgent.sources.Twitter.type = com.cloudera.flume.source.TwitterSource
+TwitterAgent.sources.Twitter.channels = MemChannel
+TwitterAgent.sources.Twitter.consumerKey = Ajmo7yMDYjcxlAa420otlboMn
+TwitterAgent.sources.Twitter.consumerSecret = o4uD5lL2lNQgDt0c75ceaBCUJq7eWuXeEMoENM6QqwqrK0INTm
+TwitterAgent.sources.Twitter.accessToken = 2738381213-TeQUgEbvgsQ8PYDpqf4sY6hWgb1VuZeIPJSkxMn
+TwitterAgent.sources.Twitter.accessTokenSecret = GWxdrMOTXASoEmnYaKb21WlFDaJ7FSvwC4Os8XhsDmw5J
+ 
+TwitterAgent.sources.Twitter.keywords = bridgeofspies, tomhanks, BridgeOfSpies, TomHanks, Spielberg
+ 
+TwitterAgent.sinks.HDFS.channel = MemChannel
+TwitterAgent.sinks.HDFS.type = hdfs
+TwitterAgent.sinks.HDFS.hdfs.path = hdfs://localhost:9000/user/flume/tweets/
+TwitterAgent.sinks.HDFS.hdfs.fileType = DataStream
+TwitterAgent.sinks.HDFS.hdfs.writeFormat = Text
+TwitterAgent.sinks.HDFS.hdfs.batchSize = 1000
+TwitterAgent.sinks.HDFS.hdfs.rollSize = 0
+TwitterAgent.sinks.HDFS.hdfs.rollCount = 10000
+ 
+TwitterAgent.channels.MemChannel.type = memory
+TwitterAgent.channels.MemChannel.capacity = 10000
+TwitterAgent.channels.MemChannel.transactionCapacity = 100

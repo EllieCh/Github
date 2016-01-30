@@ -1,0 +1,25 @@
+sentiment_baahubali
+
+Consumer Key (API Key):	Ajmo7yMDYjcxlAa420otlboMn
+
+App-only authentication:	https://api.twitter.com/oauth2/token
+
+Request token URL:	https://api.twitter.com/oauth/request_token
+
+Authorize URL:	https://api.twitter.com/oauth/authorize
+
+Access token URL:	https://api.twitter.com/oauth/access_token
+
+Consumer Secret (API Secret):	o4uD5lL2lNQgDt0c75ceaBCUJq7eWuXeEMoENM6QqwqrK0INTm
+
+Access Level:	Read and write (modify app permissions)
+
+Owner:	Gaya3Nagavali
+
+Owner ID:	2738381213
+
+Access Token:	2738381213-TeQUgEbvgsQ8PYDpqf4sY6hWgb1VuZeIPJSkxMn
+
+Access Token Secret:	GWxdrMOTXASoEmnYaKb21WlFDaJ7FSvwC4Os8XhsDmw5J
+
+

@@ -1,0 +1,231 @@
+mrinmoy@ubuntu:~$ su root
+Password: 
+root@ubuntu:/home/mrinmoy# cd ..
+root@ubuntu:/home# mysql
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+root@ubuntu:/home# mysql -u root -p
+Enter password:         //root
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 58
+Server version: 5.1.49-1ubuntu8 (Ubuntu)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Chaitu_Lab         |
+| Gopal_Lab          |
+| NewYearDB          |
+| RK                 |
+| Roja               |
+| aaa                |
+| b41                |
+| b42                |
+| batch17            |
+| batch42            |
+| mysql              |
+| p1                 |
+| week14             |
++--------------------+
+14 rows in set (0.09 sec)
+
+mysql> create database JK;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use JK;
+Database changed
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Chaitu_Lab         |
+| Gopal_Lab          |
+| JK                 |
+| NewYearDB          |
+| RK                 |
+| Roja               |
+| aaa                |
+| b41                |
+| b42                |
+| batch17            |
+| batch42            |
+| mysql              |
+| p1                 |
+| week14             |
++--------------------+
+15 rows in set (0.00 sec)
+
+mysql> create table emp (eid int primary key,ename varchar(50),esal int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into emp values(1000,'kiran',50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(1200,'Siva',70000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(1230,'phani',40000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(1234,'prasant',4000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from emp;
++------+---------+-------+
+| eid  | ename   | esal  |
++------+---------+-------+
+| 1000 | kiran   | 50000 |
+| 1200 | Siva    | 70000 |
+| 1230 | phani   | 40000 |
+| 1234 | prasant |  4000 |
++------+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> grant all previlleges on JK.* to ''@'localhost'
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'previlleges on JK.* to ''@'localhost'' at line 1
+mysql> grant all privileges on JK.* to ''@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+----open another terminal--------
+
+root@ubuntu:/home/kiran412/sqoop# sqoop import --connect jdbc:mysql://localhost/JK --table emp;
+
+15/03/02 05:05:12 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+15/03/02 05:05:12 INFO tool.CodeGenTool: Beginning code generation
+15/03/02 05:05:12 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+15/03/02 05:05:12 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+15/03/02 05:05:12 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+15/03/02 05:05:12 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+15/03/02 05:05:14 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/682f5f58783d5ae97a94ca0288ff766e/emp.jar
+15/03/02 05:05:14 WARN manager.MySQLManager: It looks like you are importing from mysql.
+15/03/02 05:05:14 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+15/03/02 05:05:14 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+15/03/02 05:05:14 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+15/03/02 05:05:14 INFO mapreduce.ImportJobBase: Beginning import of emp
+15/03/02 05:05:15 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`eid`), MAX(`eid`) FROM `emp`
+15/03/02 05:05:16 INFO mapred.JobClient: Running job: job_201503020315_0005
+15/03/02 05:05:17 INFO mapred.JobClient:  map 0% reduce 0%
+15/03/02 05:05:30 INFO mapred.JobClient:  map 25% reduce 0%
+15/03/02 05:05:34 INFO mapred.JobClient:  map 50% reduce 0%
+15/03/02 05:05:35 INFO mapred.JobClient:  map 75% reduce 0%
+15/03/02 05:05:37 INFO mapred.JobClient:  map 100% reduce 0%
+15/03/02 05:05:37 INFO mapred.JobClient: Job complete: job_201503020315_0005
+15/03/02 05:05:37 INFO mapred.JobClient: Counters: 16
+15/03/02 05:05:37 INFO mapred.JobClient:   Job Counters 
+15/03/02 05:05:37 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=31232
+15/03/02 05:05:37 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+15/03/02 05:05:37 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+15/03/02 05:05:37 INFO mapred.JobClient:     Launched map tasks=4
+15/03/02 05:05:37 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+15/03/02 05:05:37 INFO mapred.JobClient:   FileSystemCounters
+15/03/02 05:05:37 INFO mapred.JobClient:     HDFS_BYTES_READ=425
+15/03/02 05:05:37 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=281148
+15/03/02 05:05:37 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=68
+15/03/02 05:05:37 INFO mapred.JobClient:   Map-Reduce Framework
+15/03/02 05:05:37 INFO mapred.JobClient:     Map input records=4
+15/03/02 05:05:37 INFO mapred.JobClient:     Physical memory (bytes) snapshot=493211648
+15/03/02 05:05:37 INFO mapred.JobClient:     Spilled Records=0
+15/03/02 05:05:37 INFO mapred.JobClient:     CPU time spent (ms)=9800
+15/03/02 05:05:37 INFO mapred.JobClient:     Total committed heap usage (bytes)=151388160
+15/03/02 05:05:37 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1813889024
+15/03/02 05:05:37 INFO mapred.JobClient:     Map output records=4
+15/03/02 05:05:37 INFO mapred.JobClient:     SPLIT_RAW_BYTES=425
+15/03/02 05:05:37 INFO mapreduce.ImportJobBase: Transferred 68 bytes in 23.2295 seconds (2.9273 bytes/sec)
+15/03/02 05:05:37 INFO mapreduce.ImportJobBase: Retrieved 4 records.
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -cat /user/root/emp
+cat: File does not exist: /user/root/emp
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -ls /user/root/emp
+Found 6 items
+-rw-r--r--   1 root supergroup          0 2015-03-02 05:05 /user/root/emp/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-03-02 05:05 /user/root/emp/_logs
+-rw-r--r--   1 root supergroup         17 2015-03-02 05:05 /user/root/emp/part-m-00000
+-rw-r--r--   1 root supergroup          0 2015-03-02 05:05 /user/root/emp/part-m-00001
+-rw-r--r--   1 root supergroup          0 2015-03-02 05:05 /user/root/emp/part-m-00002
+-rw-r--r--   1 root supergroup         51 2015-03-02 05:05 /user/root/emp/part-m-00003
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -cat /user/root/emp/part-m-00000
+1000,kiran,50000
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -cat /user/root/emp/part-m-00001
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -cat /user/root/emp/part-m-00002
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -cat /user/root/emp/part-m-00003
+1200,Siva,70000
+1230,phani,40000
+1234,prasant,4000
+
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -rmr /user/root/emp
+Deleted hdfs://localhost:8020/user/root/emp
+
+
+root@ubuntu:/home/kiran412/sqoop# sqoop import --connect jdbc:mysql://localhost/JK --table emp -m 1;
+15/03/02 05:09:22 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+15/03/02 05:09:22 INFO tool.CodeGenTool: Beginning code generation
+15/03/02 05:09:22 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+15/03/02 05:09:22 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+15/03/02 05:09:22 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+15/03/02 05:09:22 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+15/03/02 05:09:23 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/7605d9504038aad0594122b15084498c/emp.jar
+15/03/02 05:09:23 WARN manager.MySQLManager: It looks like you are importing from mysql.
+15/03/02 05:09:23 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+15/03/02 05:09:23 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+15/03/02 05:09:23 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+15/03/02 05:09:23 INFO mapreduce.ImportJobBase: Beginning import of emp
+15/03/02 05:09:24 INFO mapred.JobClient: Running job: job_201503020315_0006
+15/03/02 05:09:25 INFO mapred.JobClient:  map 0% reduce 0%
+15/03/02 05:09:30 INFO mapred.JobClient:  map 100% reduce 0%
+15/03/02 05:09:30 INFO mapred.JobClient: Job complete: job_201503020315_0006
+15/03/02 05:09:30 INFO mapred.JobClient: Counters: 16
+15/03/02 05:09:30 INFO mapred.JobClient:   Job Counters 
+15/03/02 05:09:30 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=4968
+15/03/02 05:09:30 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+15/03/02 05:09:30 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+15/03/02 05:09:30 INFO mapred.JobClient:     Launched map tasks=1
+15/03/02 05:09:30 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+15/03/02 05:09:30 INFO mapred.JobClient:   FileSystemCounters
+15/03/02 05:09:30 INFO mapred.JobClient:     HDFS_BYTES_READ=87
+15/03/02 05:09:30 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=70286
+15/03/02 05:09:30 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=68
+15/03/02 05:09:30 INFO mapred.JobClient:   Map-Reduce Framework
+15/03/02 05:09:30 INFO mapred.JobClient:     Map input records=4
+15/03/02 05:09:30 INFO mapred.JobClient:     Physical memory (bytes) snapshot=175525888
+15/03/02 05:09:30 INFO mapred.JobClient:     Spilled Records=0
+15/03/02 05:09:30 INFO mapred.JobClient:     CPU time spent (ms)=690
+15/03/02 05:09:30 INFO mapred.JobClient:     Total committed heap usage (bytes)=31653888
+15/03/02 05:09:30 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=520863744
+15/03/02 05:09:30 INFO mapred.JobClient:     Map output records=4
+15/03/02 05:09:30 INFO mapred.JobClient:     SPLIT_RAW_BYTES=87
+15/03/02 05:09:30 INFO mapreduce.ImportJobBase: Transferred 68 bytes in 7.0012 seconds (9.7126 bytes/sec)
+15/03/02 05:09:30 INFO mapreduce.ImportJobBase: Retrieved 4 records.
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -ls /user/root/emp
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2015-03-02 05:09 /user/root/emp/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2015-03-02 05:09 /user/root/emp/_logs
+-rw-r--r--   1 root supergroup         68 2015-03-02 05:09 /user/root/emp/part-m-00000
+root@ubuntu:/home/kiran412/sqoop# hadoop fs -cat /user/root/emp/part-m-00000
+1000,kiran,50000
+1200,Siva,70000
+1230,phani,40000
+1234,prasant,4000
+
+
+
+
+
+
+
+
+
+
+
+
+

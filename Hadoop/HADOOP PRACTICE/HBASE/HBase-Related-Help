@@ -1,0 +1,190 @@
+Hbase-Related
+================
+
+root@ubuntu:/usr/lib/hbase/bin# jps
+1837 TaskTracker
+3434 Jps
+1026 DataNode
+1948 QuorumPeerMain
+1496 NameNode
+1607 SecondaryNameNode
+1300 JobTracker
+root@ubuntu:/usr/lib/hbase/bin# kill 1948
+root@ubuntu:/usr/lib/hbase/bin# jps
+1837 TaskTracker
+3448 Jps
+1026 DataNode
+1496 NameNode
+1607 SecondaryNameNode
+1300 JobTracker
+root@ubuntu:/usr/lib/hbase/bin# ./start-hbase.sh 
+starting master, logging to /usr/lib/hbase/bin/../logs/hbase-root-master-ubuntu.out
+root@ubuntu:/usr/lib/hbase/bin# cd ../logs/
+root@ubuntu:/usr/lib/hbase/logs# ll
+total 72
+drwxr-xr-x  2 hbase hbase  4096 2012-12-11 05:41 ./
+drwxr-xr-x 21 root  root   4096 2012-12-11 05:02 ../
+-rw-r--r--  1 root  root  43845 2012-12-11 05:42 hbase-root-master-ubuntu.log
+-rw-r--r--  1 root  root      0 2012-12-11 05:41 hbase-root-master-ubuntu.out
+-rw-r--r--  1 root  root   6455 2012-12-11 05:41 hbase-root-master-ubuntu.out.1
+-rw-r--r--  1 root  root   6437 2012-12-11 05:17 hbase-root-master-ubuntu.out.2
+-rw-r--r--  1 root  root    152 2012-12-10 09:57 hbase-root-master-ubuntu.out.3
+root@ubuntu:/usr/lib/hbase/logs# cat hbase-root-master-ubuntu.out
+root@ubuntu:/usr/lib/hbase/logs# jps
+3690 Jps
+1837 TaskTracker
+1026 DataNode
+1496 NameNode
+3529 HMaster
+1607 SecondaryNameNode
+1300 JobTracker
+root@ubuntu:/usr/lib/hbase/logs# hbase shell
+
+===================================================
+
+Baisc Operations like 'create', 'put' , 'scan' in HBase
+-------------------------------------------------------
+
+root@ubuntu:/usr/lib/hbase/logs# hbase shell
+HBase Shell; enter 'help<RETURN>' for list of supported commands.
+Type "exit<RETURN>" to leave the HBase Shell
+Version 0.90.6-cdh3u5, r, Fri Oct  5 17:35:30 PDT 2012
+
+hbase(main):001:0> create 'Gopal','Hadoop' 
+0 row(s) in 3.9960 seconds
+
+hbase(main):002:0> list
+TABLE                                                                                                                                                                   
+Gopal                                                                                                                                                                   
+1 row(s) in 0.4150 seconds
+
+hbase(main):003:0> put 'Gopal','row1','Hadoop:echosystem1','MapReduce'
+0 row(s) in 2.7420 seconds
+
+hbase(main):004:0> put 'Gopal','row2','Hadoop:echosystem2','Apache PIG'
+0 row(s) in 0.1080 seconds
+
+hbase(main):005:0> put 'Gopal','row3','Hadoop:echosystem3','Hive'      
+0 row(s) in 0.1030 seconds
+
+hbase(main):006:0> scan 'Gopal'
+ROW                                         COLUMN+CELL                                                                                                                 
+ row1                                       column=Hadoop:echosystem1, timestamp=1355233720737, value=MapReduce                                                         
+ row2                                       column=Hadoop:echosystem2, timestamp=1355233760715, value=Apache PIG                                                        
+ row3                                       column=Hadoop:echosystem3, timestamp=1355233779253, value=Hive                                                              
+3 row(s) in 1.3560 seconds
+
+hbase(main):007:0> 
+
+hbase(main):007:0> get 'Gopal','row3'
+COLUMN                                      CELL                                                                                                                        
+ Hadoop:echosystem3                         timestamp=1355233779253, value=Hive                                                                                         
+1 row(s) in 1.9220 seconds
+
+hbase(main):008:0> 
+==============================================================================================================
+
+hbase(main):011:0> create 'SampleTable','cf'
+0 row(s) in 1.9100 seconds
+
+hbase(main):012:0> put 'SampleTable','row1','cf:a','Firstvalue'
+0 row(s) in 2.0340 seconds
+
+hbase(main):013:0> put 'SampleTable','row2','cf:b','secondvalue'
+0 row(s) in 0.2540 seconds
+
+hbase(main):014:0> put 'SampleTable','row2','cf:c','thridvalue','cf:e','FourthValue'
+
+ERROR: wrong number of arguments (6 for 5)
+
+Here is some help for this command:
+Put a cell 'value' at specified table/row/column and optionally
+timestamp coordinates.  To put a cell value into table 't1' at
+row 'r1' under column 'c1' marked with the time 'ts1', do:
+
+  hbase> put 't1', 'r1', 'c1', 'value', ts1
+
+
+hbase(main):015:0> put 'SampleTable','row2','cf:c','thridvalue'                     
+0 row(s) in 0.2110 seconds
+
+hbase(main):016:0> list
+TABLE                                                                                                                                                                   
+Gopal                                                                                                                                                                   
+SampleTable                                                                                                                                                             
+test                                                                                                                                                                    
+3 row(s) in 0.5260 seconds
+
+hbase(main):017:0> scan 'sampletable'
+ROW                                         COLUMN+CELL                                                                                                                 
+
+ERROR: Unknown table sampletable!
+
+Here is some help for this command:
+Scan a table; pass table name and optionally a dictionary of scanner
+specifications.  Scanner specifications may include one or more of:
+TIMERANGE, FILTER, LIMIT, STARTROW, STOPROW, TIMESTAMP, MAXLENGTH,
+or COLUMNS, CACHE. If no columns are specified, all columns will be scanned.
+To scan all members of a column family, leave the qualifier empty as in
+'col_family:'.
+
+Some examples:
+
+  hbase> scan '.META.'
+  hbase> scan '.META.', {COLUMNS => 'info:regioninfo'}
+  hbase> scan 't1', {COLUMNS => ['c1', 'c2'], LIMIT => 10, STARTROW => 'xyz'}
+  hbase> scan 't1', {FILTER => org.apache.hadoop.hbase.filter.ColumnPaginationFilter.new(1, 0)}
+  hbase> scan 't1', {COLUMNS => 'c1', TIMERANGE => [1303668804, 1303668904]}
+
+For experts, there is an additional option -- CACHE_BLOCKS -- which
+switches block caching for the scanner on (true) or off (false).  By
+default it is enabled.  Examples:
+
+  hbase> scan 't1', {COLUMNS => ['c1', 'c2'], CACHE_BLOCKS => false}
+
+
+hbase(main):018:0> scan 'SampleTable'
+ROW                                         COLUMN+CELL                                                                                                                 
+ row1                                       column=cf:a, timestamp=1355234315812, value=Firstvalue                                                                      
+ row2                                       column=cf:b, timestamp=1355234343514, value=secondvalue                                                                     
+ row2                                       column=cf:c, timestamp=1355234436657, value=thridvalue                                                                      
+2 row(s) in 0.4780 seconds
+
+hbase(main):019:0> disable 'SampleTable'
+0 row(s) in 2.7390 seconds
+
+hbase(main):020:0> drop 'SampleTable'
+0 row(s) in 4.4410 seconds
+
+hbase(main):021:0> list
+TABLE                                                                                                                                                                   
+Gopal                                                                                                                                                                   
+test                                                                                                                                                                    
+2 row(s) in 0.0880 seconds
+
+hbase(main):022:0> scan '.META.'
+ROW                                         COLUMN+CELL                                                                                                                 
+ Gopal,,1355233531420.b6f7b7222f0f47bb707b9 column=info:regioninfo, timestamp=1355233531839, value=REGION => {NAME => 'Gopal,,1355233531420.b6f7b7222f0f47bb707b906b688e
+ 06b688e2f56.                               2f56.', STARTKEY => '', ENDKEY => '', ENCODED => b6f7b7222f0f47bb707b906b688e2f56, TABLE => {{NAME => 'Gopal', FAMILIES => [
+                                            {NAME => 'Hadoop', BLOOMFILTER => 'NONE', REPLICATION_SCOPE => '0', COMPRESSION => 'NONE', VERSIONS => '3', TTL => '21474836
+                                            47', BLOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCACHE => 'true'}]}}                                                   
+ Gopal,,1355233531420.b6f7b7222f0f47bb707b9 column=info:server, timestamp=1355233532171, value=ubuntu:59003                                                             
+ 06b688e2f56.                                                                                                                                                           
+ Gopal,,1355233531420.b6f7b7222f0f47bb707b9 column=info:serverstartcode, timestamp=1355233532171, value=1355233308032                                                   
+ 06b688e2f56.                                                                                                                                                           
+ test,,1355234242493.1f6da7066bd5b45c2e6206 column=info:regioninfo, timestamp=1355234243276, value=REGION => {NAME => 'test,,1355234242493.1f6da7066bd5b45c2e6206dcaf2bf
+ dcaf2bf3e6.                                3e6.', STARTKEY => '', ENDKEY => '', ENCODED => 1f6da7066bd5b45c2e6206dcaf2bf3e6, TABLE => {{NAME => 'test', FAMILIES => [{N
+                                            AME => 'cf', BLOOMFILTER => 'NONE', REPLICATION_SCOPE => '0', COMPRESSION => 'NONE', VERSIONS => '3', TTL => '2147483647', B
+                                            LOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCACHE => 'true'}]}}                                                         
+ test,,1355234242493.1f6da7066bd5b45c2e6206 column=info:server, timestamp=1355234243671, value=ubuntu:59003                                                             
+ dcaf2bf3e6.                                                                                                                                                            
+ test,,1355234242493.1f6da7066bd5b45c2e6206 column=info:serverstartcode, timestamp=1355234243671, value=1355233308032                                                   
+ dcaf2bf3e6.                                                                                                                                                            
+2 row(s) in 0.1620 seconds
+
+hbase(main):023:0> 
+=============================================================================================================
+
+
+
+

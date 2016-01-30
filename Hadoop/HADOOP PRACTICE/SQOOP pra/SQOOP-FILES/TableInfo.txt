@@ -1,0 +1,55 @@
+mysql> desc emp;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| empid | int(11)      | NO   | PRI | NULL    |       |
+| ename | varchar(100) | YES  |     | NULL    |       |
+| esal  | int(11)      | NO   |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+3 rows in set (0.96 sec)
+
+mysql> desc dept1;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| deptid  | int(11)      | NO   | PRI | NULL    |       |
+| dname   | varchar(100) | YES  |     | NULL    |       |
+| deptloc | varchar(100) | YES  |     | NULL    |       |
+| empid   | int(11)      | YES  | MUL | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> 
+
+mysql> select * from emp;
++-------+---------+-------+
+| empid | ename   | esal  |
++-------+---------+-------+
+|   100 | Gopal   | 10000 |
+|   101 | Ravi    | 11000 |
+|   102 | Rajan   | 12000 |
+|   103 | Rajeev  | 13000 |
+|   104 | Neeraj  | 15000 |
+|   121 | Madan   | 21500 |
+|   131 | Manohar | 41500 |
+|   141 | Trinath | 31500 |
++-------+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from dept1;
++--------+----------+-----------+-------+
+| deptid | dname    | deptloc   | empid |
++--------+----------+-----------+-------+
+|    200 | cloud    | Hyderabad |   100 |
+|    201 | mfg      | pune      |   101 |
+|    202 | ivs      | Chennai   |   102 |
+|    203 | ecs      | Mumbai    |   103 |
+|    204 | rtl      | Banglore  |   104 |
+|    208 | ADM      | Kerala    |   109 |
+|    210 | NextGen  | Noida     |   181 |
+|    410 | TechSale | Noida     |   191 |
++--------+----------+-----------+-------+
+8 rows in set (0.00 sec)
+
+mysql> 
+

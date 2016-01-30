@@ -1,0 +1,89 @@
+root@ubuntu:/home/Gopal/Sqoop-Related# sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select e.empid,e.ename,e.esal,d.dname from emp e JOIN dept1 d ON(e.empid=d.empid) where \$CONDITIONS"   -m 1 --target-dir /user/Gopal/sundayTestforJOIN;
+12/12/02 04:27:56 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+12/12/02 04:27:56 INFO tool.CodeGenTool: Beginning code generation
+12/12/02 04:27:56 INFO manager.SqlManager: Executing SQL statement: select e.empid,e.ename,e.esal,d.dname from emp e JOIN dept1 d ON(e.empid=d.empid) where  (1 = 0) 
+12/12/02 04:27:56 INFO manager.SqlManager: Executing SQL statement: select e.empid,e.ename,e.esal,d.dname from emp e JOIN dept1 d ON(e.empid=d.empid) where  (1 = 0) 
+12/12/02 04:27:56 INFO manager.SqlManager: Executing SQL statement: select e.empid,e.ename,e.esal,d.dname from emp e JOIN dept1 d ON(e.empid=d.empid) where  (1 = 0) 
+12/12/02 04:27:56 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+12/12/02 04:27:56 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+12/12/02 04:27:59 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/0e089a1b1442d583c2ada078725d42b9/QueryResult.jar
+12/12/02 04:27:59 INFO mapreduce.ImportJobBase: Beginning query import.
+12/12/02 04:28:04 INFO mapred.JobClient: Running job: job_201212020340_0003
+12/12/02 04:28:05 INFO mapred.JobClient:  map 0% reduce 0%
+12/12/02 04:28:19 INFO mapred.JobClient:  map 100% reduce 0%
+12/12/02 04:28:21 INFO mapred.JobClient: Job complete: job_201212020340_0003
+12/12/02 04:28:21 INFO mapred.JobClient: Counters: 16
+12/12/02 04:28:21 INFO mapred.JobClient:   Job Counters 
+12/12/02 04:28:21 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=11192
+12/12/02 04:28:21 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+12/12/02 04:28:21 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+12/12/02 04:28:21 INFO mapred.JobClient:     Launched map tasks=1
+12/12/02 04:28:21 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+12/12/02 04:28:21 INFO mapred.JobClient:   FileSystemCounters
+12/12/02 04:28:21 INFO mapred.JobClient:     HDFS_BYTES_READ=87
+12/12/02 04:28:21 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=69963
+12/12/02 04:28:21 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=103
+12/12/02 04:28:21 INFO mapred.JobClient:   Map-Reduce Framework
+12/12/02 04:28:21 INFO mapred.JobClient:     Map input records=5
+12/12/02 04:28:21 INFO mapred.JobClient:     Physical memory (bytes) snapshot=126808064
+12/12/02 04:28:21 INFO mapred.JobClient:     Spilled Records=0
+12/12/02 04:28:21 INFO mapred.JobClient:     CPU time spent (ms)=1590
+12/12/02 04:28:21 INFO mapred.JobClient:     Total committed heap usage (bytes)=39911424
+12/12/02 04:28:21 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=453783552
+12/12/02 04:28:21 INFO mapred.JobClient:     Map output records=5
+12/12/02 04:28:21 INFO mapred.JobClient:     SPLIT_RAW_BYTES=87
+12/12/02 04:28:21 INFO mapreduce.ImportJobBase: Transferred 103 bytes in 21.4316 seconds (4.806 bytes/sec)
+12/12/02 04:28:21 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+root@ubuntu:/home/Gopal/Sqoop-Related# hadoop fs -cat /user/Gopal/sundayTestforJOIN/part-m-00000
+100,Gopal,10000,cloud
+101,Ravi,11000,mfg
+102,Rajan,12000,ivs
+103,Rajeev,13000,ecs
+104,Neeraj,15000,rtl
+root@ubuntu:/home/Gopal/Sqoop-Related# sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select e.empid,e.ename,e.esal,d.dname from emp e LEFT OUTER JOIN dept1 d ON(e.empid=d.empid) where \$CONDITIONS"   -m 1 --target-dir /user/Gopal/sundayTestforLEFTOUTERJOIN;
+12/12/02 04:34:25 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+12/12/02 04:34:25 INFO tool.CodeGenTool: Beginning code generation
+12/12/02 04:34:25 INFO manager.SqlManager: Executing SQL statement: select e.empid,e.ename,e.esal,d.dname from emp e LEFT OUTER JOIN dept1 d ON(e.empid=d.empid) where  (1 = 0) 
+12/12/02 04:34:25 INFO manager.SqlManager: Executing SQL statement: select e.empid,e.ename,e.esal,d.dname from emp e LEFT OUTER JOIN dept1 d ON(e.empid=d.empid) where  (1 = 0) 
+12/12/02 04:34:26 INFO manager.SqlManager: Executing SQL statement: select e.empid,e.ename,e.esal,d.dname from emp e LEFT OUTER JOIN dept1 d ON(e.empid=d.empid) where  (1 = 0) 
+12/12/02 04:34:26 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+12/12/02 04:34:26 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+12/12/02 04:34:28 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/a135a715503b4ed021aa96b9cc9124a2/QueryResult.jar
+12/12/02 04:34:28 INFO mapreduce.ImportJobBase: Beginning query import.
+12/12/02 04:34:32 INFO mapred.JobClient: Running job: job_201212020340_0004
+12/12/02 04:34:33 INFO mapred.JobClient:  map 0% reduce 0%
+12/12/02 04:34:42 INFO mapred.JobClient:  map 100% reduce 0%
+12/12/02 04:34:44 INFO mapred.JobClient: Job complete: job_201212020340_0004
+12/12/02 04:34:44 INFO mapred.JobClient: Counters: 16
+12/12/02 04:34:44 INFO mapred.JobClient:   Job Counters 
+12/12/02 04:34:44 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=9910
+12/12/02 04:34:44 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+12/12/02 04:34:44 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+12/12/02 04:34:44 INFO mapred.JobClient:     Launched map tasks=1
+12/12/02 04:34:44 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+12/12/02 04:34:44 INFO mapred.JobClient:   FileSystemCounters
+12/12/02 04:34:44 INFO mapred.JobClient:     HDFS_BYTES_READ=87
+12/12/02 04:34:44 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=69984
+12/12/02 04:34:44 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=170
+12/12/02 04:34:44 INFO mapred.JobClient:   Map-Reduce Framework
+12/12/02 04:34:44 INFO mapred.JobClient:     Map input records=8
+12/12/02 04:34:44 INFO mapred.JobClient:     Physical memory (bytes) snapshot=134516736
+12/12/02 04:34:44 INFO mapred.JobClient:     Spilled Records=0
+12/12/02 04:34:44 INFO mapred.JobClient:     CPU time spent (ms)=1780
+12/12/02 04:34:44 INFO mapred.JobClient:     Total committed heap usage (bytes)=39911424
+12/12/02 04:34:44 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=457129984
+12/12/02 04:34:44 INFO mapred.JobClient:     Map output records=8
+12/12/02 04:34:44 INFO mapred.JobClient:     SPLIT_RAW_BYTES=87
+12/12/02 04:34:44 INFO mapreduce.ImportJobBase: Transferred 170 bytes in 15.1734 seconds (11.2038 bytes/sec)
+12/12/02 04:34:44 INFO mapreduce.ImportJobBase: Retrieved 8 records.
+root@ubuntu:/home/Gopal/Sqoop-Related# hadoop fs -cat /user/Gopal/sundayTestforLEFTOUTERJOIN/part-m-00000
+100,Gopal,10000,cloud
+101,Ravi,11000,mfg
+102,Rajan,12000,ivs
+103,Rajeev,13000,ecs
+104,Neeraj,15000,rtl
+121,Madan,21500,null
+131,Manohar,41500,null
+141,Trinath,31500,null
+root@ubuntu:/home/Gopal/Sqoop-Related# 
+

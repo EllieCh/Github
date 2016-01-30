@@ -1,0 +1,6 @@
+sqoop create-hive-table --connect jdbc:mysql://localhost/Gopal_Lab --table employees --hive-table hivemanemps;
+
+HBAE IMPORT
+
+HBase arguments:
+ArgumentDescription--column-family <family>Sets the target column family for the import--hbase-create-tableIf specified, create missing HBase tables--hbase-row-key <col>Specifies which input column to use as the row key--hbase-table <table-name>Specifies an HBase table to use as the target instead of HDFS

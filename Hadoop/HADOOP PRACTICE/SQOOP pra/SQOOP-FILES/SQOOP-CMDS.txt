@@ -1,0 +1,162 @@
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table 
+emp -m 1;
+
+GETTING THE DATA IN A SPECIFIED DIR OF HDFS
+-------------------------------------------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table 
+emp -m 1 --target-dir /Import28; 
+
+IMPORTING THE DATA IN OUR OWN SPECIFIED FORMAT
+----------------------------------------------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table emp
+ -m 1 --target-dir /ImportNew28 --fields-terminated-by '|';
+
+IMPORTING SPECIFIED COLUMNS DATA
+---------------------------------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table emp
+ -m 1 --target-dir /ImportNew28Cols --fields-terminated-by '|'
+ --columns 'empid , esal';
+
+IMPORTING THE DATA BASED ON CONDITION
+---------------------------------------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table emp
+ -m 1 --target-dir /ImportNew28Cond --fields-terminated-by '|'
+ --where 'esal>15000';
+
+IMPORTING ALL TABLES DATA IN ONE SHOT
+-------------------------------------
+
+sqoop import-all-tables --connect jdbc:mysql://localhost/Gopal_Lab
+ -m 1;
+
+TO SEE THE GENERATED MAPREDUCE CODE
+--------------------------------------
+
+sqoop codegen --connect jdbc:mysql://localhost/Gopal_Lab --table dept1;
+
+
+EVAL  WITH --QUERY
+-----------------
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query
+ "select * from emp";
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query
+ "select * from emp limit 3";
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query 
+"create table batch28evaltab(evalid int primary key,
+evalname varchar(30),evamt int)";
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query 
+"show tables";
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query 
+"desc batch28evaltab";
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query 
+"insert into batch28evaltab values(100,'evname',10000)";
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query 
+"update batch28evaltab set evamt = 99999 where evalid=100";
+
+sqoop eval --connect jdbc:mysql://localhost/Batch28 --query 
+"drop table batch28evaltab";
+
+
+IMPORT ------> --QUERY
+-----------------------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --query 
+"select * from emp WHERE \$CONDITIONS" -m 1 --target-dir /Import28Q;
+
+
+JOINS IN SQOOP
+--------------
+
+INNER JOIN
+-----------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --query
+ "select e.empid,ename,esal,deptid,deptloc from emp e JOIN
+ dept d ON (e.empid = d.empid) and \$CONDITIONS" -m 1 
+--target-dir /JOIN28;
+
+LEFT OUTER JOIN
+----------------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --query
+ "select e.empid,ename,esal,deptid,deptloc from emp e LEFT OUTER JOIN
+ dept d ON (e.empid = d.empid) and \$CONDITIONS" -m 1 
+--target-dir /JOINLEFT28;
+
+FULL OUTER JOIN
+---------------
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --query 
+"select e.empid,ename,esal,deptid,deptloc from emp e LEFT OUTER JOIN 
+dept d ON (e.empid = d.empid) UNION select e.empid,ename,esal,deptid,
+deptloc from emp e RIGHT OUTER JOIN dept d ON (e.empid = d.empid) 
+and \$CONDITIONS" -m 1 --target-dir /JOINFULL28;
+
+TO IMPORT THE DATA IN BINARY FORMAT(SQENCEFILE FILE)
+---------------------------------------------------
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table emp 
+--as-sequencefile -m 1 --target-dir /SQFile28;
+
+TO IMPORT THE DATA IN AVRO DATA FILE FORMAT
+---------------------------------------------------
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table emp 
+--as-avrodatafile -m 1 --target-dir /AVROFile28;
+
+SQOOP JOBS
+----------
+
+sqoop job --create GopalNewSqJob -- import --connect 
+jdbc:mysql://localhost/Batch28 --table emp -m 1 
+--target-dir /SQJob28;
+
+sqoop job --list;
+
+sqoop job --show <<jobname>>;
+
+sqoop job --exec <<jobname>>;
+
+sqoop job --delete <<jobname>>;
+
+
+SQOOP --append
+-------------
+
+sqoop job --create SqoopNewJob -- import --connect 
+jdbc:mysql://localhost/Batch28 --table emp -m 1 
+--target-dir /NewSQJob28 --append;
+
+sqoop import --connect jdbc:mysql://localhost/Batch28 --table emp 
+--where 'empid>120' --target-dir /NewSQJob28 -m 1 --append;
+
+SQOOP-EXPORT
+------------
+
+sqoop export --connect jdbc:mysql://localhost/Batch28 --table 
+exporttab --export-dir /NewSQJob28/part-m-00000;
+
+sqoop export --connect jdbc:mysql://localhost/Batch28 --table 
+exporttab --fields-terminated-by '|' --export-dir /NewSQJob28;
+
+
+
+
+
+
+
+
+
+
+
+
+

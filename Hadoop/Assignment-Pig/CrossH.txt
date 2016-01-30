@@ -1,0 +1,487 @@
+
+Input(s):
+Successfully read 5 records (590 bytes) from: "/pig50/empdata.log"
+
+Output(s):
+Successfully stored 5 records (287 bytes) in: "/COGROUP-H50"
+
+Counters:
+Total records written : 5
+Total bytes written : 287
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_201505201843_0015
+
+
+2015-06-08 10:35:54,685 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+grunt> quit;
+root@ubuntu:/home/Batch50/PIG# hadoop fs -cat /COGROUP-H50/part-r-00000
+ Mumbai	{(10401, DeloitteConsultantsLTD ,290000, Mumbai)}
+ Chennai	{(10301, TechMahindraLTD ,320000, Chennai)}
+ Guwahati	{(10501, CognizantTechServices ,420000, Guwahati)}
+ Bangalore	{(10201, InfosysTechLTD ,500000, Bangalore)}
+ Hyderabad	{(10101, UnitedHealthGroup ,700000, Hyderabad)}
+root@ubuntu:/home/Batch50/PIG# 
+root@ubuntu:/home/Batch50/PIG# pig
+2015-06-08 10:38:33,002 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/Batch50/PIG/pig_1433785112996.log
+2015-06-08 10:38:33,820 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://localhost:8020
+2015-06-08 10:38:34,879 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to map-reduce job tracker at: localhost:8021
+grunt> A = LOAD '/pig50/data1.log' using PigStorage('\t') as (id:int, name:chararray, sal:int);                        
+grunt> DESCRIBE A;
+A: {id: int,name: chararray,sal: int}
+grunt> ILLUSTRATE A;
+2015-06-08 10:40:08,278 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://localhost:8020
+2015-06-08 10:40:08,283 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to map-reduce job tracker at: localhost:8021
+2015-06-08 10:40:08,740 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-06-08 10:40:08,757 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-06-08 10:40:08,844 [main] WARN  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library is available
+2015-06-08 10:40:08,849 [main] INFO  org.apache.hadoop.util.NativeCodeLoader - Loaded the native-hadoop library
+2015-06-08 10:40:08,849 [main] INFO  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library loaded
+------------------------------------------------------------
+| A     | id: bytearray | name: bytearray | sal: bytearray | 
+------------------------------------------------------------
+|       | 101           | F               | 276000         | 
+------------------------------------------------------------
+------------------------------------------------
+| A     | id: int | name: chararray | sal: int | 
+------------------------------------------------
+|       | 101     | F               | 276000   | 
+------------------------------------------------
+
+grunt> EXPLAIN A;   
+2015-06-08 10:40:41,121 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+#-----------------------------------------------
+# Logical Plan:
+#-----------------------------------------------
+fake: Store 1-19 Schema: {id: int,name: chararray,sal: int} Type: Unknown
+|
+|---A: Load 1-18 Schema: {id: int,name: chararray,sal: int} Type: bag
+
+#-----------------------------------------------
+# New Logical Plan:
+#-----------------------------------------------
+fake: (Name: LOStore Schema: id#7:int,name#8:chararray,sal#9:int)
+|
+|---A: (Name: LOForEach Schema: id#7:int,name#8:chararray,sal#9:int)
+    |   |
+    |   (Name: LOGenerate[false,false,false] Schema: id#7:int,name#8:chararray,sal#9:int)ColumnPrune:InputUids=[7, 8, 9]ColumnPrune:OutputUids=[7, 8, 9]
+    |   |   |
+    |   |   (Name: Cast Type: int Uid: 7)
+    |   |   |
+    |   |   |---id:(Name: Project Type: bytearray Uid: 7 Input: 0 Column: 0)
+    |   |   |
+    |   |   (Name: Cast Type: chararray Uid: 8)
+    |   |   |
+    |   |   |---name:(Name: Project Type: bytearray Uid: 8 Input: 1 Column: 0)
+    |   |   |
+    |   |   (Name: Cast Type: int Uid: 9)
+    |   |   |
+    |   |   |---sal:(Name: Project Type: bytearray Uid: 9 Input: 2 Column: 0)
+    |   |
+    |   |---(Name: LOInnerLoad[0] Schema: id#7:bytearray)
+    |   |
+    |   |---(Name: LOInnerLoad[1] Schema: name#8:bytearray)
+    |   |
+    |   |---(Name: LOInnerLoad[2] Schema: sal#9:bytearray)
+    |
+    |---A: (Name: LOLoad Schema: id#7:bytearray,name#8:bytearray,sal#9:bytearray)RequiredFields:null
+
+#-----------------------------------------------
+# Physical Plan:
+#-----------------------------------------------
+A: Store(fakefile:org.apache.pig.builtin.PigStorage) - scope-11
+|
+|---A: New For Each(false,false,false)[bag] - scope-10
+    |   |
+    |   Cast[int] - scope-2
+    |   |
+    |   |---Project[bytearray][0] - scope-1
+    |   |
+    |   Cast[chararray] - scope-5
+    |   |
+    |   |---Project[bytearray][1] - scope-4
+    |   |
+    |   Cast[int] - scope-8
+    |   |
+    |   |---Project[bytearray][2] - scope-7
+    |
+    |---A: Load(/pig50/data1.log:PigStorage('	')) - scope-0
+
+2015-06-08 10:40:41,573 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2015-06-08 10:40:41,647 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2015-06-08 10:40:41,648 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+#--------------------------------------------------
+# Map Reduce Plan                                  
+#--------------------------------------------------
+MapReduce node scope-12
+Map Plan
+A: Store(fakefile:org.apache.pig.builtin.PigStorage) - scope-11
+|
+|---A: New For Each(false,false,false)[bag] - scope-10
+    |   |
+    |   Cast[int] - scope-2
+    |   |
+    |   |---Project[bytearray][0] - scope-1
+    |   |
+    |   Cast[chararray] - scope-5
+    |   |
+    |   |---Project[bytearray][1] - scope-4
+    |   |
+    |   Cast[int] - scope-8
+    |   |
+    |   |---Project[bytearray][2] - scope-7
+    |
+    |---A: Load(/pig50/data1.log:PigStorage('	')) - scope-0--------
+Global sort: false
+----------------
+
+grunt>                                                                                           
+grunt> A = LOAD '/pig50/marksData.log' using PigStorage('\t') as (ID:int, Name:chararray, Grade:chararray);
+grunt> B = DISTINCT A;
+grunt> SPLIT B INTO C if Grade == 'A', D if Grade == 'B', E if Grade == 'C';
+grunt> STORE C INTO '/AGRADE-H50'; STORE D INTO '/BGRADE-H50'; STORE E INTO '/CGRADE-H50';
+2015-06-08 10:46:29,746 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: DISTINCT
+2015-06-08 10:46:29,747 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+2015-06-08 10:46:29,856 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - (Name: C: Store(/AGRADE-H50:org.apache.pig.builtin.PigStorage) - scope-30 Operator Key: scope-30)
+2015-06-08 10:46:29,857 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2015-06-08 10:46:29,889 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 2
+2015-06-08 10:46:29,890 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - Merged the only map-only splittee.
+2015-06-08 10:46:29,890 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2015-06-08 10:46:30,189 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig script settings are added to the job
+2015-06-08 10:46:30,232 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2015-06-08 10:46:39,350 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2015-06-08 10:46:39,362 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting identity combiner class.
+2015-06-08 10:46:39,384 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - BytesPerReducer=1000000000 maxReducers=999 totalInputFileSize=153
+2015-06-08 10:46:39,384 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Neither PARALLEL nor default parallelism is set for this job. Setting number of reducers to 1
+2015-06-08 10:46:39,582 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2015-06-08 10:46:40,084 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2015-06-08 10:46:40,127 [Thread-10] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-06-08 10:46:40,130 [Thread-10] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-06-08 10:46:40,138 [Thread-10] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2015-06-08 10:46:41,248 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_201505201843_0016
+2015-06-08 10:46:41,249 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - More information at: http://localhost:50030/jobdetails.jsp?jobid=job_201505201843_0016
+2015-06-08 10:46:54,402 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 50% complete
+2015-06-08 10:47:16,199 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2015-06-08 10:47:16,205 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2015-06-08 10:46:30	2015-06-08 10:47:16	DISTINCT
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTIme	AvgMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	Alias	Feature	Outputs
+job_201505201843_0016	1	1	7	7	7	13	13	13	A,C	DISTINCT	/AGRADE-H50,
+
+Input(s):
+Successfully read 11 records (512 bytes) from: "/pig50/marksData.log"
+
+Output(s):
+Successfully stored 3 records (41 bytes) in: "/AGRADE-H50"
+
+Counters:
+Total records written : 3
+Total bytes written : 41
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_201505201843_0016
+
+
+2015-06-08 10:47:16,235 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2015-06-08 10:47:16,287 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: DISTINCT
+2015-06-08 10:47:16,287 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+2015-06-08 10:47:16,325 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - (Name: D: Store(/BGRADE-H50:org.apache.pig.builtin.PigStorage) - scope-57 Operator Key: scope-57)
+2015-06-08 10:47:16,325 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2015-06-08 10:47:16,331 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 2
+2015-06-08 10:47:16,331 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - Merged the only map-only splittee.
+2015-06-08 10:47:16,331 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2015-06-08 10:47:16,339 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig script settings are added to the job
+2015-06-08 10:47:16,358 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2015-06-08 10:47:25,196 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2015-06-08 10:47:25,199 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting identity combiner class.
+2015-06-08 10:47:25,204 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - BytesPerReducer=1000000000 maxReducers=999 totalInputFileSize=153
+2015-06-08 10:47:25,204 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Neither PARALLEL nor default parallelism is set for this job. Setting number of reducers to 1
+2015-06-08 10:47:25,236 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2015-06-08 10:47:25,519 [Thread-21] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-06-08 10:47:25,519 [Thread-21] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-06-08 10:47:25,523 [Thread-21] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2015-06-08 10:47:25,737 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2015-06-08 10:47:26,494 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_201505201843_0017
+2015-06-08 10:47:26,495 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - More information at: http://localhost:50030/jobdetails.jsp?jobid=job_201505201843_0017
+2015-06-08 10:47:40,126 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 50% complete
+2015-06-08 10:48:01,492 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2015-06-08 10:48:01,493 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2015-06-08 10:47:16	2015-06-08 10:48:01	DISTINCT
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTIme	AvgMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	Alias	Feature	Outputs
+job_201505201843_0017	1	1	7	7	7	13	13	13	A,D	DISTINCT	/BGRADE-H50,
+
+Input(s):
+Successfully read 11 records (512 bytes) from: "/pig50/marksData.log"
+
+Output(s):
+Successfully stored 3 records (41 bytes) in: "/BGRADE-H50"
+
+Counters:
+Total records written : 3
+Total bytes written : 41
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_201505201843_0017
+
+
+2015-06-08 10:48:01,506 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2015-06-08 10:48:01,590 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: DISTINCT
+2015-06-08 10:48:01,599 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+2015-06-08 10:48:01,624 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - (Name: E: Store(/CGRADE-H50:org.apache.pig.builtin.PigStorage) - scope-84 Operator Key: scope-84)
+2015-06-08 10:48:01,625 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2015-06-08 10:48:01,632 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 2
+2015-06-08 10:48:01,632 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - Merged the only map-only splittee.
+2015-06-08 10:48:01,632 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2015-06-08 10:48:01,641 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig script settings are added to the job
+2015-06-08 10:48:01,642 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2015-06-08 10:48:10,307 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2015-06-08 10:48:10,308 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting identity combiner class.
+2015-06-08 10:48:10,313 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - BytesPerReducer=1000000000 maxReducers=999 totalInputFileSize=153
+2015-06-08 10:48:10,313 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Neither PARALLEL nor default parallelism is set for this job. Setting number of reducers to 1
+2015-06-08 10:48:10,367 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2015-06-08 10:48:10,655 [Thread-31] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-06-08 10:48:10,656 [Thread-31] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-06-08 10:48:10,660 [Thread-31] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2015-06-08 10:48:10,874 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2015-06-08 10:48:11,737 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_201505201843_0018
+2015-06-08 10:48:11,737 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - More information at: http://localhost:50030/jobdetails.jsp?jobid=job_201505201843_0018
+2015-06-08 10:48:24,872 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 50% complete
+2015-06-08 10:48:46,596 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2015-06-08 10:48:46,599 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2015-06-08 10:48:01	2015-06-08 10:48:46	DISTINCT
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTIme	AvgMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	Alias	Feature	Outputs
+job_201505201843_0018	1	1	7	7	7	13	13	13	A,E	DISTINCT	/CGRADE-H50,
+
+Input(s):
+Successfully read 11 records (512 bytes) from: "/pig50/marksData.log"
+
+Output(s):
+Successfully stored 5 records (71 bytes) in: "/CGRADE-H50"
+
+Counters:
+Total records written : 5
+Total bytes written : 71
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_201505201843_0018
+
+
+2015-06-08 10:48:46,629 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+grunt> QUIT;
+root@ubuntu:/home/Batch50/PIG# hadoop fs -cat /AGRADE-H50/part-r-00000
+219	Gayathri	A
+251	Navya	A
+253	Niteesh	A
+root@ubuntu:/home/Batch50/PIG# hadoop fs -cat /BGRADE-H50/part-r-00000
+218	Eshwar	B
+225	Keshari	B
+243	Mounika	B
+root@ubuntu:/home/Batch50/PIG# hadoop fs -cat /CGRADE-H50/part-r-00000
+211	Charishma	C
+220	Ghousia	C
+229	Karthik	C
+240	Manogna	C
+256	Pavani	C
+root@ubuntu:/home/Batch50/PIG# 
+root@ubuntu:/home/Batch50/PIG# pig 
+2015-06-08 10:50:25,300 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/Batch50/PIG/pig_1433785825295.log
+2015-06-08 10:50:26,179 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://localhost:8020
+2015-06-08 10:50:27,283 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to map-reduce job tracker at: localhost:8021
+grunt> data1 = LOAD '/pig50/data1.log' using PigStorage('\t') as (id:int, name:chararray, sal:int);        
+grunt> data2 = LOAD '/pig50/data2.log' using PigStorage('\t') as (Id:int, Name:chararray, Sal:int);
+grunt> crsData = CROSS data1, data2;
+grunt> STORE crsData INTO '/CROSS-H50';
+2015-06-08 10:52:01,351 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: CROSS
+2015-06-08 10:52:01,351 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - pig.usenewlogicalplan is set to true. New logical plan will be used.
+2015-06-08 10:52:01,946 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - (Name: crsData: Store(/CROSS-H50:org.apache.pig.builtin.PigStorage) - scope-43 Operator Key: scope-43)
+2015-06-08 10:52:01,996 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2015-06-08 10:52:02,105 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler$LastInputStreamingOptimizer - Rewrite: POPackage->POForEach to POJoinPackage
+2015-06-08 10:52:02,141 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2015-06-08 10:52:02,142 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2015-06-08 10:52:02,496 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig script settings are added to the job
+2015-06-08 10:52:02,566 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2015-06-08 10:52:12,068 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2015-06-08 10:52:12,113 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - BytesPerReducer=1000000000 maxReducers=999 totalInputFileSize=195
+2015-06-08 10:52:12,113 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Neither PARALLEL nor default parallelism is set for this job. Setting number of reducers to 1
+2015-06-08 10:52:12,342 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2015-06-08 10:52:12,845 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2015-06-08 10:52:12,908 [Thread-9] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-06-08 10:52:12,908 [Thread-9] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-06-08 10:52:12,976 [Thread-9] WARN  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library is available
+2015-06-08 10:52:12,978 [Thread-9] INFO  org.apache.hadoop.util.NativeCodeLoader - Loaded the native-hadoop library
+2015-06-08 10:52:12,978 [Thread-9] INFO  org.apache.hadoop.io.compress.snappy.LoadSnappy - Snappy native library loaded
+2015-06-08 10:52:12,986 [Thread-9] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2015-06-08 10:52:13,004 [Thread-9] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2015-06-08 10:52:13,004 [Thread-9] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2015-06-08 10:52:13,007 [Thread-9] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2015-06-08 10:52:14,157 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_201505201843_0019
+2015-06-08 10:52:14,157 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - More information at: http://localhost:50030/jobdetails.jsp?jobid=job_201505201843_0019
+2015-06-08 10:52:34,957 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 25% complete
+2015-06-08 10:52:35,461 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 50% complete
+2015-06-08 10:52:59,272 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2015-06-08 10:52:59,278 [main] INFO  org.apache.pig.tools.pigstats.PigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+0.20.2-cdh3u5	0.8.1-cdh3u5	root	2015-06-08 10:52:02	2015-06-08 10:52:59	CROSS
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTIme	AvgMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	Alias	Feature	Outputs
+job_201505201843_0019	2	1	15	14	14	13	13	13	crsData,data1,data2		/CROSS-H50,
+
+Input(s):
+Successfully read 10 records from: "/pig50/data1.log"
+Successfully read 5 records from: "/pig50/data2.log"
+
+Output(s):
+Successfully stored 50 records (1300 bytes) in: "/CROSS-H50"
+
+Counters:
+Total records written : 50
+Total bytes written : 1300
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_201505201843_0019
+
+
+2015-06-08 10:52:59,306 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+grunt> quit;
+root@ubuntu:/home/Batch50/PIG# hadoop fs -cat /CROSS-H50/part-r-00000
+104	H	418700	101	Z	319400
+101	C	290000	101	Z	319400
+101	C	290000	101	Y	275000
+104	H	418700	101	Y	275000
+101	C	290000	105	V	332450
+101	C	290000	102	X	180000
+104	H	418700	105	V	332450
+104	H	418700	102	X	180000
+104	H	418700	105	W	210000
+101	C	290000	105	W	210000
+102	J	240000	101	Z	319400
+100	B	320000	101	Z	319400
+100	B	320000	101	Y	275000
+102	J	240000	101	Y	275000
+100	B	320000	102	X	180000
+100	B	320000	105	V	332450
+102	J	240000	102	X	180000
+102	J	240000	105	V	332450
+100	B	320000	105	W	210000
+102	J	240000	105	W	210000
+102	D	176500	101	Z	319400
+102	D	176500	101	Y	275000
+102	D	176500	102	X	180000
+102	D	176500	105	V	332450
+102	D	176500	105	W	210000
+101	F	276000	101	Z	319400
+101	F	276000	101	Y	275000
+101	F	276000	105	V	332450
+101	F	276000	102	X	180000
+101	F	276000	105	W	210000
+100	E	139870	101	Z	319400
+100	E	139870	101	Y	275000
+100	E	139870	105	V	332450
+100	E	139870	102	X	180000
+100	E	139870	105	W	210000
+101	A	190000	101	Z	319400
+101	G	310020	101	Z	319400
+101	G	310020	101	Y	275000
+101	A	190000	101	Y	275000
+101	G	310020	105	V	332450
+101	G	310020	102	X	180000
+101	A	190000	105	V	332450
+101	A	190000	102	X	180000
+101	G	310020	105	W	210000
+101	A	190000	105	W	210000
+105	I	354000	101	Z	319400
+105	I	354000	101	Y	275000
+105	I	354000	102	X	180000
+105	I	354000	105	V	332450
+105	I	354000	105	W	210000
+root@ubuntu:/home/Batch50/PIG# hadoop fs -cat /CROSS-H50/part-r-00000 wc -l
+104	H	418700	101	Z	319400
+101	C	290000	101	Z	319400
+101	C	290000	101	Y	275000
+104	H	418700	101	Y	275000
+101	C	290000	105	V	332450
+101	C	290000	102	X	180000
+104	H	418700	105	V	332450
+104	H	418700	102	X	180000
+104	H	418700	105	W	210000
+101	C	290000	105	W	210000
+102	J	240000	101	Z	319400
+100	B	320000	101	Z	319400
+100	B	320000	101	Y	275000
+102	J	240000	101	Y	275000
+100	B	320000	102	X	180000
+100	B	320000	105	V	332450
+102	J	240000	102	X	180000
+102	J	240000	105	V	332450
+100	B	320000	105	W	210000
+102	J	240000	105	W	210000
+102	D	176500	101	Z	319400
+102	D	176500	101	Y	275000
+102	D	176500	102	X	180000
+102	D	176500	105	V	332450
+102	D	176500	105	W	210000
+101	F	276000	101	Z	319400
+101	F	276000	101	Y	275000
+101	F	276000	105	V	332450
+101	F	276000	102	X	180000
+101	F	276000	105	W	210000
+100	E	139870	101	Z	319400
+100	E	139870	101	Y	275000
+100	E	139870	105	V	332450
+100	E	139870	102	X	180000
+100	E	139870	105	W	210000
+101	A	190000	101	Z	319400
+101	G	310020	101	Z	319400
+101	G	310020	101	Y	275000
+101	A	190000	101	Y	275000
+101	G	310020	105	V	332450
+101	G	310020	102	X	180000
+101	A	190000	105	V	332450
+101	A	190000	102	X	180000
+101	G	310020	105	W	210000
+101	A	190000	105	W	210000
+105	I	354000	101	Z	319400
+105	I	354000	101	Y	275000
+105	I	354000	102	X	180000
+105	I	354000	105	V	332450
+105	I	354000	105	W	210000
+cat: File does not exist: /user/root/wc
+cat: File does not exist: /user/root/-l
+root@ubuntu:/home/Batch50/PIG# 
+

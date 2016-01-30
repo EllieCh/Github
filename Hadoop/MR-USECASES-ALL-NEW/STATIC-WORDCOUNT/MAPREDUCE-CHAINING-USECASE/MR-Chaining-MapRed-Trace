@@ -1,0 +1,141 @@
+MAP REDUCE CHAINING
+-------------------
+
+mrinmoy@ubuntu:~$ su root
+Password: 
+root@ubuntu:/home/mrinmoy# cd ../
+root@ubuntu:/home# mkdir MapReduce
+root@ubuntu:/home# cd MapReduce/
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# cp /home/mrinmoy/Downloads/MapReduce/MRChainJarFile.jar .
+root@ubuntu:/home/MapReduce# cp /home/mrinmoy/Downloads/MapReduce/Student.txt .
+root@ubuntu:/home/MapReduce# ll
+total 20
+drwxr-xr-x  2 root root 4096 2013-12-03 08:44 ./
+drwxr-xr-x 13 root root 4096 2013-12-03 08:40 ../
+-rwxr--r--  1 root root 6490 2013-12-03 08:44 MRChainJarFile.jar*
+-rwxr--r--  1 root root  817 2013-12-03 08:44 Student.txt*
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# hadoop fs -mkdir /MRChainInput
+root@ubuntu:/home/MapReduce# hadoop fs -put Student.txt /MRChainInput
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# hadoop fs -ls /MRChainInput
+Found 1 items
+-rw-r--r--   1 root supergroup        817 2013-12-03 08:45 /MRChainInput/Student.txt
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# hadoop jar MRChainJarFile.jar com/gopal/demo/Driver /MRChainInput/Student.txt /MRChainOut
+13/12/03 08:46:12 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/12/03 08:46:12 WARN snappy.LoadSnappy: Snappy native library is available
+13/12/03 08:46:12 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/12/03 08:46:12 INFO snappy.LoadSnappy: Snappy native library loaded
+13/12/03 08:46:12 INFO mapred.FileInputFormat: Total input paths to process : 1
+13/12/03 08:46:14 INFO mapred.JobClient: Running job: job_201312030838_0001
+13/12/03 08:46:15 INFO mapred.JobClient:  map 0% reduce 0%
+13/12/03 08:46:47 INFO mapred.JobClient:  map 50% reduce 0%
+13/12/03 08:46:49 INFO mapred.JobClient:  map 100% reduce 0%
+13/12/03 08:46:59 INFO mapred.JobClient:  map 100% reduce 100%
+13/12/03 08:47:02 INFO mapred.JobClient: Job complete: job_201312030838_0001
+13/12/03 08:47:02 INFO mapred.JobClient: Counters: 27
+13/12/03 08:47:02 INFO mapred.JobClient:   Job Counters 
+13/12/03 08:47:02 INFO mapred.JobClient:     Launched reduce tasks=1
+13/12/03 08:47:02 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=58455
+13/12/03 08:47:02 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/12/03 08:47:02 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/12/03 08:47:02 INFO mapred.JobClient:     Launched map tasks=2
+13/12/03 08:47:02 INFO mapred.JobClient:     Data-local map tasks=2
+13/12/03 08:47:02 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=11391
+13/12/03 08:47:02 INFO mapred.JobClient:   FileSystemCounters
+13/12/03 08:47:02 INFO mapred.JobClient:     FILE_BYTES_READ=304
+13/12/03 08:47:02 INFO mapred.JobClient:     HDFS_BYTES_READ=1425
+13/12/03 08:47:02 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=178457
+13/12/03 08:47:02 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=74
+13/12/03 08:47:02 INFO mapred.JobClient:   Map-Reduce Framework
+13/12/03 08:47:02 INFO mapred.JobClient:     Map input records=22
+13/12/03 08:47:02 INFO mapred.JobClient:     Reduce shuffle bytes=310
+13/12/03 08:47:02 INFO mapred.JobClient:     Spilled Records=44
+13/12/03 08:47:02 INFO mapred.JobClient:     Map output bytes=254
+13/12/03 08:47:02 INFO mapred.JobClient:     CPU time spent (ms)=33870
+13/12/03 08:47:02 INFO mapred.JobClient:     Total committed heap usage (bytes)=342425600
+13/12/03 08:47:02 INFO mapred.JobClient:     Map input bytes=817
+13/12/03 08:47:02 INFO mapred.JobClient:     Combine input records=0
+13/12/03 08:47:02 INFO mapred.JobClient:     SPLIT_RAW_BYTES=198
+13/12/03 08:47:02 INFO mapred.JobClient:     Reduce input records=22
+13/12/03 08:47:02 INFO mapred.JobClient:     Reduce input groups=6
+13/12/03 08:47:02 INFO mapred.JobClient:     Combine output records=0
+13/12/03 08:47:02 INFO mapred.JobClient:     Physical memory (bytes) snapshot=567296000
+13/12/03 08:47:02 INFO mapred.JobClient:     Reduce output records=6
+13/12/03 08:47:02 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1345777664
+13/12/03 08:47:02 INFO mapred.JobClient:     Map output records=22
+13/12/03 08:47:02 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/12/03 08:47:02 INFO mapred.FileInputFormat: Total input paths to process : 1
+13/12/03 08:47:02 INFO mapred.JobClient: Running job: job_201312030838_0002
+13/12/03 08:47:03 INFO mapred.JobClient:  map 0% reduce 0%
+13/12/03 08:47:17 INFO mapred.JobClient:  map 50% reduce 0%
+13/12/03 08:47:18 INFO mapred.JobClient:  map 100% reduce 0%
+13/12/03 08:47:28 INFO mapred.JobClient:  map 100% reduce 100%
+13/12/03 08:47:31 INFO mapred.JobClient: Job complete: job_201312030838_0002
+13/12/03 08:47:31 INFO mapred.JobClient: Counters: 27
+13/12/03 08:47:31 INFO mapred.JobClient:   Job Counters 
+13/12/03 08:47:31 INFO mapred.JobClient:     Launched reduce tasks=1
+13/12/03 08:47:31 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=24510
+13/12/03 08:47:31 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/12/03 08:47:31 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/12/03 08:47:31 INFO mapred.JobClient:     Launched map tasks=2
+13/12/03 08:47:31 INFO mapred.JobClient:     Data-local map tasks=2
+13/12/03 08:47:31 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=11210
+13/12/03 08:47:31 INFO mapred.JobClient:   FileSystemCounters
+13/12/03 08:47:31 INFO mapred.JobClient:     FILE_BYTES_READ=92
+13/12/03 08:47:31 INFO mapred.JobClient:     HDFS_BYTES_READ=308
+13/12/03 08:47:31 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=177976
+13/12/03 08:47:31 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=78
+13/12/03 08:47:31 INFO mapred.JobClient:   Map-Reduce Framework
+13/12/03 08:47:31 INFO mapred.JobClient:     Map input records=6
+13/12/03 08:47:31 INFO mapred.JobClient:     Reduce shuffle bytes=98
+13/12/03 08:47:31 INFO mapred.JobClient:     Spilled Records=12
+13/12/03 08:47:31 INFO mapred.JobClient:     Map output bytes=74
+13/12/03 08:47:31 INFO mapred.JobClient:     CPU time spent (ms)=8540
+13/12/03 08:47:31 INFO mapred.JobClient:     Total committed heap usage (bytes)=346554368
+13/12/03 08:47:31 INFO mapred.JobClient:     Map input bytes=74
+13/12/03 08:47:31 INFO mapred.JobClient:     Combine input records=0
+13/12/03 08:47:31 INFO mapred.JobClient:     SPLIT_RAW_BYTES=196
+13/12/03 08:47:31 INFO mapred.JobClient:     Reduce input records=6
+13/12/03 08:47:31 INFO mapred.JobClient:     Reduce input groups=6
+13/12/03 08:47:31 INFO mapred.JobClient:     Combine output records=0
+13/12/03 08:47:31 INFO mapred.JobClient:     Physical memory (bytes) snapshot=592728064
+13/12/03 08:47:31 INFO mapred.JobClient:     Reduce output records=6
+13/12/03 08:47:31 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1375481856
+13/12/03 08:47:31 INFO mapred.JobClient:     Map output records=6
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# hadoop fs -ls /user/job1out
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2013-12-03 08:47 /user/job1out/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2013-12-03 08:46 /user/job1out/_logs
+-rw-r--r--   1 root supergroup         74 2013-12-03 08:46 /user/job1out/part-00000
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# hadoop fs -cat /user/job1out/part-00000
+Abhishek	72.0
+Laxman	79.5
+Rahul	81.5
+Saroj	79.0
+Sayantan	77.75
+Tania	60.0
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# hadoop fs -ls /MRChainOut
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2013-12-03 08:47 /MRChainOut/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2013-12-03 08:47 /MRChainOut/_logs
+-rw-r--r--   1 root supergroup         78 2013-12-03 08:47 /MRChainOut/part-00000
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# 
+root@ubuntu:/home/MapReduce# hadoop fs -cat /MRChainOut/part-00000
+Abhishek	Good
+Laxman	Good
+Rahul	Very Good
+Saroj	Good
+Sayantan	Good
+Tania	Fair
+root@ubuntu:/home/MapReduce# 
+

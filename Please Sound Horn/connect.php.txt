@@ -1,0 +1,31 @@
+<?php
+if(!isset($_POST['submit']))
+{
+echo "error, you need to submit the form!";
+}
+$name = $_POST[ 'Name' ];
+$contact=$_POST[ 'Phone Number' ];
+$Email= $_POST[ 'Email ID' ];
+$place(to)=$_POST[ 'Place(to)' ];
+$place(from)=$_POST[ 'Place(from)' ];
+$date=$_POST[ 'Booking date' ];
+$vehicle=$_POST[ 'select a vehicle' ];
+$vehicle_description=$_POST[ 'Description of vehicle' ];
+$load_description=$_POST[ 'Load Description' ];
+
+id(empty($name) || empty($contact))
+{
+echo "Name and contact are mandatory!!";
+exit;
+}
+
+$email_form = 'amithteja.n@gmail.com';
+$email_subject = 'New Booking';
+$email_body = "you have recieved a new message fron the user $name.';
+
+$to = "amithteja.n@gmail.com";
+$headers = " From: $email_from \r\n";
+
+mail($to,$email_subject,$email_body, $headers);
+
+?>

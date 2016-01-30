@@ -1,0 +1,16 @@
+
+Log Trace for Import from emp tablef
+-------------------------------------
+
+root@ubuntu:/home/Gopal/Sqoop-Related# hadoop fs -cat /user/Gopal/sundayTest/part-m-00000
+100,Gopal,10000
+101,Ravi,11000
+102,Rajan,12000
+103,Rajeev,13000
+104,Neeraj,15000
+root@ubuntu:/home/Gopal/Sqoop-Related# 
+======================================================
+command is below:
+-----------------
+
+sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table emp -m 1 --target-dir /user/Gopal/sundayTest;

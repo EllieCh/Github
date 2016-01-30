@@ -1,0 +1,51 @@
+mrinmoy@ubuntu:~$ su root
+Password: 
+root@ubuntu:/home/mrinmoy# hive
+Hive history file=/tmp/root/hive_job_log_root_201502190826_241644080.txt
+hive> add jar Udf.jar
+    > ;
+Added Udf.jar to class path
+Added resource: Udf.jar
+hive> create temporary function kiran as 'Udf';
+OK
+Time taken: 0.271 seconds
+
+
+hive> create table udf1(id int,name string)
+    > row format delimited                 
+    > fields terminated by '|'             
+    > stored as textfile;                  
+OK
+Time taken: 12.775 seconds
+hive> load data local inpath 'input' into table udf1; 
+Copying data from file:/home/mrinmoy/input
+Copying file: file:/home/mrinmoy/input
+Loading data to table default.udf1
+OK
+Time taken: 0.535 seconds
+hive> select * from udf1;
+OK
+2314	         kiran            
+6547	 sai        
+9674	     siva       shankar   
+Time taken: 0.331 seconds
+
+hive> select * from udf1 int,kiran(name);
+FAILED: Parse Error: line 1:19 mismatched input 'int' expecting EOF near 'udf1'
+
+hive> select id,kiran(name) from udf1;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502190606_0001, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502190606_0001
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502190606_0001
+2015-02-19 08:33:44,528 Stage-1 map = 0%,  reduce = 0%
+2015-02-19 08:33:50,613 Stage-1 map = 100%,  reduce = 0%
+2015-02-19 08:33:52,626 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502190606_0001
+OK
+2314	kiran
+6547	sai
+9674	siva       shankar
+Time taken: 17.968 seconds
+

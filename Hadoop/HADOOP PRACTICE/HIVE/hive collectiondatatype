@@ -1,0 +1,309 @@
+root@ubuntu:/home/mrinmoy# cat f1
+1243|tata cosultancy services,TCS       |193373|RNO.12,ABC STREET,Banglore
+1243|international business machine,IBM |236312|RNO.16,XBE STREET,Hyderabad
+7463|wipro technologies,WIP             |343621|RNO.23,XBD STREET,Mumbai
+3526|cognizant technology services,CTS  |343832|RNO.76,XYZ STREET,Chennai
+1243|Accenture,ACC                      |337328|RNO.25,OPD STREET,Banglore
+3636|Tech mahindra,TEC                  |346647|RNO.56,OUT STREET,Hyderabad
+7463|wipro technologies,WIP             |337328|RNO.09,ODS STREET,Hyderabad
+root@ubuntu:/home/mrinmoy# hive
+Hive history file=/tmp/root/hive_job_log_root_201502240255_160824199.txt
+hive> create table j2 (cid int,cname struct<actualname:string,aliasname:string>,cemp int,cadd struct<rno:int,sname:string,cloc:string>)
+    > row format delimited                                                                                                             
+    > fields terminated by '|'                                                                                                         
+    > collection items terminated by ','                                                                                               
+    > map keys terminated by ':'                                                                                                       
+    > stored as textfile;                                                                                                              
+OK
+Time taken: 7.102 seconds
+hive> select * from j2;
+OK
+Time taken: 0.314 seconds
+hive> load data local inpath 'f1' into table j2;
+Copying data from file:/home/mrinmoy/f1
+Copying file: file:/home/mrinmoy/f1
+Loading data to table default.j2
+OK
+Time taken: 0.306 seconds
+hive> select * from j2;                  // here rno is a string not int
+OK
+1243	{"actualname":"tata cosultancy services","aliasname":"TCS       "}	193373	{"rno":null,"sname":"ABC STREET","cloc":"Banglore"}
+1243	{"actualname":"international business machine","aliasname":"IBM "}	236312	{"rno":null,"sname":"XBE STREET","cloc":"Hyderabad"}
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	343621	{"rno":null,"sname":"XBD STREET","cloc":"Mumbai"}
+3526	{"actualname":"cognizant technology services","aliasname":"CTS  "}	343832	{"rno":null,"sname":"XYZ STREET","cloc":"Chennai"}
+1243	{"actualname":"Accenture","aliasname":"ACC                      "}	337328	{"rno":null,"sname":"OPD STREET","cloc":"Banglore"}
+3636	{"actualname":"Tech mahindra","aliasname":"TEC                  "}	346647	{"rno":null,"sname":"OUT STREET","cloc":"Hyderabad"}
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	337328	{"rno":null,"sname":"ODS STREET","cloc":"Hyderabad"}
+
+Time taken: 0.188 seconds
+
+hive >desc j2;
+OK
+cid	int	
+cname	struct<actualname:string,aliasname:string>	
+cemp	int	
+cadd	struct<rno:int,sname:string,cloc:string>	
+Time taken: 0.119 seconds
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /user/hive/warehouse/j2
+Found 1 items
+-rw-r--r--   1 root supergroup        525 2015-02-24 02:56 /user/hive/warehouse/j2/f1
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /user/hive/warehouse/j2/f1
+Found 1 items
+-rw-r--r--   1 root supergroup        525 2015-02-24 02:56 /user/hive/warehouse/j2/f1
+
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /user/hive/warehouse/j2/f1
+1243|tata cosultancy services,TCS       |193373|RNO.12,ABC STREET,Banglore
+1243|international business machine,IBM |236312|RNO.16,XBE STREET,Hyderabad
+7463|wipro technologies,WIP             |343621|RNO.23,XBD STREET,Mumbai
+3526|cognizant technology services,CTS  |343832|RNO.76,XYZ STREET,Chennai
+1243|Accenture,ACC                      |337328|RNO.25,OPD STREET,Banglore
+3636|Tech mahindra,TEC                  |346647|RNO.56,OUT STREET,Hyderabad
+7463|wipro technologies,WIP             |337328|RNO.09,ODS STREET,Hyderabad
+
+
+hive> select * from j2 where cid like '3%'; 
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502240254_0003, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0003
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0003
+2015-02-24 03:22:32,657 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:22:35,689 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:22:37,704 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0003
+OK
+3526	{"actualname":"cognizant technology services","aliasname":"CTS  "}	343832	{"rno":null,"sname":"XYZ STREET","cloc":"Chennai"}
+3636	{"actualname":"Tech mahindra","aliasname":"TEC                  "}	346647	{"rno":null,"sname":"OUT STREET","cloc":"Hyderabad"}
+Time taken: 8.707 seconds
+hive> select cname['TCS'] from j2;         
+FAILED: Error in semantic analysis: Line 1:7 [] not valid on non-collection types 'TCS': struct<actualname:string,aliasname:string>
+hive> select cname.aliasname from j2;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502240254_0004, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0004
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0004
+2015-02-24 03:27:29,859 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:27:32,893 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:27:34,910 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0004
+OK
+TCS       
+IBM 
+WIP             
+CTS  
+ACC                      
+TEC                  
+WIP             
+Time taken: 8.715 seconds
+
+hive> select cname.actualname from j2;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502240254_0005, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0005
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0005
+2015-02-24 03:28:01,343 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:28:04,360 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:28:07,379 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0005
+OK
+tata cosultancy services
+international business machine
+wipro technologies
+cognizant technology services
+Accenture
+Tech mahindra
+wipro technologies
+Time taken: 9.565 seconds
+
+hive> select cadd.sname from j2;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502240254_0007, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0007
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0007
+2015-02-24 03:33:06,201 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:33:08,212 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:33:11,237 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0007
+OK
+ABC STREET
+XBE STREET
+XBD STREET
+XYZ STREET
+OPD STREET
+OUT STREET
+ODS STREET
+Time taken: 8.641 seconds
+
+hive> select cadd.sname from j2;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502240254_0007, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0007
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0007
+2015-02-24 03:33:06,201 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:33:08,212 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:33:11,237 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0007
+OK
+ABC STREET
+XBE STREET
+XBD STREET
+XYZ STREET
+OPD STREET
+OUT STREET
+ODS STREET
+Time taken: 8.641 seconds
+
+hive> select * from j2 GROUP BY cadd.cloc;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_201502240254_0008, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0008
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0008
+2015-02-24 03:34:10,354 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:34:13,372 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:34:21,436 Stage-1 map = 100%,  reduce = 33%
+2015-02-24 03:34:22,450 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0008
+OK
+Banglore
+Chennai
+Hyderabad
+Mumbai
+Time taken: 17.853 seconds
+
+hive> select cname.actualname from j2;    
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502240254_0009, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0009
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0009
+2015-02-24 03:34:54,168 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:34:57,224 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:34:59,237 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0009
+OK
+tata cosultancy services
+international business machine
+wipro technologies
+cognizant technology services
+Accenture
+Tech mahindra
+wipro technologies
+Time taken: 8.524 seconds
+
+hive> select * from j2 where cname.actualname like 't%';
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201502240254_0010, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0010
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0010
+2015-02-24 03:37:45,866 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:37:48,887 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:37:50,903 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0010
+OK
+1243	{"actualname":"tata cosultancy services","aliasname":"TCS       "}	193373	{"rno":null,"sname":"ABC STREET","cloc":"Banglore"}
+Time taken: 8.527 seconds
+
+hive> select * from j2 CLUSTER BY cname.actualname;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_201502240254_0015, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0015
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0015
+2015-02-24 03:45:35,359 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 03:45:38,375 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 03:45:46,441 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0015
+OK
+1243	{"actualname":"Accenture","aliasname":"ACC                      "}	337328	{"rno":null,"sname":"OPD STREET","cloc":"Banglore"}
+3636	{"actualname":"Tech mahindra","aliasname":"TEC                  "}	346647	{"rno":null,"sname":"OUT STREET","cloc":"Hyderabad"}
+3526	{"actualname":"cognizant technology services","aliasname":"CTS  "}	343832	{"rno":null,"sname":"XYZ STREET","cloc":"Chennai"}
+1243	{"actualname":"international business machine","aliasname":"IBM "}	236312	{"rno":null,"sname":"XBE STREET","cloc":"Hyderabad"}
+1243	{"actualname":"tata cosultancy services","aliasname":"TCS       "}	193373	{"rno":null,"sname":"ABC STREET","cloc":"Banglore"}
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	343621	{"rno":null,"sname":"XBD STREET","cloc":"Mumbai"}
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	337328	{"rno":null,"sname":"ODS STREET","cloc":"Hyderabad"}
+Time taken: 17.608 seconds
+---------------PARTITION------------
+
+hive> create table jpart (cid int,cname struct<actualname:string,aliasname:string>,cemp int,cadd struct<rno:string,sname:string,cloc:string>)
+    > partitioned BY (country string)
+    > row format delimited                                                                                                                   
+    > fields terminated by '|'                                                                                                               
+    > collection items terminated by ','                                                                                                     
+    > stored as textfile;                                                                                                                    
+OK
+Time taken: 0.074 seconds
+hive> desc jpart;
+OK
+cid	int	
+cname	struct<actualname:string,aliasname:string>	
+cemp	int	
+cadd	struct<rno:string,sname:string,cloc:string>	
+country	string	
+Time taken: 0.105 seconds
+
+hive> load data local inpath 'f1' into table jpart PARTITION(country=='INDIA');
+Copying data from file:/home/mrinmoy/f1
+Copying file: file:/home/mrinmoy/f1
+Loading data to table default.jpart partition (country=INDIA)
+OK
+Time taken: 0.644 seconds
+hive> select * from jpart;
+OK
+1243	{"actualname":"tata cosultancy services","aliasname":"TCS       "}	193373	{"rno":"RNO.12","sname":"ABC STREET","cloc":"Banglore"}	INDIA
+1243	{"actualname":"international business machine","aliasname":"IBM "}	236312	{"rno":"RNO.16","sname":"XBE STREET","cloc":"Hyderabad"}	INDIA
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	343621	{"rno":"RNO.23","sname":"XBD STREET","cloc":"Mumbai"}	INDIA
+3526	{"actualname":"cognizant technology services","aliasname":"CTS  "}	343832	{"rno":"RNO.76","sname":"XYZ STREET","cloc":"Chennai"}	INDIA
+1243	{"actualname":"Accenture","aliasname":"ACC                      "}	337328	{"rno":"RNO.25","sname":"OPD STREET","cloc":"Banglore"}	INDIA
+3636	{"actualname":"Tech mahindra","aliasname":"TEC                  "}	346647	{"rno":"RNO.56","sname":"OUT STREET","cloc":"Hyderabad"}	INDIA
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	337328	{"rno":"RNO.09","sname":"ODS STREET","cloc":"Hyderabad"}	INDIA
+Time taken: 0.23 seconds
+
+hive> select * from jpart ORDER BY cadd.rno;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_201502240254_0017, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201502240254_0017
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201502240254_0017
+2015-02-24 04:01:43,215 Stage-1 map = 0%,  reduce = 0%
+2015-02-24 04:01:46,230 Stage-1 map = 100%,  reduce = 0%
+2015-02-24 04:01:53,298 Stage-1 map = 100%,  reduce = 33%
+2015-02-24 04:01:54,306 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201502240254_0017
+OK
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	337328	{"rno":"RNO.09","sname":"ODS STREET","cloc":"Hyderabad"}	INDIA
+1243	{"actualname":"tata cosultancy services","aliasname":"TCS       "}	193373	{"rno":"RNO.12","sname":"ABC STREET","cloc":"Banglore"}	INDIA
+1243	{"actualname":"international business machine","aliasname":"IBM "}	236312	{"rno":"RNO.16","sname":"XBE STREET","cloc":"Hyderabad"}	INDIA
+7463	{"actualname":"wipro technologies","aliasname":"WIP             "}	343621	{"rno":"RNO.23","sname":"XBD STREET","cloc":"Mumbai"}	INDIA
+1243	{"actualname":"Accenture","aliasname":"ACC                      "}	337328	{"rno":"RNO.25","sname":"OPD STREET","cloc":"Banglore"}	INDIA
+3636	{"actualname":"Tech mahindra","aliasname":"TEC                  "}	346647	{"rno":"RNO.56","sname":"OUT STREET","cloc":"Hyderabad"}	INDIA
+3526	{"actualname":"cognizant technology services","aliasname":"CTS  "}	343832	{"rno":"RNO.76","sname":"XYZ STREET","cloc":"Chennai"}	INDIA
+Time taken: 16.632 seconds
+
+
+
+

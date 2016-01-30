@@ -1,0 +1,183 @@
+mrinmoy@ubuntu:~$ su root
+Password: 
+root@ubuntu:/home/mrinmoy# cd ../Gopal/
+root@ubuntu:/home/Gopal# jps
+1642 SecondaryNameNode
+1942 QuorumPeerMain
+1848 TaskTracker
+1472 NameNode
+2495 Jps
+963 DataNode
+2028 Bootstrap
+1317 JobTracker
+root@ubuntu:/home/Gopal# ifconfig
+eth3      Link encap:Ethernet  HWaddr 00:0c:29:c4:74:1e  
+          inet addr:192.168.37.147  Bcast:192.168.37.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fec4:741e/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:194 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:231 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:20350 (20.3 KB)  TX bytes:24358 (24.3 KB)
+          Interrupt:19 Base address:0x2000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:31325 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:31325 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:6211720 (6.2 MB)  TX bytes:6211720 (6.2 MB)
+
+root@ubuntu:/home/Gopal# mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 58
+Server version: 5.1.49-1ubuntu8 (Ubuntu)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Chaitu_Lab         |
+| Gopal_Lab          |
+| NewYearDB          |
+| RK                 |
+| Roja               |
+| Sekhar_DB          |
+| eveningBatch       |
+| mysql              |
+| nagarajudb         |
+| samia              |
+| vasu               |
++--------------------+
+12 rows in set (0.25 sec)
+
+mysql> use samia;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_samia |
++-----------------+
+| dept            |
+| employee        |
+| exportErrorTab  |
++-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+--------------+----------+
+| deptid | dname        | deptloc  |
++--------+--------------+----------+
+|    200 | Finance      | USA      |
+|    201 | Admin        | India    |
+|    202 | Marketing    | Japan    |
+|    203 | Manufaturing | INDIA    |
+|    204 | Sales        | Europe   |
+|    999 | Marketing    | Pakistan |
++--------+--------------+----------+
+6 rows in set (0.06 sec)
+
+mysql> quit;
+Bye
+-------------------------------------------------------
+root@ubuntu:/home/Gopal# sqoop job --create GopalNewJob -- import --connect jdbc:mysql://localhost/samia --table dept;
+root@ubuntu:/home/Gopal# sqoop job --list;
+Available jobs:
+  GopalNewJob
+root@ubuntu:/home/Gopal# sqoop --show GopalNewJob
+No such sqoop tool: --show. See 'sqoop help'.
+root@ubuntu:/home/Gopal# sqoop job --show GopalNewJob
+Job: GopalNewJob
+Tool: import
+Options:
+----------------------------
+db.clear.staging.table = false
+direct.import = false
+db.batch = false
+codegen.input.delimiters.record = 0
+hive.fail.table.exists = false
+hdfs.append.dir = false
+codegen.auto.compile.dir = true
+db.table = dept
+codegen.output.delimiters.enclose.required = false
+codegen.output.delimiters.field = 44
+import.max.inline.lob.size = 16777216
+codegen.input.delimiters.enclose.required = false
+import.direct.split.size = 0
+hbase.create.table = false
+codegen.output.delimiters.record = 10
+hive.overwrite.table = false
+db.connect.string = jdbc:mysql://localhost/samia
+codegen.output.dir = .
+codegen.output.delimiters.enclose = 0
+codegen.input.delimiters.escape = 0
+enable.compression = false
+export.new.update = UpdateOnly
+mapreduce.num.mappers = 4
+hdfs.file.format = TextFile
+db.require.password = false
+hive.import = false
+incremental.mode = None
+codegen.input.delimiters.field = 0
+import.fetch.size = null
+hive.drop.delims = false
+codegen.compile.dir = /tmp/sqoop-root/compile/5a9d1ae3cfac99f12377249c9295b5fc
+codegen.output.delimiters.escape = 0
+codegen.input.delimiters.enclose = 0
+
+root@ubuntu:/home/Gopal# sqoop job --exec GopalNewJob
+13/04/04 17:33:24 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+13/04/04 17:33:24 INFO tool.CodeGenTool: Beginning code generation
+13/04/04 17:33:25 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `dept` AS t LIMIT 1
+13/04/04 17:33:25 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `dept` AS t LIMIT 1
+13/04/04 17:33:25 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+13/04/04 17:33:25 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+13/04/04 17:33:27 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/c349738d6f4dcdf6f8ea0b063c403fde/dept.jar
+13/04/04 17:33:27 WARN manager.MySQLManager: It looks like you are importing from mysql.
+13/04/04 17:33:27 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+13/04/04 17:33:27 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+13/04/04 17:33:27 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+13/04/04 17:33:27 INFO mapreduce.ImportJobBase: Beginning import of dept
+13/04/04 17:33:30 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`deptid`), MAX(`deptid`) FROM `dept`
+13/04/04 17:33:31 INFO mapred.JobClient: Running job: job_201304040657_0002
+13/04/04 17:33:32 INFO mapred.JobClient:  map 0% reduce 0%
+13/04/04 17:34:00 INFO mapred.JobClient:  map 25% reduce 0%
+13/04/04 17:34:01 INFO mapred.JobClient:  map 50% reduce 0%
+13/04/04 17:34:09 INFO mapred.JobClient:  map 100% reduce 0%
+13/04/04 17:34:12 INFO mapred.JobClient: Job complete: job_201304040657_0002
+13/04/04 17:34:12 INFO mapred.JobClient: Counters: 16
+13/04/04 17:34:12 INFO mapred.JobClient:   Job Counters 
+13/04/04 17:34:12 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=57145
+13/04/04 17:34:12 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/04/04 17:34:12 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/04/04 17:34:12 INFO mapred.JobClient:     Launched map tasks=4
+13/04/04 17:34:12 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+13/04/04 17:34:12 INFO mapred.JobClient:   FileSystemCounters
+13/04/04 17:34:12 INFO mapred.JobClient:     HDFS_BYTES_READ=441
+13/04/04 17:34:12 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=282456
+13/04/04 17:34:12 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=115
+13/04/04 17:34:12 INFO mapred.JobClient:   Map-Reduce Framework
+13/04/04 17:34:12 INFO mapred.JobClient:     Map input records=6
+13/04/04 17:34:12 INFO mapred.JobClient:     Physical memory (bytes) snapshot=509767680
+13/04/04 17:34:12 INFO mapred.JobClient:     Spilled Records=0
+13/04/04 17:34:12 INFO mapred.JobClient:     CPU time spent (ms)=15130
+13/04/04 17:34:12 INFO mapred.JobClient:     Total committed heap usage (bytes)=134873088
+13/04/04 17:34:12 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1825902592
+13/04/04 17:34:12 INFO mapred.JobClient:     Map output records=6
+13/04/04 17:34:12 INFO mapred.JobClient:     SPLIT_RAW_BYTES=441
+13/04/04 17:34:12 INFO mapreduce.ImportJobBase: Transferred 115 bytes in 44.4721 seconds (2.5859 bytes/sec)
+13/04/04 17:34:12 INFO mapreduce.ImportJobBase: Retrieved 6 records.
+root@ubuntu:/home/Gopal# 
+

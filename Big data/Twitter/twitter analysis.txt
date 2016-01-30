@@ -1,0 +1,4 @@
+http://hortonworks.com/hadoop-tutorial/using-spring-xd-to-stream-tweets-to-hadoop-for-sentiment-analysis/
+
+http://projects.spring.io/spring-xd/#quick-start
+

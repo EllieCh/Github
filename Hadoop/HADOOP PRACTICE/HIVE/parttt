@@ -1,0 +1,52 @@
+root@ubuntu:/home/mrinmoy# cat > f1
+1234|tata  |4567|hyderabad
+2354|wipro |4536|banglore
+1245|accen |2657|chennai     
+1234|cts   |4536|mumbai
+8357|ibm   |3272|delhi
+5436|tech  |3425|banglore
+
+hive> create table jkp1(id int,name string,code int,loc string) 
+    > PARTITIONED BY (state string)                             
+    > row format delimited                                      
+    > fields terminated by '|'                                  
+    > stored as textfile;                                       
+OK
+Time taken: 0.06 seconds
+hive> load data local inpath 'f1' into table jkp1 PARTITION(state='andhra');
+Copying data from file:/home/mrinmoy/f1
+Copying file: file:/home/mrinmoy/f1
+Loading data to table default.jkp1 partition (state=andhra)
+OK
+Time taken: 0.225 seconds
+hive> select * from jkp1;
+OK
+1234	tata  	4567	hyderabad	andhra
+2354	wipro 	4536	banglore	andhra
+1245	accen 	2657	chennai	andhra
+1234	cts   	4536	mumbai	andhra
+8357	ibm   	3272	delhi	andhra
+5436	tech  	3425	banglore	andhra
+Time taken: 0.113 seconds
+
+hive> create table jkp2(id int,name string,code int)                        
+    > PARTITIONED BY (loc string)                                           
+    > row format delimited                                                  
+    > fields terminated by '|'                                              
+    > stored as textfile;                                                   
+OK
+Time taken: 0.063 seconds
+hive> load data local inpath 'f1' into table jkp2 PARTITION(loc='mumbai');  
+Copying data from file:/home/mrinmoy/f1
+Copying file: file:/home/mrinmoy/f1
+Loading data to table default.jkp2 partition (loc=mumbai)
+OK
+Time taken: 0.258 seconds
+hive> select * from jkp2;                                                   
+OK
+1234	tata  	4567	mumbai
+2354	wipro 	4536	mumbai
+1245	accen 	2657	mumbai
+1234	cts   	4536	mumbai
+8357	ibm   	3272	mumbai
+5436	tech  	3425	mumbai

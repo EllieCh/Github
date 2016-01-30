@@ -1,0 +1,243 @@
+hbase(main):001:0> create 'jbk12','colfam'        
+0 row(s) in 0.4950 seconds
+
+hbase(main):002:0> put 'jbk12','row 1','colfam:kiran','is a good boy'
+0 row(s) in 0.1380 seconds
+
+hbase(main):003:0> put 'jbk12','row 2','colfam:God','is Omnipotent'
+0 row(s) in 0.0120 seconds
+
+hbase(main):004:0> put 'jbk12','row 3','colfam:God','is Omnipresent'
+0 row(s) in 0.0090 seconds
+
+hbase(main):005:0                                                 '
+hbase(main):006:0* hbase(main):006:0> scan 'jbk12'
+ROW                                         COLUMN+CELL                                                                                                                 
+ row 1                                      column=colfam:kiran, timestamp=1424340145123, value=is a good boy                                                           
+ row 2                                      column=colfam:God, timestamp=1424340199215, value=is Omnipotent                                                             
+ row 3                                      column=colfam:God, timestamp=1424340256869, value=is Omnipresent                                                            
+3 row(s) in 0.0600 seconds
+
+hbase(main):007:0> put 'jbk12','row 4','colfam:Human','is selfish'
+0 row(s) in 0.0090 seconds
+
+hbase(main):008:0> scan 'jbk12'
+ROW                                         COLUMN+CELL                                                                                                                 
+ row 1                                      column=colfam:kiran, timestamp=1424340145123, value=is a good boy                                                           
+ row 2                                      column=colfam:God, timestamp=1424340199215, value=is Omnipotent                                                             
+ row 3                                      column=colfam:God, timestamp=1424340256869, value=is Omnipresent                                                            
+ row 4                                      column=colfam:Human, timestamp=1424340416118, value=is selfish                                                              
+4 row(s) in 0.0240 seconds
+
+hbase(main):009:0> list 'jbk12'
+TABLE                                                                                                                                                                   
+jbk12                                                                                                                                                                   
+1 row(s) in 0.0370 seconds
+
+hbase(main):010:0> describe 'jbk12'
+DESCRIPTION                                                                                                  ENABLED                                                    
+ {NAME => 'jbk12', FAMILIES => [{NAME => 'colfam', BLOOMFILTER => 'NONE', REPLICATION_SCOPE => '0', COMPRESS true                                                       
+ ION => 'NONE', VERSIONS => '3', TTL => '2147483647', BLOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCACHE                                                            
+  => 'true'}]}                                                                                                                                                          
+1 row(s) in 0.0380 seconds
+
+hbase(main):011:0> is_enabled 'jbk12'
+true                                                                                                                                                                    
+0 row(s) in 0.0130 seconds
+
+hbase(main):012:0> is_disabled 'jbk12'
+false                                                                                                                                                                   
+0 row(s) in 0.0090 seconds
+
+hbase(main):013:0> get 'jbk12','row 3'
+COLUMN                                      CELL                                                                                                                        
+ colfam:God                                 timestamp=1424340256869, value=is Omnipresent                                                                               
+1 row(s) in 0.0180 seconds
+
+hbase(main):014:0> get 'jbk12','row 3','colfam'
+COLUMN                                      CELL                                                                                                                        
+ colfam:God                                 timestamp=1424340256869, value=is Omnipresent                                                                               
+1 row(s) in 0.0270 seconds
+
+hbase(main):015:0> delete 'jbk12','row 2'
+
+ERROR: wrong number of arguments (2 for 3)
+
+Here is some help for this command:
+Put a delete cell value at specified table/row/column and optionally
+timestamp coordinates.  Deletes must match the deleted cell's
+coordinates exactly.  When scanning, a delete cell suppresses older
+versions. To delete a cell from  't1' at row 'r1' under column 'c1'
+marked with the time 'ts1', do:
+
+  hbase> delete 't1', 'r1', 'c1', ts1
+
+
+hbase(main):016:0> delete 'jbk12','row 2','colfam'
+0 row(s) in 0.0170 seconds
+
+hbase(main):017:0> scan 'jbk12'
+ROW                                         COLUMN+CELL                                                                                                                 
+ row 1                                      column=colfam:kiran, timestamp=1424340145123, value=is a good boy                                                           
+ row 2                                      column=colfam:God, timestamp=1424340199215, value=is Omnipotent                                                             
+ row 3                                      column=colfam:God, timestamp=1424340256869, value=is Omnipresent                                                            
+ row 4                                      column=colfam:Human, timestamp=1424340416118, value=is selfish                                                              
+4 row(s) in 0.0290 seconds
+
+hbase(main):018:0> describe 'jbk12'
+DESCRIPTION                                                                                                  ENABLED                                                    
+ {NAME => 'jbk12', FAMILIES => [{NAME => 'colfam', BLOOMFILTER => 'NONE', REPLICATION_SCOPE => '0', COMPRESS true                                                       
+ ION => 'NONE', VERSIONS => '3', TTL => '2147483647', BLOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCACHE                                                            
+  => 'true'}]}                                                                                                                                                          
+1 row(s) in 0.0340 seconds
+
+hbase(main):019:0> delete 'jbk12','row 2','colfam:God'
+0 row(s) in 0.0280 seconds
+
+hbase(main):020:0> scan 'jbk12'                       
+ROW                                         COLUMN+CELL                                                                                                                 
+ row 1                                      column=colfam:kiran, timestamp=1424340145123, value=is a good boy                                                           
+ row 3                                      column=colfam:God, timestamp=1424340256869, value=is Omnipresent                                                            
+ row 4                                      column=colfam:Human, timestamp=1424340416118, value=is selfish                                                              0
+3 row(s) in 0.0370 seconds
+
+hbase(main):029:0> is_enabled 'jbk12' 
+false                                                                                                                                                                   
+0 row(s) in 0.0070 seconds
+
+hbase(main):030:0> alter 'jbk12',{NAME=>'colfam',METHOD=>'delete'}    
+0 row(s) in 0.0520 seconds
+
+hbase(main):031:0> enable 'jbk12'
+0 row(s) in 2.0570 seconds
+
+hbase(main):032:0> scan 'jbk12'                                   
+ROW                                         COLUMN+CELL                                                                                                                 
+0 row(s) in 0.0140 seconds
+
+hbase(main):033:0> alter 'jbk12','row 1',{NAME=>'colfam',VERSIONS=>3}
+
+ERROR: Table jbk12 is enabled. Disable it first before altering.
+
+hbase(main):034:0> disable 'jbk12'
+0 row(s) in 2.0640 seconds
+
+hbase(main):035:0> alter 'jbk12','row 1',{NAME=>'colfam',VERSIONS=>3}
+0 row(s) in 0.0430 seconds
+
+hbase(main):039:0> exists 'jbk12'
+Table jbk12 does exist                                                                                                                                                  
+0 row(s) in 0.0420 seconds
+
+hbase(main):040:0> exists 'jb12' 
+Table jb12 does not exist                                                                                                                                               
+0 row(s) in 0.0370 seconds
+
+
+
+
+------------------------------VERSIONS-----------------------
+
+hbase(main):091:0> create 'jbk1','colfam'                          
+0 row(s) in 1.1100 seconds
+
+hbase(main):092:0> disable 'jbk1'                                     
+0 row(s) in 2.0460 seconds
+
+hbase(main):093:0> alter 'jbk1','row1',{NAME=>'colfam',VERSIONS=>5} 
+0 row(s) in 0.0600 seconds
+
+hbase(main):097:0> enable 'jbk1'
+0 row(s) in 2.0420 seconds
+
+hbase(main):098:0> put 'jbk1','row 1','colfam:God','is omnipotent' 
+0 row(s) in 0.0290 seconds
+
+hbase(main):099:0> put 'jbk1','row 1','colfam:God','hgfghfgf'      
+0 row(s) in 0.0130 seconds
+
+hbase(main):100:0> put 'jbk1','row 1','colfam:God','jhghgyigiuggigig'
+0 row(s) in 0.0140 seconds
+
+hbase(main):101:0> put 'jbk1','row 1','colfam:God','jhghgyigiuggigiggfkhfgkgkghg'
+0 row(s) in 0.0110 seconds
+
+hbase(main):103:0> scan 'jbk1'
+ROW                                         COLUMN+CELL                                                                                                                 
+ row 1                                      column=colfam:God, timestamp=1424345209784, value=jhghgyigiuggigiggfkhfgkgkghg                                              
+1 row(s) in 0.0190 seconds
+
+hbase(main):104:0> scan 'jbk1',VERSIONS=>3         //LAST 3 WILL BE DISPLAYED
+ROW                                         COLUMN+CELL                                                                                                                 
+ row 1                                      column=colfam:God, timestamp=1424345209784, value=jhghgyigiuggigiggfkhfgkgkghg                                              
+ row 1                                      column=colfam:God, timestamp=1424345206141, value=jhghgyigiuggigig                                                          
+ row 1                                      column=colfam:God, timestamp=1424345200624, value=hgfghfgf                                                                  
+1 row(s) in 0.0400 seconds
+
+hbase(main):105:0> scan 'jbk1',VERSIONS=>5
+ROW                                         COLUMN+CELL                                                                                                                 
+ row 1                                      column=colfam:God, timestamp=1424345209784, value=jhghgyigiuggigiggfkhfgkgkghg                                              
+ row 1                                      column=colfam:God, timestamp=1424345206141, value=jhghgyigiuggigig                                                          
+ row 1                                      column=colfam:God, timestamp=1424345200624, value=hgfghfgf                                                                  
+ row 1                                      column=colfam:God, timestamp=1424345185769, value=is omnipotent                                                           
+---------------------------------------------------------
+hbase(main):028:0> create 'jk','row 1',{NAME=>'column',VERSIONS=>5} 
+0 row(s) in 1.1120 seconds
+hbase(main):031:0> put 'jk','row1','column:hello','good morning'   
+0 row(s) in 0.0130 seconds
+
+hbase(main):032:0> put 'jk','row1','column:hello','good afternoon'
+0 row(s) in 0.0110 seconds
+
+hbase(main):033:0> put 'jk','row1','column:hello','good evening'  
+0 row(s) in 0.0140 seconds
+
+hbase(main):034:0> put 'jk','row1','column:hello','good night'  
+0 row(s) in 0.0120 seconds
+
+hbase(main):035:0> put 'jk','row1','column:hello','good wishes'
+0 row(s) in 0.0130 seconds
+
+hbase(main):036:0> scan 'jk'
+ROW                                         COLUMN+CELL                                                                                                                 
+ row1                                       column=column:hello, timestamp=1424593911292, value=good wishes                                                             
+1 row(s) in 0.0150 seconds
+
+hbase(main):091:0> scan 'jk',COLUMNS=>'column:hello',VERSIONS=>5
+ROW                                         COLUMN+CELL                                                                                                                 
+ row1                                       column=column:hello, timestamp=1424594400701, value=good method                                                             
+ row1                                       column=column:hello, timestamp=1424593911292, value=good wishes                                                             
+ row1                                       column=column:hello, timestamp=1424593898897, value=good night                                                              
+ row1                                       column=column:hello, timestamp=1424593890916, value=good evening                                                            
+ row1                                       column=column:hello, timestamp=1424593882304, value=good afternoon                                                          
+1 row(s) in 0.0350 seconds
+
+hbase(main):092:0> scan 'jk',COLUMNS=>'column:hello',VERSIONS=>2
+ROW                                         COLUMN+CELL                                                                                                                 
+ row1                                       column=column:hello, timestamp=1424594400701, value=good method                                                             
+ row1                                       column=column:hello, timestamp=1424593911292, value=good wishes                                                             
+1 row(s) in 0.0150 seconds
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

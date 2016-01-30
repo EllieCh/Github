@@ -1,0 +1,591 @@
+    1  ls -l
+    2  mkdir hadoop
+    3  addgroup hadoop
+    4  usermod -aG hadoop mrinmoy
+    5  id mrinmoy
+    6  chown mrinmoy:hadoop /hadoop
+    7  ls -l
+    8  chmod 775 hadoop/
+    9  ls -l
+   10  cd had
+   11  cd hadoop/
+   12  exit
+   13  cd /usr/
+   14  ls -l
+   15  mkdir java
+   16  ls -l
+   17  cd java/
+   18  ls -l
+   19  cp /hadoop/jdk-6u26-linux-i586.bin jdk-6u26-linux-i586.bin
+   20  ls -l
+   21  ./jdk-6u26-linux-i586.bin 
+   22  jjava
+   23  java
+   24  ls -l
+   25  cd jdk1.6.0_26/
+   26  ls -l
+   27  man tree
+   28  pwd
+   29  cd jre/
+   30  ls -l
+   31  pwd
+   32  gedit /etc/environment 
+   33  cat /etc/environment 
+   34  exit
+   35  apt-get update
+   36  cd /usr/
+   37  ls -l
+   38  mkdir hadoop
+   39  ls -l
+   40  cd hadoop/
+   41  cp /hadoop/cdh3-repository_1.0_all.deb cdh3-repository_1.0_all.deb
+   42  ls -l
+   43  dpkg -i Downloads/cdh3-repository_1.0_all.deb
+   44  ls -l
+   45  chmod +x cdh3-repository_1.0_all.deb 
+   46  ls -l
+   47  dpkg -i cdh3-repository_1.0_all.deb
+   48  gedit &
+   49  apt-get update
+   50  apt-cache search hadoop
+   51  apt-get install hadoop-0.20
+   52  ls  -l
+   53  exit
+   54  poweroff
+   55  pwd
+   56  cd /
+   57  find -name hadoop
+   58  apt-get install hadoop-0.20-
+   59  apt-get install hadoop-0.20-namenode
+   60  apt-get install hadoop-0.20-datanode
+   61  apt-get install hadoop-0.20-secondarynamenode
+   62  apt-get install hadoop-0.20-jobtracker
+   63  apt-get install hadoop-0.20-tasktracker
+   64  exit
+   65  poweroff
+   66  dpkg -L hadoop
+   67  dpkg -L hadoop-0.20
+   68  man hadoop
+   69  cd /tmp
+   70  ls -l
+   71  exit
+   72  poweroff
+   73  cd
+   74  apt-get update
+   75  apt-get install hadoop-0.20-conf-pseudo
+   76  dpkg -L hadoop-0.20-conf-pseudo
+   77  ls -l /etc/hadoop-0.20/conf.pseudo
+   78  poweroff
+   79  cd
+   80  dpkg -L hadoop-0.20-conf-pseudo
+   81  for service in /etc/init.d/hadoop-0.20-*; $service start
+   82  for service in /etc/init.d/hadoop-0.20-*; do $service start done; ;
+   83  for service in /etc/init.d/hadoop-0.20-*; do; $service start; done;
+   84  for service in /etc/init.d/hadoop-0.20-*; do $service start; done
+   85  hadoop-0.20 fs -ls
+   86  hadoop-0.20 fs -ls /
+   87  hadoop-0.20 fs -ls /var
+   88  hadoop-0.20 fs -mkdir input
+   89  hadoop-0.20 fs -put /etc/hadoop-0.20/conf/*.xml input
+   90  hadoop-0.20 fs -ls input
+   91  exit
+   92  id
+   93  id supergroup
+   94  id mrinmoy
+   95  hadoop-0.20 fs -ls input
+   96  hadoop-0.20 fs -ls /
+   97  usermod -aG supergroup mrinmoy
+   98  hadoop-0.20 jar /usr/lib/hadoop-0.20/hadoop-*-examples.jar grep input output 'dfs[a-z.]+'
+   99  cd
+  100  hadoop-0.20 fs -ls /
+  101  hadoop-0.20 fs -ls /usr/
+  102  hadoop-0.20 fs -ls /user/
+  103  hadoop-0.20 fs -ls /user/root
+  104  hadoop-0.20 fs -ls /user/root/output
+  105  hadoop-0.20 fs -cat /user/root/output/part-00000
+  106  echo $HADOOP_HOME
+  107  EXIT
+  108  exit
+  109  cd
+  110  service sqoop-metastore stop
+  111  apt-get install hadoop-pig
+  112  pig
+  113  reboot
+  114  cd
+  115  sudo apt-get install hadoop-hive
+  116  apt-get install hadoop-hbase
+  117  apt-get install hadoop-zookeeper-server
+  118  apt-get search hadoop
+  119  apt-get install hadoop-zookeeper
+  120  apt-get install hadoop-0.20-fuse
+  121  env
+  122  env | grep HADOOP
+  123  env | grep HIVE
+  124  env | grep H
+  125  apt-get install sqoop
+  126  reboot
+  127  poweroff
+  128  which java
+  129  which hadoop
+  130  echo $JAVA_HOME
+  131  pig
+  132  hive
+  133  hbase shell
+  134  poweroff
+  135  mkdir Gopal
+  136  cd Gopal/
+  137  pwd
+  138  vi Sample.txt
+  139  ll
+  140  chmod 777 Sample.txt 
+  141  ll
+  142  cd ..
+  143  ll
+  144  cd Gopal/
+  145  ll
+  146  touch Input.txt
+  147  touch Prac.txt
+  148  ll
+  149  cat Input.txt 
+  150  cat Sample.txt 
+  151  rm Prac.txt 
+  152  ll
+  153  touch TodayInput.txt
+  154  ll
+  155  grep hadoop Sample.txt 
+  156  cal
+  157  date
+  158  date -u
+  159  hadoop -version
+  160  hadoop version
+  161  jps
+  162  clear
+  163  hadoop fs
+  164  ll
+  165  cd ..
+  166  ll
+  167  tail -10f build.xml 
+  168  clear
+  169  top
+  170  clear
+  171  cd Gopal/
+  172  ll
+  173  hadoop fs -lsr /
+  174  hadoop fs -mkdir /user/Gopal/Inputdir
+  175  hadoop fs -lsr /user/Gopal/Inputdir
+  176  hadoop fs -lsr /user/Gopal
+  177  hadoop fs g+w /user/Gopal/Inputdir
+  178  hadoop fs -g+w /user/Gopal/Inputdir
+  179  hadoop fs -chmod g+w /user/Gopal/Inputdir
+  180  hadoop fs -lsr /user/Gopal
+  181  hadoop fs -put Sample.txt /user/Gopal/Inputdir
+  182  hadoop fs -lsr /user/Gopal/Inputdir
+  183  hadoop fs -put Sample.txt /user/Gopal/Inputdir
+  184  hadoop fs -rm /user/Gopal/Inputdir/Sample.txt
+  185  hadoop fs -lsr /user/Gopal/Inputdir
+  186  hadoop fs -copyFromLocal Sample.txt /user/Gopal/Inputdir
+  187  hadoop fs -lsr /user/Gopal/Inputdir
+  188  mkdir ForReading
+  189  hadoop fs -copyToLocal /user/Gopal/Inputdir/Sample.txt /ForReading
+  190  cd ForReading/
+  191  ll
+  192  pwd
+  193  hadoop fs -copyToLocal /user/Gopal/Inputdir/Sample.txt /usr/lib/hadoop-0.20/Gopal/ForReading
+  194  ll
+  195  hadoop fs-cat /user/Gopal/Inputdir/Sample.txt
+  196  hadoop fs -cat /user/Gopal/Inputdir/Sample.txt
+  197  hadoop dfsadmin -report
+  198  hadoop dfsadmin -get safemode
+  199  hadoop dfsadmin -safemode get
+  200  ifconfig
+  201  pig
+  202  hive
+  203  hbase shell
+  204  sqoop version
+  205  pwd
+  206  cd ../../
+  207  cd bin/
+  208  ll
+  209  cd /etc/
+  210  ll
+  211  cd /
+  212  grep editlog
+  213  cd /usr/lib/hadoop-0.20/bin/
+  214  ll
+  215  ./start-dfs.sh 
+  216  exit;
+  217  clear
+  218  pig
+  219  cd /usr/lib/hadoop-0.20/
+  220  ll
+  221  cd Gopal/
+  222  pwd
+  223  cp /etc/passwd .
+  224  ll
+  225  pig -x local
+  226  cat passwd 
+  227  vi empdata.txt
+  228  grunt
+  229  pig -x local
+  230  vi Simple.pig
+  231  ll
+  232  cat Sample.txt 
+  233  cat Simple.pig 
+  234  pig Simple.pig 
+  235  vi Simple.pig
+  236  pig Simple.pig 
+  237  hadoop fs -lsr /user
+  238  hadoop fs -put passwd /user/Gopal
+  239  hadoop fs -lsr /user
+  240  vi Simple.pig 
+  241  pig Simple.pig 
+  242  hadoop fs -get /tmp/temp-1283820447/tmp-2072904309 .
+  243  cp Simple.pig SimpleNew.pig 
+  244  vi SimpleNew.pig 
+  245  pig SimpleNew.pig 
+  246  hadoop fs -lsr /user/Gopal/OutputPig
+  247  hadoop fs -get /user/Gopal/OutputPig/part-m-00000 .
+  248  ll
+  249  cat part-m-00000 
+  250  pig
+  251  pwd
+  252  ifconfig
+  253  cd /
+  254  cd /home/
+  255  ll
+  256  mrinmoy/
+  257  cd mrinmoy/
+  258  ll
+  259  cd Downloads/
+  260  ll
+  261  cp -r PIG-Latin/* /usr/lib/hadoop-0.20/Gopal/
+  262  cd /usr/lib/hadoop-0.20/Gopal/
+  263  ll
+  264  cat myscript.pig 
+  265  pig myscript.pig 
+  266  pig -x local myscript.pig 
+  267  cat UPPER.java 
+  268  ll
+  269  pig -x local myscriptNew.pig 
+  270  cat myscriptNew.pig 
+  271  vi myscriptNew.pig 
+  272  pig -x local myscriptNew.pig 
+  273  cd udfOutput.txt1
+  274  ll
+  275  cat part-m-00000 
+  276  cd ..
+  277  mkdir MR
+  278  cd MR/
+  279  cd /home/mrinmoy/Downloads/
+  280  ll
+  281  pig
+  282  hive
+  283  cd /usr/lib/
+  284  ll
+  285  cd /home/
+  286  mkdir Gopal
+  287  cd Gopal/
+  288  cp  -r /home/mrinmoy/Downloads/MapReduce/  .
+  289  ll
+  290  cp  -r /home/mrinmoy/Downloads/HIVE.zip  .
+  291  ll
+  292  cp  -r /home/mrinmoy/Downloads/PIG-Latin/  .
+  293  ll
+  294  pwd
+  295  cd MapReduce/
+  296  cat MR.txt 
+  297  hadoop jar
+  298  cp /home/mrinmoy/Downloads/MapReduce/Input.txt .
+  299  ll
+  300  hadoop fs -put Input.txt /user/Gopal
+  301  hadoop jar WordCountNew.jar WordCountNew /user/Gopal/ /user/Gopal/MROutPut
+  302  cat WordCountNew.java 
+  303  hadoop fs -mkdir /user/Gopal/MapRed/Input
+  304  hadoop fs -put Input.txt /user/Gopal/MapRed/Input
+  305  hadoop fs -lsr -lsr /user/Gopal/MapRed/Input/
+  306  hadoop jar WordCountNew.jar WordCountNew /user/Gopal/MapRed/Input /user/Gopal/MapRedOutput
+  307  hadoop fs -lsr /user/Gopal/MapRedOutput
+  308  mkdir GenMROutput
+  309  cd GenMROutput/
+  310  hadoop fs -get /user/Gopal/MapRedOutput/part-r-00000 .
+  311  ll
+  312  cat part-r-00000 
+  313  poweroff
+  314  clear
+  315  cd ..
+  316  cd Gopal/
+  317  cd /usr/lib/hadoop-0.20/
+  318  ll
+  319  cp -r hadoop-examples-0.20.2-cdh3u5.jar /home/Gopal/MapReduce/
+  320  cp -r hadoop-examples-0.20.2-cdh3u5.jar /home/mrinmoy/Downloads/
+  321  cp -r hadoop-ant-0.20.2-cdh3u5.jar /home/mrinmoy/Downloads/
+  322  cp -r hadoop-core-0.20.2-cdh3u5.jar /home/mrinmoy/Downloads/
+  323  cd /home/Gopal/
+  324  ll
+  325  cd PIG-Latin/
+  326  ll
+  327  cat myscriptNew.pig 
+  328  pig-x local myscriptNew.pig 
+  329  pig -x local myscriptNew.pig 
+  330  cat myscriptNew.pig 
+  331  vi myscriptNew.pig 
+  332  pig -x local myscriptNew.pig 
+  333  ifconfig
+  334  cd ..
+  335  cd MapReduce/
+  336  ll
+  337  hadoop fs -lsr /user/Gopal
+  338  hadoop jar WordCountNew.jar WordCountNew /user/Gopal/Inputdir /user/Gopal/MapRedOut
+  339  hadoop fs -lsr /user/Gopal/MapRedOut
+  340  hadoop fs -cat /user/Gopal/MapRedOut/part-r-00000
+  341  hadoop fs -cat /user/Gopal/Inputdir
+  342  hadoop fs -lsr  /user/Gopal/Input
+  343  hadoop fs -lsr  /user/Gopal/Inputdir
+  344  hadoop fs -cat /user/Gopal/Inputdir/Sample.txt
+  345  ll
+  346  pwd
+  347  cd ..
+  348  cd PIG-Latin/
+  349  pwd
+  350  ll
+  351  cat myscript.pig 
+  352  cat employee.txt 
+  353  ll
+  354  ifconfig
+  355  ll
+  356  ifconfig
+  357  pig -x local myscript.pig 
+  358  ll
+  359  cd ..
+  360  cd MapReduce/
+  361  pwd
+  362  ll
+  363  cat Input.txt 
+  364  hadoop fs -mkdir /user/Amar/MapredInput
+  365  hadoop fs -put Input.txt /user/Amar/MapredInput
+  366  hadoop fs -mkdir /user/Amar/MapredOutput
+  367  hadoop jar WordCountNew.jar WordCountNew /user/Amar/MapredInput /user/Amar/MapredOutput
+  368  hadoop jar WordCountNew.jar WordCountNew /user/Amar/MapredInput /user/Amar/
+  369  hadoop jar WordCountNew.jar WordCountNew /user/Amar/MapredInput /user/Amar/MapredOutput/Out
+  370  hadoop fs -cat /user/Amar/MapredOut/Out
+  371  hadoop fs -lsr /user/Amar/MapredOut/Out
+  372  hadoop fs -lsr /user/Amar/MapredOut
+  373  hadoop fs -lsr  /user/Amar/MapredOutput/Out
+  374  hadoop fs -cat /user/Amar/MapredOutput/Out/part-r-00000
+  375  cat Input.txt 
+  376  hadoop jar WordCountNew.jar WordCountNew /user/Amar/MapredInput /user/Amar/MapredOutput/Out
+  377  clear
+  378  pwd
+  379  cd ..
+  380  pwd
+  381  exit;
+  382  pwd
+  383  ll
+  384  cd Videos/
+  385  pwd
+  386  ll
+  387  cd ..
+  388  mkdir Aadi
+  389  cd Aadi/
+  390  pwd
+  391  mkdir PIG-Examples
+  392  cd PIG-Examples/
+  393  pwd
+  394  ll
+  395  vi Sample.txt
+  396  ll
+  397  cat Sample.txt 
+  398  pig -x local
+  399  cat /etc/passwd
+  400  pig -x local
+  401  cp /etc/passwd /home/Aadi/PIG-Examples/
+  402  ll
+  403  date
+  404  pig -x local
+  405  hadoop fs -mkdir /user/Aadi
+  406  hadoop fs -lsr /user/
+  407  ll
+  408  hadoop fs -put passwd /user/Aadi
+  409  hadoop fs -lsr /user/Aadi
+  410  pig
+  411  hadoop fs -lsr /user/Aadi/AadiOutput
+  412  hadoop fs -cat /user/Aadi/AadiOutput/part-m-00000
+  413  pwd
+  414  vi samplePigScript.pig
+  415  cat samplePigScript.pig 
+  416  pig -x local samplePigScript.pig 
+  417  cd ..
+  418  cd Gopal/
+  419  ll
+  420  cd PIG-Latin/
+  421  ll
+  422  cat myscriptNew.pig 
+  423  cat employee_data.txt 
+  424  cat myscriptNew.pig 
+  425  vi myscriptNew.pig 
+  426  ll
+  427  pig -x local myscriptNew.pig 
+  428  ll
+  429  cd AadiOut/
+  430  ll
+  431  cat part-m-00000 
+  432  cd ..
+  433  cat employee_data.txt 
+  434  cd../..
+  435  cd ../..
+  436  mkdir todayadi
+  437  pwd
+  438  ll
+  439  cd todayadi
+  440  pwd
+  441  vi sample.txt
+  442  ll
+  443  cat sample.txt 
+  444  hadoop fs -mkdir /user/todayadi
+  445  hadoop fs -lsr
+  446  hadoop fs -lsr /user/todayadi
+  447  hadoop fs -put sample.txt /user/todayadi
+  448  hadoop fs -lsr /user/todayadi
+  449  hadoop fs -cat /user/tadayadi/sample.txt
+  450  hadoop fs -cat /user/todayadi/sample.txt
+  451  hadoop fs -get /user/todayadi/sample.txt
+  452  hadoop fs -get /user/todayadi/sample.txt /home/todayadi
+  453  hadoop fs -get /user/todayadi/sample.txt /home
+  454  cd ..
+  455  ll
+  456  chmod 777 Aadi
+  457  ll
+  458  cd /
+  459  pwd
+  460  poweroff
+  461  clear
+  462  cd ../Gopal/
+  463  ll
+  464  clear
+  465  ifconfig
+  466  sqoop help
+  467  sqoop list-databases
+  468  mysql
+  469  grep mysql
+  470  mysql -u root -p
+  471  apt-get install mysql-client-core-5.1
+  472  mysql
+  473  apt-get update
+  474  apt-get install mysql-client-core-5.1
+  475  ifconfig
+  476  poweroff
+  477  pwd
+  478  cd ../Gopal/
+  479  Sqoop-Related
+  480  mkdir Sqoop-Related
+  481  cd Sqoop-Related/
+  482  sudo apt-get install mysql-client mysql-server
+  483  sudo apt-get update
+  484  sudo make install
+  485  touch /etc/apt/sources.list.d/cloudera.list
+  486  ll
+  487  cd /etc/apt/sources.list.d/cloudera.list 
+  488  cat /etc/apt/sources.list.d/cloudera.list
+  489  lsb_release-a
+  490  ifconfig
+  491  sudo apt-get install mysql-client mysql-server
+  492  mysql -u root -p
+  493  sqoop help
+  494  sqoop help import
+  495  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails -m 1
+  496  which sqoop
+  497  cd /usr/bin/sqoop
+  498  cd /usr/bin/
+  499  ll
+  500  ls -l sqoop
+  501  sqoop
+  502  cat sqoop
+  503  cd /usr/lib/sqoop/
+  504  ll
+  505  cd lib/
+  506  ll
+  507  ifconfig
+  508  cp /home/mrinmoy/Downloads/mysql-connector-java-5.1.16-bin.jar .
+  509  ll
+  510  cd /home/Gopal/Sqoop-Related/
+  511  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails -m 1
+  512  mysql -u root -p
+  513  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails -m 1
+  514  ll
+  515  cd empdetails.java 
+  516  cat empdetails.java 
+  517  ll
+  518  hadoop fs -lsr empdetails
+  519  hadoop fs -cat /user/root/empdetails/part-m-0000
+  520  hadoop fs -cat /user/root/empdetails/part-m-00000
+  521  cd /home/Gopal/Sqoop-Related/
+  522  cd /usr/lib/sqoop/lib/
+  523  ll
+  524  poweroff
+  525  cd ..
+  526  ll
+  527  cd Gopal/
+  528  ll
+  529  cd Sqoop-Related/
+  530  ll
+  531  mysql -u root -p
+  532  sqoop help
+  533  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails -m 2
+  534  hadoop fs -lsr /user/root
+  535  hadoop fs -rmr /user/root/empdetials/
+  536  hadoop fs -rmr /user/root/empdetails/
+  537  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails -m 2
+  538  hadoop fs -lsr /user/root
+  539  hadoop fs -cat /user/root/empdetails/part-m-00000
+  540  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails --where esal > 12000
+  541  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails --where esal > 12000 --target-dir /user
+  542  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails --where esal > 12000 --target-dir /user/Gopal/Sqoop-Out
+  543  hadoop fs -lsr /user/Gopal/Sqoop-*
+  544  hadoop fs -cat /user/Gopal/Sqoop-Out/part-m-00000
+  545  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table empdetails --where empid >102 --target-dir /user/Gopal/Sqoop-Output1
+  546  hadoop fs -lsr /user/Gopal/Sqoop-*
+  547  hadoop fs -cat /user/Gopal/Sqoop-Output1/part-m-00000
+  548  mysql -u root -p
+  549  sqoop import-all-tables --connect jdbc:mysql://localhost/Gopal_Lab --target-dir /user/Sqoop-OutMulTab -m2
+  550  sqoop import-all-tables --connect jdbc:mysql://localhost/Gopal_Lab --target-dir /user/Sqoop-OutMulTab
+  551  sqoop import-all-tables --connect jdbc:mysql://localhost/Gopal_Lab 
+  552  sqoop import-all-tables --connect jdbc:mysql://localhost/Gopal_Lab -m 1
+  553  hadoop fs -lsr
+  554  hadoop fs -cat /user/root/dept/part-m-00000
+  555  sqoop import-all-tables --connect jdbc:mysql://localhost/Gopal_Lab -m 2
+  556  poweroff
+  557  cd ../Gopal/
+  558  ll
+  559  cd Sqoop-Related/
+  560  ll
+  561  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select * from emp" - m 1 --target-dir /user/sqoop_sele_qur;
+  562  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select * from emp"  --target-dir /user/sqoop_sele_qur;
+  563  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select * from emp where $CONDITIONS" \  --target-dir /user/sqoop_sele_qur;
+  564  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select * from emp WHERE $CONDITIONS" \  --target-dir /user/sqoop_sele_qur;
+  565  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query "select * from emp WHERE $CONDITIONS" \ -m 1 --target-dir /user/sqoop_sele_qur;
+  566  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query 'select * from emp WHERE $CONDITIONS' \ -m 1 --target-dir /user/sqoop_sele_qur;
+  567  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query 'select * from emp WHERE $CONDITIONS' \  --target-dir /user/sqoop_sele_qur;
+  568  sqoop import  --query 'select * from emp WHERE $CONDITIONS' \  --target-dir /user/sqoop_sele_qur;
+  569  mysql help
+  570  sqoop help
+  571  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --query 'select ename,esal from emp WHERE $CONDITIONS' \ --target-dir /user/Gopla29;
+  572  sqoop import  --query 'select ename,esal from emp WHERE $CONDITIONS' \ --target-dir /user/Gopla29;
+  573  sqoop import  --query 'select ename,esal from emp WHERE $CONDITIONS' \ -m 1 --target-dir /user/Gopla29;
+  574  sqoop import  --query 'select ename,esal from emp WHERE $CONDITIONS' \ - m 1 --target-dir /user/Gopla29;
+  575  sqoop import  --query 'select ename,esal from emp WHERE $CONDITIONS' \  --target-dir /user/Gopla29;
+  576  sqoop import  --connect jdbc:mysql://localhost/Gopal_Lab --query 'select ename,esal from emp WHERE $CONDITIONS' \  --target-dir /user/Gopla29;
+  577  sqoop import  --connect jdbc:mysql://localhost/Gopal_Lab --query 'select ename,esal from emp WHERE $CONDITIONS' \ -m 1  --target-dir /user/Gopla29;
+  578  cd ../Gopal/
+  579  cd Sqoop-Related/
+  580  mysql -u root -p
+  581  poweroff
+  582  cd ..
+  583  cd Gopal/Sqoop-Related/
+  584  ll
+  585  cat 102
+  586  sqoop import --connect jdbc:/mysql://localhost/Gopal_Lab --table emp -m 1 --target-dir /user/Gopal/sundayTest;
+  587  sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table emp -m 1 --target-dir /user/Gopal/sundayTest;
+  588  hadoop fs -ls /user/Gopal/SundayTest
+  589  hadoop fs -ls /user/Gopal/sundayTest
+  590  hadoop fs -cat /user/Gopal/sundayTest/part-m-00000
+  591  history >>sunday-prac.txt

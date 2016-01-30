@@ -1,0 +1,422 @@
+hive> create table kiran (id int,name string,emp int,loc string)
+    > row format delimited
+    > fields terminated by '|'
+    > stored as textfile;
+hive> load data local inpath 'f1' into table kiran; 
+hive> select * from kiran;
+OK
+1234	abcd	2345	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6354	irut
+9685	iitj	3622	poyi
+7869	jgsh	4536	itjg
+8956	opre	9784	jjts
+3648	igkv	6789	poiy
+1234	abcd	2345	ghjf
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /user/hive/warehouse/kiran1/f1
+Found 1 items
+-rw-r--r--   1 root supergroup        160 2015-02-22 00:09 /user/hive/warehouse/kiran1/f1
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /user/hive/warehouse/kiran1
+cat: File does not exist: /user/hive/warehouse/kiran1
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /user/hive/warehouse/kiran1/f1
+1234|abcd|2345|ghjf
+1423|yrtf|6789|akjd
+1534|truy|6354|irut
+9685|iitj|3622|poyi
+7869|jgsh|4536|itjg
+8956|opre|9784|jjts
+3648|igkv|6789|poiy
+1234|abcd|2345|ghjf
+
+hive> create table partition1 (id int,name string,emp int,loc string)
+    > PARTITIONED BY(sal int,title string)                           
+    > row format delimited                                           
+    > fields terminated by '|'                                       
+    > stored as textfile;     
+hive> load data local inpath 'f1' into table partition1 PARTITION(sal=15000,title='TCS');
+hive> select * from partition1;                                                          
+OK
+1234	abcd	2345	ghjf	15000	TCS
+1423	yrtf	6789	akjd	15000	TCS
+1534	truy	6354	irut	15000	TCS
+9685	iitj	3622	poyi	15000	TCS
+7869	jgsh	4536	itjg	15000	TCS
+8956	opre	9784	jjts	15000	TCS
+3648	igkv	6789	poiy	15000	TCS
+1234	abcd	2345	ghjf	15000	TCS
+
+hive> select * from partition1 LIMIT 4;   
+OK
+1234	abcd	2345	ghjf	15000	TCS
+1423	yrtf	6789	akjd	15000	TCS
+1534	truy	6354	irut	15000	TCS
+9685	iitj	3622	poyi	15000	TCS
+
+hive> select * from partition1 ORDER BY id; 
+1234	abcd	2345	ghjf	15000	TCS
+1234	abcd	2345	ghjf	15000	TCS
+1423	yrtf	6789	akjd	15000	TCS
+1534	truy	6354	irut	15000	TCS
+3648	igkv	6789	poiy	15000	TCS
+7869	jgsh	4536	itjg	15000	TCS
+8956	opre	9784	jjts	15000	TCS
+9685	iitj	3622	poyi	15000	TCS
+
+hive> select * from partion1 where id like '1%'; 
+1234	abcd	2345	ghjf	15000	TCS
+1423	yrtf	6789	akjd	15000	TCS
+1534	truy	6354	irut	15000	TCS
+1234	abcd	2345	ghjf	15000	TCS
+
+hive> alter table partition1 ADD COLUMNS(new1 int,new2 string);
+OK
+Time taken: 0.083 seconds
+hive> select * from partition1;                                
+OK
+1234	abcd	2345	ghjf	NULL	NULL	15000	TCS
+1423	yrtf	6789	akjd	NULL	NULL	15000	TCS
+1534	truy	6354	irut	NULL	NULL	15000	TCS
+9685	iitj	3622	poyi	NULL	NULL	15000	TCS
+7869	jgsh	4536	itjg	NULL	NULL	15000	TCS
+8956	opre	9784	jjts	NULL	NULL	15000	TCS
+3648	igkv	6789	poiy	NULL	NULL	15000	TCS
+1234	abcd	2345	ghjf	NULL	NULL	15000	TCS
+
+hive> load data local inpath 'f2' OVERWRITE into table kiran;       
+Copying data from file:/home/mrinmoy/f2
+Copying file: file:/home/mrinmoy/f2
+Loading data to table default.kiran
+Deleted hdfs://localhost:8020/user/hive/warehouse/kiran
+OK
+Time taken: 0.191 seconds
+hive> select * from kiran;
+OK
+1234	afdc	2445	ghjf
+4323	yrtf	6789	akjd
+1534	truy	6544	irdd
+4385	iitj	3622	poyi
+7869	dfsh	5436	ituh
+8456	opre	9094	jjts
+3438	igkv	6789	poiy
+1434	abcd	2345	ghjf
+
+hive> create table new as select id,name,loc from kiran;
+Total MapReduce jobs = 2
+Launching Job 1 out of 2
+8 Rows loaded to hdfs://localhost:8020/tmp/hive-root/hive_2015-02-22_00-35-04_421_278328792654421887/-ext-10000
+OK
+Time taken: 5.363 seconds
+hive> select * from new;
+OK
+1234	afdc	ghjf
+4323	yrtf	akjd
+1534	truy	irdd
+4385	iitj	poyi
+7869	dfsh	ituh
+8456	opre	jjts
+3438	igkv	poiy
+1434	abcd	ghjf
+
+hive> alter table partition1 RENAME TO kiran1;
+OK
+Time taken: 0.176 seconds
+hive> select * from kiran1;
+OK
+1234	abcd	2345	ghjf	NULL	NULL	15000	TCS
+1423	yrtf	6789	akjd	NULL	NULL	15000	TCS
+1534	truy	6354	irut	NULL	NULL	15000	TCS
+9685	iitj	3622	poyi	NULL	NULL	15000	TCS
+7869	jgsh	4536	itjg	NULL	NULL	15000	TCS
+8956	opre	9784	jjts	NULL	NULL	15000	TCS
+3648	igkv	6789	poiy	NULL	NULL	15000	TCS
+1234	abcd	2345	ghjf	NULL	NULL	15000	TCS
+
+hivecreate table kiran2 (aid int,aname string,aemp int,aloc string)                    
+    row format delimited                                                               
+    fields terminated by '|'                                                           
+    stored as textfile;                                                                
+OK
+Time taken: 0.044 seconds
+hive> load data local inpath 'f2' into table kiran2;
+Copying data from file:/home/mrinmoy/f2
+Copying file: file:/home/mrinmoy/f2
+Loading data to table default.kiran2
+OK
+Time taken: 0.134 seconds
+hive> select * from kiran2;
+OK
+1234	afdc	2445	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6544	irdd
+4385	iitj	3622	poyi
+7869	dfsh	5436	ituh
+8456	opre	9094	jjts
+3648	igkv	6789	poiy
+1434	abcd	2345	ghjf
+
+hive> create table merge1 as select id,name,emp,loc from kiran1 A JOIN kiran2 B ON(A.id=B.aid);
+6 Rows loaded to hdfs://localhost:8020/tmp/hive-root/hive_2015-02-22_00-45-57_688_6322444455953568000/-ext-10000
+OK
+Time taken: 16.522 seconds
+hive> select * from merge1;
+OK
+1234	abcd	2345	ghjf
+1234	abcd	2345	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6354	irut
+3648	igkv	6789	poiy
+7869	jgsh	4536	itjg
+
+hive> create table leftmerge as select id,name,emp,loc from kiran1 A LEFT OUTER JOIN kiran2 B ON(A.id=B.aid);
+8 Rows loaded to hdfs://localhost:8020/tmp/hive-root/hive_2015-02-22_00-48-01_704_380517013870347775/-ext-10000
+OK
+Time taken: 15.564 seconds
+hive> select * from leftmerge;                                                                               
+OK
+1234	abcd	2345	ghjf
+1234	abcd	2345	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6354	irut
+3648	igkv	6789	poiy
+7869	jgsh	4536	itjg
+8956	opre	9784	jjts
+9685	iitj	3622	poyi
+
+hive> create table rightmerge as select id,name,emp,loc from kiran1 A RIGHT OUTER JOIN kiran2 B ON(A.id=B.aid);
+9 Rows loaded to hdfs://localhost:8020/tmp/hive-root/hive_2015-02-22_00-48-57_847_1174457310566041492/-ext-10000
+OK
+Time taken: 15.471 seconds
+hive> select * from rightmerge;                                                                                
+OK
+1234	abcd	2345	ghjf
+1234	abcd	2345	ghjf
+1423	yrtf	6789	akjd
+NULL	NULL	NULL	NULL
+1534	truy	6354	irut
+3648	igkv	6789	poiy
+NULL	NULL	NULL	NULL
+7869	jgsh	4536	itjg
+NULL	NULL	NULL	NULL
+
+hive> select * from kiran1 CLUSTER BY id;      (DISTRIBUTE BY + SORT BY = CLUSTER BY)
+OK
+1234	abcd	2345	ghjf	NULL	NULL	15000	TCS
+1234	abcd	2345	ghjf	NULL	NULL	15000	TCS
+1423	yrtf	6789	akjd	NULL	NULL	15000	TCS
+1534	truy	6354	irut	NULL	NULL	15000	TCS
+3648	igkv	6789	poiy	NULL	NULL	15000	TCS
+7869	jgsh	4536	itjg	NULL	NULL	15000	TCS
+8956	opre	9784	jjts	NULL	NULL	15000	TCS
+9685	iitj	3622	poyi	NULL	NULL	15000	TCS
+------------------------------EXTERNAL TABLE--------------------
+
+hive> create external table kiran6 (id int,place string,emp int,job string)
+    > row format delimited                                                 
+    > fields terminated by '|'                                             
+    > stored as textfile location '/jk';                                   
+OK
+Time taken: 0.048 seconds
+hive> load data local inpath 'f1' into table kiran6;
+Copying data from file:/home/mrinmoy/f1
+Copying file: file:/home/mrinmoy/f1
+Loading data to table default.kiran6
+OK
+Time taken: 0.16 seconds
+hive> select * from kiran6;
+OK
+1234	abcd	2345	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6354	irut
+9685	iitj	3622	poyi
+7869	jgsh	4536	itjg
+8956	opre	9784	jjts
+3648	igkv	6789	poiy
+1234	abcd	2345	ghjf
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /jk
+Found 1 items
+-rw-r--r--   1 root supergroup        160 2015-02-22 01:20 /jk/f1
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /jk/f1
+1234|abcd|2345|ghjf
+1423|yrtf|6789|akjd
+1534|truy|6354|irut
+9685|iitj|3622|poyi
+7869|jgsh|4536|itjg
+8956|opre|9784|jjts
+3648|igkv|6789|poiy
+1234|abcd|2345|ghjf
+
+----------------------------BUCKETING-------------------------
+hive> create table sample (id int,name string,emp int,loc string)          
+    > row format delimited                                       
+    > fields terminated by '|'                                   
+    > stored as textfile;                                        
+OK
+Time taken: 0.05 seconds
+hive> load data local inpath 'f1' into table sample;
+Copying data from file:/home/mrinmoy/f1
+Copying file: file:/home/mrinmoy/f1
+Loading data to table default.sample
+OK
+Time taken: 0.155 seconds
+hive> load data local inpath 'f2' into table sample;
+Copying data from file:/home/mrinmoy/f2
+Copying file: file:/home/mrinmoy/f2
+Loading data to table default.sample
+OK
+Time taken: 0.132 seconds
+hive> load data local inpath 'f11' into table sample;
+Copying data from file:/home/mrinmoy/f11
+Copying file: file:/home/mrinmoy/f11
+Loading data to table default.sample
+OK
+Time taken: 0.14 seconds
+hive> select * from sample;
+OK
+1234	abcd	2345	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6354	irut
+9685	iitj	3622	poyi
+7869	jgsh	4536	itjg
+8956	opre	9784	jjts
+3648	igkv	6789	poiy
+1234	abcd	2345	ghjf
+1234	abcd	2345	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6354	irut
+9685	iitj	3622	poyi
+7869	jgsh	4536	itjg
+8956	opre	9784	jjts
+3648	igkv	6789	poiy
+1234	abcd	2345	ghjf
+1234	afdc	2445	ghjf
+1423	yrtf	6789	akjd
+1534	truy	6544	irdd
+4385	iitj	3622	poyi
+7869	dfsh	5436	ituh
+8456	opre	9094	jjts
+3648	igkv	6789	poiy
+1434	abcd	2345	ghjf
+Time taken: 0.104 seconds
+hive> SET hive.enforce.bucketing=true;
+hive> create table bucket12 (id int,name string,emp int,loc string)
+    > CLUSTERED BY(id) INTO 4 buckets                              
+    > row format delimited                                         
+    > fields terminated by '|'                                     
+    > stored as textfile;                                          
+OK
+hive> INSERT OVERWRITE TABLE bucket12 SELECT *  FROM sample;  
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 4
+hive> select * from bucket12;
+OK
+8956	opre	9784	jjts    (8956 % 4 =0 )
+3648	igkv	6789	poiy     3648 % 4 =0
+8956	opre	9784	jjts
+3648	igkv	6789	poiy
+3648	igkv	6789	poiy
+8456	opre	9094	jjts
+7869	jgsh	4536	itjg       7869 % 4 =1         // HERE BUCKETING BY 4 MEANS OUTPUT OBTAINED IN THE INCREASING ORDER OF THE REMAINDERS BY 4 //
+7869	dfsh	5436	ituh
+4385	iitj	3622	poyi       4385 % 4 =1
+9685	iitj	3622	poyi
+7869	jgsh	4536	itjg
+9685	iitj	3622	poyi
+1234	abcd	2345	ghjf      1234 % 4 =2
+1534	truy	6354	irut      1534 % 4 =2
+1234	abcd	2345	ghjf
+1234	abcd	2345	ghjf
+1534	truy	6354	irut
+1234	abcd	2345	ghjf
+1234	afdc	2445	ghjf
+1534	truy	6544	irdd
+1434	abcd	2345	ghjf     
+1423	yrtf	6789	akjd      1423 % 4 =2 
+1423	yrtf	6789	akjd      
+1423	yrtf	6789	akjd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

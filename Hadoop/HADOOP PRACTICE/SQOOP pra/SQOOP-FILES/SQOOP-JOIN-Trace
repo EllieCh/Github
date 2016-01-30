@@ -1,0 +1,46 @@
+rinmoy@ubuntu:~$ sqoop import --connect jdbc:mysql://localhost/HadoopDB --query "select e.empid,ename,esal,deptid,deptname,deptloc from emptab e JOIN depttab d ON(e.empid=d.empid) where \$CONDITIONS" -m 1 --target-dir /GopalTest111;
+13/05/13 05:31:35 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+13/05/13 05:31:35 INFO tool.CodeGenTool: Beginning code generation
+13/05/13 05:31:36 INFO manager.SqlManager: Executing SQL statement: select e.empid,ename,esal,deptid,deptname,deptloc from emptab e JOIN depttab d ON(e.empid=d.empid) where  (1 = 0) 
+13/05/13 05:31:36 INFO manager.SqlManager: Executing SQL statement: select e.empid,ename,esal,deptid,deptname,deptloc from emptab e JOIN depttab d ON(e.empid=d.empid) where  (1 = 0) 
+13/05/13 05:31:36 INFO manager.SqlManager: Executing SQL statement: select e.empid,ename,esal,deptid,deptname,deptloc from emptab e JOIN depttab d ON(e.empid=d.empid) where  (1 = 0) 
+13/05/13 05:31:36 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+13/05/13 05:31:36 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+13/05/13 05:31:40 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-mrinmoy/compile/85687159c2219eb46daa8ca1de04116b/QueryResult.jar
+13/05/13 05:31:40 INFO mapreduce.ImportJobBase: Beginning query import.
+13/05/13 05:31:47 INFO mapred.JobClient: Running job: job_201305130456_0001
+13/05/13 05:31:48 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/13 05:32:06 INFO mapred.JobClient:  map 100% reduce 0%
+13/05/13 05:32:08 INFO mapred.JobClient: Job complete: job_201305130456_0001
+13/05/13 05:32:08 INFO mapred.JobClient: Counters: 16
+13/05/13 05:32:08 INFO mapred.JobClient:   Job Counters 
+13/05/13 05:32:08 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=17206
+13/05/13 05:32:08 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/13 05:32:08 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/13 05:32:08 INFO mapred.JobClient:     Launched map tasks=1
+13/05/13 05:32:08 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+13/05/13 05:32:08 INFO mapred.JobClient:   FileSystemCounters
+13/05/13 05:32:08 INFO mapred.JobClient:     HDFS_BYTES_READ=87
+13/05/13 05:32:08 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=71007
+13/05/13 05:32:08 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=104
+13/05/13 05:32:08 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/13 05:32:08 INFO mapred.JobClient:     Map input records=3
+13/05/13 05:32:08 INFO mapred.JobClient:     Physical memory (bytes) snapshot=142671872
+13/05/13 05:32:08 INFO mapred.JobClient:     Spilled Records=0
+13/05/13 05:32:08 INFO mapred.JobClient:     CPU time spent (ms)=1980
+13/05/13 05:32:08 INFO mapred.JobClient:     Total committed heap usage (bytes)=39911424
+13/05/13 05:32:08 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=473509888
+13/05/13 05:32:08 INFO mapred.JobClient:     Map output records=3
+13/05/13 05:32:08 INFO mapred.JobClient:     SPLIT_RAW_BYTES=87
+13/05/13 05:32:08 INFO mapreduce.ImportJobBase: Transferred 104 bytes in 27.1208 seconds (3.8347 bytes/sec)
+13/05/13 05:32:08 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+mrinmoy@ubuntu:~$ 
+
+mrinmoy@ubuntu:~$ hadoop fs -cat /GopalTest111/part-m-00000
+100,Raja,15000.0,200,finance,Hyd
+101,Raj,16000.0,201,admin,Pune
+102,Rajeev,17000.0,202,Marketing,Mumbai
+mrinmoy@ubuntu:~$ 
+
+
+

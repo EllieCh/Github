@@ -1,0 +1,392 @@
+%function wireless_final_project()
+clc
+close all;
+clear all;
+% disp('                              Physical Layer Simulation of OFDM System');
+% disp('                              ========================================');
+% disp('      ');
+% 
+% disp('Please enter the following input parameters');
+% disp('-------------------------------------------');
+% disp('      ');
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+%input parameters
+
+% disp('1. BPSK');
+% disp('2. QPSK');
+% disp('3. 16 QAM');
+%M = input('Select modulation scheme (1/2/3): ');    %Modulation scheme
+% if ((isempty(M)) || (M>3))
+%     disp('None/invalid input entered..Using BPSK as default modulation');
+%     M = 1;
+% end
+
+% disp('      ');
+% disp('1. AWGN Channel');
+% disp('2. Multipath Channel');
+% C = input('Select channel (1/2): ');    %Channel
+% if ((isempty(C)) || (C>3))
+%     disp('None/invalid input entered..Using AWGN as default channel');
+%     C = 1;
+% end
+% 
+% disp('      ');
+% disp('Please wait...Simulation is in progress...');
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+%assumptions
+
+N1 = 100; %100 symbols
+N2 = 5; %Monte-Carlo trials for each symbol
+range = 10:30;  %Range for Adaptive Modulation
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+%simulator coding
+
+pilot = rand(1,4)>0.5;  %pseudo binary sequence
+BPSK_pilot = BPSK(1,pilot); %BPSK Modulated pilot signal
+
+%switch C
+    %case 1
+        AWGNSNRdB = [3 5 7 9 11];
+        AWGNSNR = 10.^((AWGNSNRdB)./10); %SNR in linear scale
+        for p = 1:N1
+            in_BPSK = rand(1,48)>0.5;  %input to BPSK modulator
+            in_QPSK = rand(1,2*48)>0.5;  %input to QPSK modulator
+            in_QAM = rand(1,4*48)>0.5;   %input to 16 QAM modulator
+
+            for q = 1:length(AWGNSNR)
+                for r = 1:N2
+                   % switch M
+                       % case 1
+                            %BPSK Modulation
+                            BPSK_Mod = BPSK(1,in_BPSK); %BPSK Modulation
+                            BPSK_Mod_OFDM = ofdmTransmit(BPSK_Mod,BPSK_pilot);  %OFDM Transmission
+                            BPSK_Mod_OFDM_Channel = awgnChannel(BPSK_Mod_OFDM,AWGNSNR(q));  %AWGN Channel
+                            [BPSK_Demod_OFDM temp] = ofdmReceive(1,BPSK_Mod_OFDM_Channel,[],[],[]); %OFDM Receiver
+                            BPSK_Demod = BPSK(2,BPSK_Demod_OFDM);   %BPSK Demodulation
+                            error_bpsk(r) = sum(in_BPSK ~= BPSK_Demod)/48;   %bit error probability
+
+                       % case 2
+                            %QPSK Modulation
+                            QPSK_Mod = QPSK(1,in_QPSK); %QPSK Modulation
+                            QPSK_Mod_OFDM = ofdmTransmit(QPSK_Mod,BPSK_pilot);  %OFDM Transmission
+                            QPSK_Mod_OFDM_Channel = awgnChannel(QPSK_Mod_OFDM,AWGNSNR(q));  %AWGN Channel
+                            [QPSK_Demod_OFDM temp] = ofdmReceive(1,QPSK_Mod_OFDM_Channel,[],[],[]); %OFDM Receiver
+                            QPSK_Demod = QPSK(2,QPSK_Demod_OFDM);   %QPSK Demodulation
+                            error_qpsk(r) = sum(in_QPSK ~= QPSK_Demod)/(48*2);   %bit error probability
+
+                        %case 3
+                            %16 QAM Modulation
+                            QAM_Mod = QAM(1,in_QAM); %QAM Modulation
+                            QAM_Mod_OFDM = ofdmTransmit(QAM_Mod,BPSK_pilot);  %OFDM Transmission
+                            QAM_Mod_OFDM_Channel = awgnChannel(QAM_Mod_OFDM,AWGNSNR(q));  %AWGN Channel
+                            [QAM_Demod_OFDM, temp] = ofdmReceive(1,QAM_Mod_OFDM_Channel,[],[],[]); %OFDM Receiver
+                            QAM_Demod = QAM(2,QAM_Demod_OFDM);   %QAM Demodulation
+                            error_qam(r) = sum(in_QAM ~= QAM_Demod)/(48*4);   %bit error probability
+
+                    %end
+                end
+                per_bpsk(p,q) = sum(error_bpsk)/N2;
+                per_qpsk(p,q) = sum(error_qpsk)/N2;
+                per_qam(p,q) = sum(error_qam)/N2;
+            end
+        end
+
+        for q = 1:length(AWGNSNR)
+            ber_bpsk(q) = sum(per_bpsk(:,q))/N1;
+            ber_qpsk(q) = sum(per_qpsk(:,q))/N1;
+            ber_qam(q) = sum(per_qam(:,q))/N1;
+        end
+
+        %switch M
+          %  case 1
+                figure
+                semilogy(AWGNSNRdB,ber_bpsk,'r','marker','*');
+                title('Error Probability vs SNR for BPSK to AWGN channel');
+                xlabel('SNR(dB)');
+                ylabel('Probability of Error');
+                
+            %case 2
+                figure
+                semilogy(AWGNSNRdB,ber_qpsk,'r','marker','*');
+                title('Error Probability vs SNR for QPSK to AWGN channel');
+                xlabel('SNR (dB)');
+                ylabel('Probability of Error');
+                
+           % case 3
+                figure
+                semilogy(AWGNSNRdB,ber_qam,'r','marker','*');
+                title('Error Probability vs SNR for 16 QAM to AWGN channel');
+                xlabel('SNR (dB)');
+                ylabel('Probability of Error');
+               
+       % end
+   % case 2
+        AWGNSNRdB = 0:30;
+        AWGNSNR = 10.^((AWGNSNRdB)./10); %SNR in linear scale
+        for p = 1:N1
+            in_BPSK = rand(1,48)>0.5;  %input to BPSK modulator
+            in_QPSK = rand(1,2*48)>0.5;  %input to QPSK modulator
+            in_QAM = rand(1,4*48)>0.5;   %input to 16 QAM modulator
+            [tapsV tapsP] = multipathChannelTaps();
+
+            for q = 1:length(AWGNSNR)
+                for r = 1:N2
+                   % switch M
+                    %    case 1
+                            %BPSK Modulation
+                            BPSK_Mod = BPSK(1,in_BPSK); %BPSK Modulation
+                            BPSK_Mod_OFDM = ofdmTransmit(BPSK_Mod,BPSK_pilot);  %OFDM Transmission
+                            [BPSK_Mod_OFDM_ChannelV BPSK_Mod_OFDM_ChannelP] = multipathChannel(BPSK_Mod_OFDM, AWGNSNR(q), tapsV, tapsP);  %Multipath Channel
+                            [BPSK_Demod_OFDMV BPSK_Demod_OFDMP] = ofdmReceive(2,BPSK_Mod_OFDM_ChannelV,BPSK_Mod_OFDM_ChannelP,tapsV,tapsP); %OFDM Receiver
+                            BPSK_DemodV = BPSK(2,BPSK_Demod_OFDMV);   %BPSK Demodulation for Vehicular
+                            BPSK_DemodP = BPSK(2,BPSK_Demod_OFDMP);   %BPSK Demodulation for Pedestrian
+                            errorIndoor_bpsk(r) = sum(in_BPSK ~= BPSK_DemodV)/48;   %bit error probability for Vehicular
+                            errorOutdoor_bpsk(r) = sum(in_BPSK ~= BPSK_DemodP)/48;   %bit error probability for Vehicular
+
+                      %  case 2
+                            %QPSK Modulation
+                            QPSK_Mod = QPSK(1,in_QPSK); %QPSK Modulation
+                            QPSK_Mod_OFDM = ofdmTransmit(QPSK_Mod,BPSK_pilot);  %OFDM Transmission
+                            [QPSK_Mod_OFDM_ChannelV QPSK_Mod_OFDM_ChannelP] = multipathChannel(QPSK_Mod_OFDM, AWGNSNR(q), tapsV, tapsP);  %Multipath Channel
+                            [QPSK_Demod_OFDMV QPSK_Demod_OFDMP] = ofdmReceive(2,QPSK_Mod_OFDM_ChannelV,QPSK_Mod_OFDM_ChannelP,tapsV,tapsP); %OFDM Receiver
+                            QPSK_DemodV = QPSK(2,QPSK_Demod_OFDMV);   %QPSK Demodulation for Vehicular
+                            QPSK_DemodP = QPSK(2,QPSK_Demod_OFDMP);   %QPSK Demodulation for Pedestrian
+                            errorIndoorQpsk(r) = sum(in_QPSK ~= QPSK_DemodV)/(48*2);   %bit error probability for Vehicular
+                            errorOutdoorQpsk(r) = sum(in_QPSK ~= QPSK_DemodP)/(48*2);   %bit error probability for Vehicular
+                            
+                       % case 3
+                            %16 QAM Modulation
+                            QAM_Mod = QAM(1,in_QAM); %QAM Modulation
+                            QAM_Mod_OFDM = ofdmTransmit(QAM_Mod,BPSK_pilot);  %OFDM Transmission
+                            [QAM_Mod_OFDM_ChannelV QAM_Mod_OFDM_ChannelP] = multipathChannel(QAM_Mod_OFDM, AWGNSNR(q), tapsV, tapsP);  %Multipath Channel
+                            [QAM_Demod_OFDMV QAM_Demod_OFDMP] = ofdmReceive(2,QAM_Mod_OFDM_ChannelV,QAM_Mod_OFDM_ChannelP,tapsV,tapsP); %OFDM Receiver
+                            QAM_DemodV = QAM(2,QAM_Demod_OFDMV);   %QAM Demodulation for Vehicular
+                            QAM_DemodP = QAM(2,QAM_Demod_OFDMP);   %QAM Demodulation for Pedestrian
+                            errorIndoorQam(r) = sum(in_QAM ~= QAM_DemodV)/(48*4);   %bit error probability for Vehicular
+                            errorOutdoorQam(r) = sum(in_QAM ~= QAM_DemodP)/(48*4);   %bit error probability for Vehicular
+                 end
+            end
+                perIndoorBpsk(p,q) = sum(errorIndoor_bpsk)/N2;
+                perOutdoorBpsk(p,q) = sum(errorOutdoor_bpsk)/N2;
+                
+                perIndoorQpsk(p,q) = sum(errorIndoorQpsk)/N2;
+                perOutdoorQpsk(p,q) = sum(errorOutdoorQpsk)/N2;
+                
+                perIndoorQam(p,q) = sum(errorIndoorQam)/N2;
+                perOutdoorQam(p,q) = sum(errorOutdoorQam)/N2;
+         end
+       % end
+
+        for q = 1:length(AWGNSNR)   %Total Probability
+            berIndoorBpsk(q) = sum(perIndoorBpsk(:,q))/N1;    
+            berOutdoorBpsk(q) = sum(perOutdoorBpsk(:,q))/N1;
+            
+            berIndoorQpsk(q) = sum(perIndoorBpsk(:,q))/N1;    
+            berOutdoorQpsk(q) = sum(perOutdoorBpsk(:,q))/N1;
+            
+            berIndoorQam(q) = sum(perIndoorQam(:,q))/N1;    
+            berOutdoorQam(q) = sum(perOutdoorQam(:,q))/N1;
+        end
+
+        %switch M
+           % case 1  %BPSK
+                figure
+                semilogy(AWGNSNRdB,berIndoorBpsk,'r','marker','*'); hold on;
+                semilogy(AWGNSNRdB,berOutdoorBpsk,'b','marker','*');
+                legend('Indoor','Outdoor'); 
+                title('Error Probability vs SNR for BPSK to Multipath channel');
+                xlabel('SNR (dB) ');
+                ylabel('Probability of Error');
+                grid on;
+         %   case 2  %QPSK
+                figure
+                semilogy(AWGNSNRdB,berIndoorQpsk,'r','marker','*'); hold on;
+                semilogy(AWGNSNRdB,berOutdoorQpsk,'b','marker','*'); 
+                legend('Indoor','Outdoor'); 
+                title('Error Probability vs SNR for QPSK to Multipath channel');
+                xlabel('SNR (dB)');
+                ylabel('Probability of Error');
+                grid on;
+          %  case 3  %16 QAM
+                figure
+                semilogy(AWGNSNRdB,berIndoorQam,'r','marker','*'); hold on;
+                semilogy(AWGNSNRdB,berOutdoorQam,'b','marker','*'); 
+                legend('Indoor','Outdoor'); 
+                title('Error Probability vs SNR for 16 QAM to Multipath channel');
+                xlabel('SNR (dB)');
+                ylabel('Probability of Error');
+                grid on;
+       % end
+        
+
+
+% disp('      ');
+% disp('      ');
+% disp('Please select the options below');
+% disp('-------------------------------');
+% disp('      ');
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+%input parameters
+
+% T = 'N';    %Initialising T
+% Q = 'N';    %Initialising Q
+% T = input('Simulate Adaptive Modulation? (Y/N): ','s');  %Adaptive Modulation
+%     if ((upper(T) ~= 'Y') && (upper(T) ~= 'N'))
+%         disp('None/invalid input entered..By default not using 2-antenna transmit');
+%         T = 'N';
+%     end
+% Q = input('Simulate MIMO-OFDM transmit? (Y/N): ','s');  %MIMO-OFDM
+%     if ((upper(Q) ~= 'Y') && (upper(Q) ~= 'N'))
+%         disp('None/invalid input entered..By default not using 2-antenna transmit');
+%         Q = 'N';
+%     end
+
+%if (T ~= 'N')   %Adaptive Modulation 
+    EmpSpecEffV = zeros(1,length(range));
+    EmpSpecEffP = zeros(1,length(range));
+    for k = 1:N1
+        [tapsV tapsP] = multipathChannelTaps();
+        [spectralEffV spectralEffP] = adaptiveModulation(tapsV,tapsP);
+        EmpSpecEffV = EmpSpecEffV + spectralEffV;
+        EmpSpecEffP = EmpSpecEffP + spectralEffP;
+    end
+
+    EmpSpecEffV = EmpSpecEffV./N1;
+    EmpSpecEffP = EmpSpecEffP./N1;
+
+    figure
+    plot(range,EmpSpecEffV,'r','marker','*'); hold on;
+    plot(range,EmpSpecEffP,'b','marker','*'); 
+    legend('Vehicular','Pedestrian',2); 
+    title('Spectral Efficiency vs SNR');
+    xlabel('SNR in dB -->');
+    ylabel('Spectral Efficiency -->');
+    grid on;
+%end
+
+%if (Q ~= 'N')   %MIMO-OFDM    
+%     EmpSpecEffV = zeros(1,length(range));
+%     EmpSpecEffP = zeros(1,length(range));
+%     for k = 1:N1
+%        [spectralEffV spectralEffP] = mimoOFDM();
+%         EmpSpecEffV = EmpSpecEffV + spectralEffV;
+%         EmpSpecEffP = EmpSpecEffP + spectralEffP;
+%     end
+% 
+%     EmpSpecEffV = EmpSpecEffV./N1;
+%     EmpSpecEffP = EmpSpecEffP./N1;
+% 
+%     figure
+%     plot(range,EmpSpecEffV,'r','marker','*'); hold on;
+%     plot(range,EmpSpecEffP,'b','marker','*'); 
+%     legend('Vehicular','Pedestrian',2); 
+%     title('Spectral Efficiency vs SNR using MIMO-OFDM transmit');
+%     xlabel('SNR in dB -->');
+%     ylabel('Spectral Efficiency -->');
+%     grid on;
+%end
+
+
+% disp('.');
+% disp('.');
+% disp('.');
+disp('Simulation is completed...Please check the populated graph for results');
+%end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%---FUNCTIONS---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%DONE
+% function [transmit] = ofdmTransmit(input, pilot)
+% %%%%%%%%%%%%%%%%%%%---OFDM TRANSMITTER---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% nfft = 64;  %Length of fft/ifft
+% cpLen = 16; %Length of cyclic prefix
+% cpStart = nfft - cpLen + 1;
+% cpStop = nfft;
+% 
+% ofdmSequence = [zeros(1,6) input(1:5) pilot(1) input(6:18) pilot(2) input(19:24) zeros(1,1) input(25:30) pilot(3) input(31:43) pilot(4) input(44:48) zeros(1,5)];
+% 
+% inputIFFT = sqrt(nfft)*ifft(ofdmSequence,64);  %IFFT
+% transmit = [inputIFFT(cpStart:cpStop) inputIFFT];   %Adding Cyclic Prefix
+% end
+
+%Done
+% function [receive] = awgnChannel(input, awgnSNR)
+% %%%%%%%%%%%%%%%%%%%%%%---AWGN CHANNEL---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% inputLen = length(input);   %Input length
+% 
+% nc = (1/sqrt(2*awgnSNR))*randn(1,inputLen);    %In-phase noise
+% ns = (1/sqrt(2*awgnSNR))*randn(1,inputLen);    %Quadrature-phase noise
+% rc = real(input) + nc;
+% rs = imag(input) + ns;
+% receive = rc + (1i.*rs);
+% end
+
+%Done
+% function [vehicular pedestrian] = multipathChannel(input, awgnSNR, tapsV, tapsP)
+% %%%%%%%%%%%%%%%%%%%%%%---MULTIPATH CHANNEL---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% inputLen = length(input);   %Input length
+% nc = (1/sqrt(2*awgnSNR))*randn(1,inputLen);    %In-phase noise
+% ns = (1/sqrt(2*awgnSNR))*randn(1,inputLen);    %Quadrature-phase noise
+% 
+% vehicular = ifft((fft(input,inputLen).*fft(tapsV,inputLen)),inputLen) + (nc + (1i*ns));
+% pedestrian = ifft((fft(input,inputLen).*fft(tapsP,inputLen)),inputLen) + (nc + (1i*ns));
+% end
+
+%Done
+
+
+
+
+
+
+
+
+
+
+
+% function [spectralEffMIMOV spectralEffMIMOP] = mimoOFDM()
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%---MIMO OFDM---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% len = 64;
+% range = 10:30;
+% spectralEffMIMOP = zeros(1,length(range));
+% spectralEffMIMOV = zeros(1,length(range));
+% 
+% [taps11V taps11P] = multipathChannelTaps(); %h11
+% [taps12V taps12P] = multipathChannelTaps(); %h12
+% [taps21V taps21P] = multipathChannelTaps(); %h21
+% [taps22V taps22P] = multipathChannelTaps(); %h22
+% 
+% H11V = fft(taps11V, len);
+% H11P = fft(taps11P, len);
+% 
+% H12V = fft(taps12V, len);
+% H12P = fft(taps12P, len);
+% 
+% H21V = fft(taps21V, len);
+% H21P = fft(taps21P, len);
+% 
+% H22V = fft(taps22V, len);
+% H22P = fft(taps22P, len);
+% 
+% for k = 1:len
+%     HV = [H11V(k),H12V(k);H21V(k),H22V(k)];
+%     HP = [H11P(k),H12P(k);H21P(k),H22P(k)];
+%     
+%     [UV SV VV] = svd(HV);
+%     [UP SP VP] = svd(HP);
+%     
+%     tapsV = max(SV(1,1), SV(2,2));
+%     tapsP = max(SP(1,1), SP(2,2));
+%     [spectralEffV spectralEffP] = adaptiveModulation(1,tapsV,tapsP);
+%     spectralEffMIMOV = spectralEffMIMOV + spectralEffV;
+%     spectralEffMIMOP = spectralEffMIMOP + spectralEffP;
+% end
+% spectralEffMIMOV = spectralEffMIMOV./len;
+% spectralEffMIMOP = spectralEffMIMOP./len;
+% end

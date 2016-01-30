@@ -1,0 +1,586 @@
+//HIVE COLLECTION DATA TYPE
+//see carefully
+//create table mantab42
+
+//Now here my data contains multiple delimiter we want to perform oprations.
+root@ubuntu:/home/mrinmoy/Hive/mantabq# nano companydata.log
+  
+File: companydata.log                                                                                          
+
+10110001|Infosys Ltd,Infy|1001,ISB Main Road,Ganchibouli,Hyd|87,76,81,77,79|china:true,Asia:false,japan:true
+10110002|Info Ltd,Infy|1002, Main Road,Ganchibouli,Hyd|87,76,81,77,79|india:true,Asia:false,japan:true
+10110003|Inf Ltd,Infy|1003,ISB Main Road,Ganchibouli,Hyd|87,76,81,77,79|US:true,US:false,japan:true
+10110004|Informatica Ltd,Infy|1004,ISB Main Road,Ganchibouli,Hyd|87,76,81,77,79|INDIA:true,Asia:false,japan:true
+
+
+//for defineing table see it carefully.
+hive> create table collectmantab44(companyId bigint,companyname struct<actualName:string,aliasname:string> , companyAddress struct<roadnum:int,street:string,city:string
+   > ,state:string>                                                                                                                                                    
+    > ,previous_Revenues array<smallint>,
+    > growth_preferences map<string,boolean>)
+    > row format delimited
+    > fields terminated by '|'
+    > collection items terminated by ','
+    > map keys terminated by ':'
+    > lines terminated by '\n'
+    > stored as textfile;
+OK
+Time taken: 3.733 seconds
+hive> desc collectmantab44
+    > ;
+OK
+companyid	bigint	
+companyname	struct<actualName:string,aliasname:string>	
+companyaddress	struct<roadnum:int,street:string,city:string,state:string>	
+previous_revenues	array<smallint>	
+growth_preferences	map<string,boolean>	
+Time taken: 0.244 seconds
+
+//now we are going to load the data
+
+hive> load data local inpath '/home/mrinmoy/Hive/mantabq/companydata.log' into table collectmantab44;                                                                  
+Copying data from file:/home/mrinmoy/Hive/mantabq/companydata.log
+Copying file: file:/home/mrinmoy/Hive/mantabq/companydata.log
+Loading data to table default.collectmantab44
+OK
+Time taken: 0.163 seconds
+
+
+//loading data is completed............................
+//see the table.
+hive> select * from collectmantab44;                                                                 
+OK
+10110001	{"actualname":"Infosys Ltd","aliasname":"Infy"}	{"roadnum":1001,"street":"ISB Main Road","city":"Ganchibouli","state":"Hyd"}	[87,76,81,77,79]	{"china":true,"Asia":false,"japan":true}
+10110002	{"actualname":"Info Ltd","aliasname":"Infy"}	{"roadnum":1002,"street":" Main Road","city":"Ganchibouli","state":"Hyd"}	[87,76,81,77,79]	{"india":true,"Asia":false,"japan":true}
+10110003	{"actualname":"Inf Ltd","aliasname":"Infy"}	{"roadnum":1003,"street":"ISB Main Road","city":"Ganchibouli","state":"Hyd"}	[87,76,81,77,79]	{"US":true,"US":false,"japan":true}
+10110004	{"actualname":"Informatica Ltd","aliasname":"Infy"}	{"roadnum":1004,"street":"ISB Main Road","city":"Ganchibouli","state":"Hyd"}	[87,76,81,77,79]{"INDIA":true,"Asia":false,"japan":true}
+NULL	null	null	null	null
+Time taken: 0.107 seconds
+
+//to see only company name(full company name,aliasname)
+
+hive> select companyname from collectmantab44;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0006, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0006
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0006
+2014-12-26 22:45:44,797 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0006
+OK
+{"actualname":"Infosys Ltd","aliasname":"Infy"}
+{"actualname":"Info Ltd","aliasname":"Infy"}
+{"actualname":"Inf Ltd","aliasname":"Infy"}
+{"actualname":"Informatica Ltd","aliasname":"Infy"}
+null
+Time taken: 6.479 seconds
+
+
+//want to get only aliasname of company only.
+hive> select companyname.aliasname from collectmantab44; 
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Ended Job = job_201412261924_0007
+OK
+Infy
+Infy
+Infy
+Infy
+NULL
+Time taken: 6.378 seconds
+
+//we want to see the actualname, aliasname indivisually;
+hive> select companyname.actualname , companyname.aliasname from collectmantab44;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0008, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0008
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0008
+2014-12-26 23:13:25,756 Stage-1 map = 0%,  reduce = 0%
+2014-12-26 23:13:28,773 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0008
+OK
+Infosys Ltd	Infy
+Info Ltd	Infy
+Inf Ltd	Infy
+Informatica Ltd	Infy
+NULL	NULL
+Time taken: 6.368 seconds
+
+hive> desc collectmantab44;
+OK
+companyid	bigint	
+companyname	struct<actualName:string,aliasname:string>	
+companyaddress	struct<roadnum:int,street:string,city:string,state:string>	
+previous_revenues	array<smallint>	
+growth_preferences	map<string,boolean>	
+Time taken: 0.065 seconds
+
+//if we want see previous_revenuesn in same table then,
+hive> select previous_revenues from collectmantab44;
+
+2014-12-26 23:20:25,172 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0009
+OK
+[87,76,81,77,79]
+[87,76,81,77,79]
+[87,76,81,77,79]
+[87,76,81,77,79]
+null
+Time taken: 5.361 seconds
+
+//for same if we want see previous_revenues at 3rd position [2] then
+hive> select previous_revenues[2] from collectmantab44;
+
+2014-12-26 23:20:41,962 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0010
+OK
+81
+81
+81
+81
+NULL
+Time taken: 6.364 seconds
+
+//Order By Vs Sort BY:
+//order by:alwaysMake Use of single reducer only
+//Sort by:why required in hive w.r.t. to performance it is used(no of reducer wr.t.to volume of data).
+
+hive> select * from stab4 ORDER BY bankid; 
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+-->Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_201412261924_0012, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0012
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0012
+2014-12-26 23:45:29,618 Stage-1 map = 0%,  reduce = 0%
+2014-12-26 23:45:31,627 Stage-1 map = 100%,  reduce = 0%
+2014-12-26 23:45:38,682 Stage-1 map = 100%,  reduce = 33%
+2014-12-26 23:45:39,687 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0012
+OK
+	NULL	NULL	UGANDA
+	NULL	NULL	NAMBIA
+	NULL	NULL	NAMBIA
+	NULL	NULL	UGANDA
+	NULL	NULL	NIGERIA
+	NULL	NULL	NIGERIA
+10101	_SBA_UG	SBA_Weekly_BankReport	UGANDA
+10101	_SBA_NM	SBA_Weekly_BankReport	NIGERIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+10101	_SBA_NG	SBA_Weekly_BankReport	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10201	_SBA_NG	SBA_Weekly_Bank_Report	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NIGERIA
+10201	_SBA_UG	SBA_Weekly_Bank_Report	UGANDA
+10301	_SBA_NG	SBA_Daily_BankReport	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NIGERIA
+10301	_SBA_UG	SBA_Daily_BankReport	UGANDA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NG	SBA_Monthly_BankReport	NAMBIA
+10401	_SBA_UG	SBA_Monthly_BankReport	UGANDA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NIGERIA
+Time taken: 15.054 seconds
+//here we get data with ORDER BY passion.
+
+//so diif between ORDER BY AND SORTBY WE CAN SEE FROM HERE SEE CAREFULLY
+
+ive> select * from stab4 SORT BY bankid; 
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to c.......................................
+2014-12-26 23:47:58,344 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0013
+OK
+	NULL	NULL	UGANDA
+	NULL	NULL	NAMBIA
+	NULL	NULL	NAMBIA
+	NULL	NULL	UGANDA
+	NULL	NULL	NIGERIA
+	NULL	NULL	NIGERIA
+10101	_SBA_UG	SBA_Weekly_BankReport	UGANDA
+10101	_SBA_NM	SBA_Weekly_BankReport	NIGERIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+10101	_SBA_NG	SBA_Weekly_BankReport	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10201	_SBA_NG	SBA_Weekly_Bank_Report	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NIGERIA
+10201	_SBA_UG	SBA_Weekly_Bank_Report	UGANDA
+10301	_SBA_NG	SBA_Daily_BankReport	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NIGERIA
+10301	_SBA_UG	SBA_Daily_BankReport	UGANDA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NG	SBA_Monthly_BankReport	NAMBIA
+10401	_SBA_UG	SBA_Monthly_BankReport	UGANDA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NIGERIA
+Time taken: 14.627 seconds
+
+//DISTRIBUTED BY:
+
+hive>select * from stab4 DISTRIBUTE BY bankid;
+
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_201412261924_0014, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0014
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0014
+2014-12-27 00:18:12,454 Stage-1 map = 100%,  reduce = 0%
+2014-12-27 00:18:19,491 Stage-1 map = 100%,  reduce = 33%
+2014-12-27 00:18:20,495 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0014
+OK
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+	NULL	NULL	NAMBIA
+	NULL	NULL	NAMBIA
+10201	_SBA_NG	SBA_Weekly_Bank_Report	NAMBIA
+10301	_SBA_NG	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NG	SBA_Monthly_BankReport	NAMBIA
+10101	_SBA_NG	SBA_Weekly_BankReport	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NIGERIA
+10301	_SBA_NM	SBA_Daily_BankReport	NIGERIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NIGERIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NIGERIA
+	NULL	NULL	NIGERIA
+	NULL	NULL	NIGERIA
+10201	_SBA_UG	SBA_Weekly_Bank_Report	UGANDA
+10301	_SBA_UG	SBA_Daily_BankReport	UGANDA
+10401	_SBA_UG	SBA_Monthly_BankReport	UGANDA
+10101	_SBA_UG	SBA_Weekly_BankReport	UGANDA
+	NULL	NULL	UGANDA
+	NULL	NULL	UGANDA
+Time taken: 14.521 seconds
+
+hive> select * from stab4 DISTRIBUTE BY bankid SORT BY bankid ;
+
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+2014-12-27 01:22:07,519 Stage-1 map = 100%,  reduce = 0%
+2014-12-27 01:22:14,585 Stage-1 map = 100%,  reduce = 33%
+2014-12-27 01:22:15,589 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0015
+OK
+	NULL	NULL	UGANDA
+	NULL	NULL	NAMBIA
+	NULL	NULL	NAMBIA
+	NULL	NULL	UGANDA
+	NULL	NULL	NIGERIA
+	NULL	NULL	NIGERIA
+10101	_SBA_UG	SBA_Weekly_BankReport	UGANDA
+10101	_SBA_NM	SBA_Weekly_BankReport	NIGERIA
+10101	_SBA_NM	SBA_Weekly_BankReport	NAMBIA
+10101	_SBA_NG	SBA_Weekly_BankReport	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NAMBIA
+10201	_SBA_NG	SBA_Weekly_Bank_Report	NAMBIA
+10201	_SBA_NM	SBA_Weekly_Bank_Report	NIGERIA
+10201	_SBA_UG	SBA_Weekly_Bank_Report	UGANDA
+10301	_SBA_NG	SBA_Daily_BankReport	NAMBIA
+10301	_SBA_NM	SBA_Daily_BankReport	NIGERIA
+10301	_SBA_UG	SBA_Daily_BankReport	UGANDA
+10301	_SBA_NM	SBA_Daily_BankReport	NAMBIA
+10401	_SBA_NG	SBA_Monthly_BankReport	NAMBIA
+10401	_SBA_UG	SBA_Monthly_BankReport	UGANDA
+10401	_SBA_NM	SBA_Monthly_BankReport	NAMBIA
+10401	_SBA_NM	SBA_Monthly_BankReport	NIGERIA
+Time taken: 17.277 seconds
+
+
+//thios is our i/p file
+     
+	File: ciscodatalogdata.log                                                                                      
+
+10101|Network Related issue|sanjose|2011-11-10|10:10:10
+10201|Router Related issue|Rose City|2012-12-09|09:10:07
+10301|Hub related issue|Newyork|2010-03-02|09:07:30
+
+
+
+
+//USING UDFS IN HIVE:
+//WE CREATING TABLE
+root@ubuntu:/home/mrinmoy/Hive# hive
+
+
+hive> select logid,temp42(logerror),logloc,logloc,logdate from ciscotab4;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0018, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0018
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0018
+2014-12-27 04:51:31,801 Stage-1 map = 0%,  reduce = 0%
+2014-12-27 04:51:33,857 Stage-1 map = 100%,  reduce = 0%
+2014-12-27 04:51:35,867 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0018
+OK
+10101	Network Related issue	sanjose	sanjose	2011-11-10
+10201	Router Related issue	Rose City	Rose City	2012-12-09
+10301	Hub related issue	Newyork	Newyork	2010-03-02
+Time taken: 6.98 seconds
+
+//in issue _____>iss only you see here,See carefully.
+hive> select logid,temp42((logerror),'ue'),logloc,logloc,logdate from ciscotab4;                    
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0019, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0019
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0019
+2014-12-27 04:54:06,930 Stage-1 map = 0%,  reduce = 0%
+2014-12-27 04:54:08,972 Stage-1 map = 100%,  reduce = 0%
+2014-12-27 04:54:10,983 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0019
+OK
+10101	Network Related iss	sanjose	sanjose	2011-11-10
+10201	Router Related iss	Rose City	Rose City	2012-12-09
+10301	Hub related iss	Newyork	Newyork	2010-03-02
+Time taken: 6.742 seconds
+hive> 
+
+
+
+
+//UDAF USING HIVE
+//some usecase bis left UDAF upate the same here]
+
+
+
+//these are some HIVE UDAF regarding format
+//we take a table 'collectmantab42'
+hive> desc collectmantab4;
+OK
+companyid	bigint	
+companyname	struct<actualName:string,aliasname:string>	
+companyaddress	struct<roadnum:int,street:string,city:string,state:string>	
+previous_revenues	array<smallint>	
+growth_preferences	map<string,boolean>	
+Time taken: 0.079 seconds
+
+hive> select previous_revenues from collectmantab4
+    > where companyid = 10110001;                 
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0022, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0022
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0022
+2014-12-27 05:14:06,719 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0022
+OK
+[87,76,81,77,79]
+Time taken: 7.136 seconds
+
+
+//want to see single value out the multiformat ways
+hive> select EXPLODE(previous_revenues)                    
+    > as previous_revenues from collectmantab4
+    > where companyid = 10110001;             
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0023, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0023
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0023
+2014-12-27 05:20:57,719 Stage-1 map = 0%,  reduce = 0%
+2014-12-27 05:20:58,736 Stage-1 map = 100%,  reduce = 0%
+2014-12-27 05:21:00,746 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0023
+OK
+87
+76
+81
+77
+79
+Time taken: 7.114 seconds
+hive> 
+
+
+
+
+//BUCKETING CONCEPTS IN HIVE:
+PARTITIONING WITH CONCEPT WE ARE GOING TO PROVIDE THE DATA.
+//!.CREATE TABLE 
+
+hive> create table sampletab42(id int,name string,sal int)
+    > row format delimited
+    > fields terminated by '\t'
+    > stored as textfile;
+OK
+Time taken: 6.377 seconds
+
+//PUT 3.LOG FILE IN THE SAME O/P
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat data1.log
+200	xxxx	120000
+201	yyyy	140000
+202	zzzz	160000
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat data2.log
+200	xxxx	120000
+201	yyyy	140000
+202	zzzz	160000
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# cat data3.log
+100	xxxxx	740000
+102	yyyyy	650000
+103	zzzzz	700000
+104	sssss	800000
+
+
+//load same data in the file
+hive> load data local inpath '/home/mrinmoy/Hive/data1.log' into table sampletab42;
+
+hive> load data local inpath '/home/mrinmoy/Hive/mantabq/data2.log' into table sampletab42;
+
+hive> load data local inpath '/home/mrinmoy/Hive/mantabq/data3.log' into table sampletab42;
+
+
+
+//now see the output in one table only
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -ls /user/hive/warehouse/sampletab42;
+Found 3 items
+-rw-r--r--   1 root supergroup         48 2014-12-27 05:28 /user/hive/warehouse/sampletab42/data1.log
+-rw-r--r--   1 root supergroup         49 2014-12-27 05:28 /user/hive/warehouse/sampletab42/data2.log
+-rw-r--r--   1 root supergroup         69 2014-12-27 05:28 /user/hive/warehouse/sampletab42/data3.log
+
+
+hive> select * from sampletab42;                                                           
+OK
+200	xxxx	120000
+201	yyyy	140000
+202	zzzz	160000
+200	xxxx	120000
+201	yyyy	140000
+202	zzzz	160000
+NULL	NULL	NULL
+100	xxxxx	740000
+102	yyyyy	650000
+103	zzzzz	700000
+104	sssss	800000
+NULL	NULL	NULL
+Time taken: 0.19 seconds
+
+_______________________________________________________
+//now this data--->all this data divided into --->bucketable--->create it!
+
+hive> create table bucketab42(id int,name string,sal int)
+    > CLUSTERED BY(id) INTO 4 BUCKETS
+    > row format delimited
+    > fields terminated by '\t'
+    > stored as textfile;
+OK
+Time taken: 0.098 seconds
+hive> desc bucket
+
+bucket    buckets
+hive> desc bucketab42;
+OK
+id	int	
+name	string	
+sal	int	
+Time taken: 0.081 seconds
+hive> INSERT OVERWRITE TABLE bucketab42 SELECT * FROM sampletab42;
+Total MapReduce jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_201412261924_0024, Tracking URL = http://localhost:50030/jobdetails.jsp?jobid=job_201412261924_0024
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=localhost:8021 -kill job_201412261924_0024
+2014-12-27 05:42:49,694 Stage-1 map = 0%,  reduce = 0%
+2014-12-27 05:42:51,708 Stage-1 map = 100%,  reduce = 0%
+2014-12-27 05:42:53,738 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_201412261924_0024
+Ended Job = -1015500719, job is filtered out (removed at runtime).
+Moving data to: hdfs://localhost:8020/tmp/hive-root/hive_2014-12-27_05-42-45_175_1010848256886864994/-ext-10000
+Loading data to table default.bucketab42
+
+Deleted hdfs://localhost:8020/user/hive/warehouse/bucketab42
+Table default.bucketab42 stats: [num_partitions: 0, num_files: 1, num_rows: 0, total_size: 182]
+12 Rows loaded to bucketab42
+OK
+Time taken: 8.825 seconds
+hive> 
+
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -ls /user/hive/warehouse/bucketab42;
+Found 1 items
+-rw-r--r--   1 root supergroup        182 2014-12-27 05:42 /user/hive/warehouse/bucketab42/000000_0
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -cat /user/hive/warehouse/bucketab42/000000_0;
+200	xxxx	120000
+201	yyyy	140000
+202	zzzz	160000
+200	xxxx	120000
+201	yyyy	140000
+202	zzzz	160000
+\N	\N	\N
+100	xxxxx	740000
+102	yyyyy	650000
+103	zzzzz	700000
+104	sssss	800000
+\N	\N	\N
+//here we get data ion one bucket only.
+
+
+//if we want data in single format
+then__________________
+just put**********
+hive>SET hive.enforce.bucketing =true;
+//so format go in this way
+hive> SET hive.enforce.bucketing=true;                            
+hive> INSERT OVERWRITE TABLE bucketab42 SELECT * FROM sampletab42;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 4
+In .......................................................................
+Table default.bucketab42 stats: [num_partitions: 0, num_files: 4, num_rows: 0, total_size: 182]
+12 Rows loaded to bucketab42
+OK
+Time taken: 34.07 seconds
+//see the particular output
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -ls /user/hive/warehouse/bucketab42
+Found 4 items
+-rw-r--r--   1 root supergroup         84 2014-12-27 05:50 /user/hive/warehouse/bucketab42/000000_0
+-rw-r--r--   1 root supergroup         32 2014-12-27 05:50 /user/hive/warehouse/bucketab42/000001_0
+-rw-r--r--   1 root supergroup         49 2014-12-27 05:50 /user/hive/warehouse/bucketab42/000002_0
+-rw-r--r--   1 root supergroup         17 2014-12-27 05:50 /user/hive/warehouse/bucketab42/000003_0
+
+
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -cat /user/hive/warehouse/bucketab42/000000_0;
+200	xxxx	120000
+200	xxxx	120000
+\N	\N	\N
+100	xxxxx	740000
+104	sssss	800000
+\N	\N	\N
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -cat /user/hive/warehouse/bucketab42/000001_0;
+201	yyyy	140000
+201	yyyy	140000
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -cat /user/hive/warehouse/bucketab42/000002_0;
+202	zzzz	160000
+202	zzzz	160000
+102	yyyyy	650000
+root@ubuntu:/home/mrinmoy/Hive/mantabq# hadoop fs -cat /user/hive/warehouse/bucketab42/000003_0;
+103	zzzzz	700000
+
+max to max 6 buckets we use in real time
+//diff between partitioning and in this is 
+
+////****************END OF HIVE***********************
+
+
+
+
+

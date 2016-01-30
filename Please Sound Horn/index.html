@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title> Please Sound Horn</title>
+    <!--REQUIRED STYLE SHEETS-->
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLE CSS -->
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <!--ANIMATED FONTAWESOME STYLE CSS -->
+    <link href="assets/css/font-awesome-animation.css" rel="stylesheet" />
+       <!-- CUSTOM STYLE CSS -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <!-- GOOGLE FONT -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body >
+       <!-- NAV SECTION -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">PleaseSoundHorn</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#home-sec">HOME</a></li>
+                    <li><a href="#services-sec">BOOK NOW</a></li>
+                     <li><a href="#price-sec"> SUPPLY CHAIN</a></li>
+                    <li><a href="#contact-sec">CONTACT</a></li>
+                </ul>
+            </div>
+           
+        </div>
+    </div>
+     <!--END NAV SECTION -->
+    
+    <!--HOME SECTION-->
+    <div id="home-sec">
+
+   
+    <div class="container" id="home" >
+        <div class="row text-center g-pad-bottom">
+            <div class="col-md-12">
+                
+                <span class="head-main"></span>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-3  col-sm-4">
+                 <a href=" #services-sec"> <img src= "images.png"></a>
+
+                          <font color="black">  <h4>Get a Truck Now in Minutes </h4>
+                            <p>Our prices start from as low as Rs150/-. Save your time by getting the best deal within minutes.
+                                
+                            </p></font>
+                           
+                </div> 
+             <div class="col-md-4  col-sm-4">
+              
+                            <h4> </h4>
+                            <p> </h4>
+                            <p>
+                                                                
+                            </p>
+                           
+                </div>
+            <div class="col-md-5  col-sm-5">
+                 
+                            <h4>  </h4>
+                            <p>
+                               
+                            </p>
+                           
+                </div>
+            </div>
+        
+    </div>
+         </div>
+    
+    <!--END HOME SECTION-->
+    <!--SERVICES SECTION-->    
+    <section  id="services-sec" >
+               
+  <div class="container">
+            
+   <section id ="bookForm"> 
+   <h1 class="hero-text animated fadeInDown"><b>BOOKING FORM</b></h1>
+  <div  class="container" style="padding-top:10px;padding-bottom:10px">
+   
+    <!-- <div class='animatedParent'>
+<h2 class='animated bounceInDown'>It Works!</h2>
+</div>  --> 
+      <form role="form" id="email-form" class="row wow tada" "> 
+        <div class="col-md-6">
+        <div class="form-group">
+          <label for="inputSubject">Name</label>
+          <input type="text" class="form-control" id="Name" placeholder="Full Name" required>
+        </div>
+        <div class="form-group">
+          <label for="inputSubject"> Phone Number</label>
+          <input type="text" class="form-control" id="Contact" placeholder="Contact number" required>
+        </div>
+         <div class="form-group">
+          <label for="inputEmail">Email ID </label>
+          <input type="email" data-fv-emailaddress-multiple="true" class="form-control" id="Email" placeholder="Enter your active email ID" required>
+        </div>
+        <div class="row form-group">
+          <div class="col-xs-3">
+            <label for="inputSubject">Place(to)</label>
+            <input type="text" class="form-control" id="To" placeholder="to">
+          </div>
+          <div class="col-xs-3">
+            <label for="inputBody">Place(from)</label>
+            <input type="text" class="form-control" id="From" placeholder="from">
+          </div>
+  
+        </div>
+         
+      </div>
+      <div class="col-md-6">
+    
+
+        
+        <div class="form-group wow fadeIn">
+         
+          <label for="inputDateBook">Booking date</label>
+          <div class="input-group datetimepicker">
+             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+             <input name="idInput" id="BookDate" class="set-due-date form-control" type="date"/>
+           </div>
+        </div>
+
+
+        <div class="form-group wow fadeIn">
+          <label for="inputVehicle">Select a vehicle </label>
+          
+           <select name="vehicleSelect">
+               {{#each vehicleSelect}}
+                  <option value="{{vId}}">Mini-truck</option>
+				  <option value="{{vId}}">Tata Ace</option>
+          <option value="{{vId}}">Tata Super Ace</option>
+          <option value="{{vId}}">Tata 407</option>
+          <option value="{{vId}}">Truck</option>
+          <option value="{{vId}}">Eicher DCM 14ft</option>
+          <option value="{{vId}}">Eicher DCM 17ft</option>
+          <option value="{{vId}}">Construction Equipment</option>
+               {{/each}}
+           </select>
+        </div>
+            <div class="form-group">
+          <label for="inputSubject">Load Description</label>
+          <input type="text" class="form-control" id="inputLoad" placeholder="Details about load ">
+        </div>
+      </div>
+  
+        <button id="saveBookButton" type ="submit" class = "btn btn-primary btn-lg btn-block row">BOOK NOW</button> 
+          
+		  		  </form>
+				  </div>
+		</div>
+			
+				  <div class="row ">
+                <div class="col-md-12">
+                      <div class="col-md-8 col-sm-8">
+                          <h2>About Please Sound Horn </h2>
+                    <p>
+pleasesoundhorn.in is a pioneer in providing Indian customers a complete solution for their logsitic needs. We assist our customers with everything starting with booking a mini-truck to setting up a complete logistic solution for oragnisations and industries.
+                    </p>
+                    </div>
+                  
+                    <div class="col-md-4 col-sm-4">
+                    <h2>#pshroadsafety </h2>
+                    <p>
+Join our road safety Campaign and lets together spread the awarness and need of road safety to reduce the number of accidents happening.
+                    </p>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row text-center">
+            <div class="col-md-4  col-sm-4">
+                 <i class="fa fa-fax faa-horizontal animated icon-round bk-color-black"></i>
+                            <h4> Track your Goods (Coming Soon)	 </h4>
+                            <p>
+                                 No need to keep calling the driver to know about his whereabouts, especially when delivery needs to be on-time. track the vehicle from app/web based tracking.
+                            </p>
+                           
+                </div>
+             <div class="col-md-4  col-sm-4">
+                 <i class="fa fa-bomb  faa-pulse animated icon-round bk-color-blue"></i>
+                            <h4>Multiple Pick-up/Drop points</h4>
+                            <p>
+							Trouble finding a single truck to pick up goods from different locations?? Introducing the concept of multiple pickups through which you can book a mini-truck to pick up goods at different places.
+                                
+                            </p>
+                           
+                </div>
+            <div class="col-md-4  col-sm-4">
+                  <i class="fa fa-paw  faa-bounce animated icon-round bk-color-brown"></i>
+                            <h4>Get a Truck for Any load</h4>
+                            <p>
+                                We have different means of transport at our disposal suitable for the requirements of different sectors.Our suite of vehicles include Tata Ace, Tata Super Ace, Tata 407, Eicher DCM, Trucks(All types) and Construction equipment.
+                            </p>
+                           
+                </div>
+           
+            </div>
+  </div>
+    </section>
+    <!--END SERVICES SECTION-->
+     <!--STATS SECTION-->
+    <section class="c-sts" id="sts-img">
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-9 ">
+                    <div class="stats-div">
+                        <h3>  </h3>
+                         <h4></h4>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3 ">
+                    <div class="stats-div">
+                        <h3></h3>
+                        <h4></h4>
+                    </div>
+
+                </div>
+                
+               
+            </div>
+        </div>
+    </section>
+    <!--END STATS SECTION-->
+     <!--PRICE SECTION-->
+    <section id="price-sec">
+	<h1 class="hero-text animated fadeInDown"><b>Supply Chain Management</b></h1>
+											  <p> 
+	                 Supply chain management for your On Demand business. We take care of your logistics while you focus on your customers. A gist of our services.
+	                                          <p>
+        <div class="container">
+            <div class="row ">
+                                 <div class="col-md-12 text-center ">
+                    <div class="col-md-4 col-sm-4">
+                        <ul class="plan">
+                            <li class="plan-head btn-danger">Hassle-Free Dispatch</li>
+                           
+                            <li><strong>Single Platform </li>
+                            <li><strong> Low Operation Costs</li>
+                            <li><strong> Happy Customers</li>
+                            <li><strong> Track your order live</li>
+                            <li class="bottom">
+                                <a href="#" class="btn btn-danger btn-lg ">Read More</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4  col-sm-4">
+                        <ul class="plan">
+                            <li class="plan-head btn-primary">Smart Technology</li>
+                            
+                            <li><strong> Real-time alerts</li>
+                            <li><strong> Simpler User Interface</li>
+                            <li><strong> Improved Efficiency</li>
+                            <li><strong> Supply Chain Design </li>
+                                                        <li class="bottom">
+                                <a href="#" class="btn btn-primary btn-lg ">Read More</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4  col-sm-4">
+                        <ul class="plan">
+                            <li class="plan-head btn-success"> Data Analytics </li>
+                         
+                            <li><strong> Out smart your competition</li>
+                            <li><strong> Data For Business Intellgence</li>
+                            <li><strong> Demand Planning intelligence</li>
+                            <li><strong> Service Supply Chain</li>
+                            <li class="bottom">
+                                <a href="#" class="btn btn-success btn-lg">Read More</a>
+                            </li>
+                        </ul>
+                    </div>
+                
+
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+    <!-- END PRICE SECTION-->
+   
+
+    <!--CONTACT SECTION-->
+    
+    <section  id="contact-sec">
+       
+   <div class="add">
+ <i>Address: </i> Kavitha Residency, Madhapur, Hyderabad-500081
+   </div>
+       
+         </section>
+    <!--END CONTACT SECTION-->
+
+   
+
+    <!--FOOTER SECTION -->
+    <div id="footer">
+        2015 www.pleasesoundhorn.in | All Right Reserved  
+         
+    </div>
+    <!-- END FOOTER SECTION -->
+
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="assets/plugins/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP CORE SCRIPT   -->
+    <script src="assets/plugins/bootstrap.js"></script>
+  
+    <!-- CUSTOM SCRIPTS -->
+    <script src="assets/js/custom.js"></script>
+
+</body>
+</html>

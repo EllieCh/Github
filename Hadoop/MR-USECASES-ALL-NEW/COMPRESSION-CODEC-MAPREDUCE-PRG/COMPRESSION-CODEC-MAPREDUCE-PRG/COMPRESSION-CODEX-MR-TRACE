@@ -1,0 +1,83 @@
+COMPRESSION CODEC EXAMPLE
+==========================
+
+
+root@ubuntu:/home/Gopal/MapReduce# cp /home/mrinmoy/Downloads/PIG-Latin/COMPRESSCODEC.jar .
+root@ubuntu:/home/Gopal/MapReduce# cp /home/mrinmoy/Downloads/PIG-Latin/Batsman_Scores.txt .
+root@ubuntu:/home/Gopal/MapReduce# ll
+total 188
+drwxr-xr-x  3 root root   4096 2013-08-07 05:12 ./
+drwxr-xr-x 22 root root   4096 2013-08-06 05:44 ../
+-rwxr--r--  1 root root    678 2013-08-07 05:12 Batsman_Scores.txt*
+-rwxr--r--  1 root root   4000 2013-08-07 05:12 COMPRESSCODEC.jar*
+drwxr-xr-x  2 root root   4096 2012-11-18 04:14 GenMROutput/
+-rw-r--r--  1 root root 142552 2012-11-19 03:20 hadoop-examples-0.20.2-cdh3u5.jar
+-rwxr--r--  1 root root   1232 2013-03-04 06:14 Input.txt*
+-rwxr--r--  1 root root   4020 2012-11-18 03:55 MR.txt*
+-rwxr--r--  1 root root   5370 2013-08-07 04:33 SORTING.jar*
+-rwxr--r--  1 root root     26 2013-08-07 04:33 sort.txt*
+-rwxr--r--  1 root root   3988 2013-01-15 06:57 WordCountNew.jar*
+-rwxr--r--  1 root root   2213 2012-11-18 03:55 WordCountNew.java*
+root@ubuntu:/home/Gopal/MapReduce# 
+root@ubuntu:/home/Gopal/MapReduce# hadoop fs -mkdir /MR-CompressionInput
+root@ubuntu:/home/Gopal/MapReduce# hadoop fs -put Batsman_Scores.txt /MR-CompressionInput
+root@ubuntu:/home/Gopal/MapReduce# hadoop fs -ls /MR-CompressionInput
+Found 1 items
+-rw-r--r--   1 root supergroup        678 2013-08-07 05:13 /MR-CompressionInput/Batsman_Scores.txt
+root@ubuntu:/home/Gopal/MapReduce# 
+root@ubuntu:/home/Gopal/MapReduce# hadoop jar COMPRESSCODEC.jar com/gopal/compressTest/Driver /MR-CompressionInput/Batsman_Scores.txt /MR-CompressionOutput
+13/08/07 05:15:00 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/08/07 05:15:01 WARN snappy.LoadSnappy: Snappy native library is available
+13/08/07 05:15:01 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/08/07 05:15:01 INFO snappy.LoadSnappy: Snappy native library loaded
+13/08/07 05:15:01 INFO mapred.FileInputFormat: Total input paths to process : 1
+13/08/07 05:15:04 INFO mapred.JobClient: Running job: job_201308070430_0002
+13/08/07 05:15:05 INFO mapred.JobClient:  map 0% reduce 0%
+13/08/07 05:15:43 INFO mapred.JobClient:  map 50% reduce 0%
+13/08/07 05:15:44 INFO mapred.JobClient:  map 100% reduce 0%
+13/08/07 05:15:52 INFO mapred.JobClient:  map 100% reduce 33%
+13/08/07 05:15:54 INFO mapred.JobClient:  map 100% reduce 100%
+13/08/07 05:15:56 INFO mapred.JobClient: Job complete: job_201308070430_0002
+13/08/07 05:15:56 INFO mapred.JobClient: Counters: 27
+13/08/07 05:15:56 INFO mapred.JobClient:   Job Counters 
+13/08/07 05:15:56 INFO mapred.JobClient:     Launched reduce tasks=1
+13/08/07 05:15:56 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=64317
+13/08/07 05:15:56 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/08/07 05:15:56 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/08/07 05:15:56 INFO mapred.JobClient:     Launched map tasks=2
+13/08/07 05:15:56 INFO mapred.JobClient:     Data-local map tasks=2
+13/08/07 05:15:56 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=10409
+13/08/07 05:15:56 INFO mapred.JobClient:   FileSystemCounters
+13/08/07 05:15:56 INFO mapred.JobClient:     FILE_BYTES_READ=214
+13/08/07 05:15:56 INFO mapred.JobClient:     HDFS_BYTES_READ=1244
+13/08/07 05:15:56 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=177037
+13/08/07 05:15:56 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=101
+13/08/07 05:15:56 INFO mapred.JobClient:   Map-Reduce Framework
+13/08/07 05:15:56 INFO mapred.JobClient:     Map input records=16
+13/08/07 05:15:56 INFO mapred.JobClient:     Reduce shuffle bytes=220
+13/08/07 05:15:56 INFO mapred.JobClient:     Spilled Records=32
+13/08/07 05:15:56 INFO mapred.JobClient:     Map output bytes=176
+13/08/07 05:15:56 INFO mapred.JobClient:     CPU time spent (ms)=37080
+13/08/07 05:15:56 INFO mapred.JobClient:     Total committed heap usage (bytes)=342491136
+13/08/07 05:15:56 INFO mapred.JobClient:     Map input bytes=678
+13/08/07 05:15:56 INFO mapred.JobClient:     Combine input records=0
+13/08/07 05:15:56 INFO mapred.JobClient:     SPLIT_RAW_BYTES=226
+13/08/07 05:15:56 INFO mapred.JobClient:     Reduce input records=16
+13/08/07 05:15:56 INFO mapred.JobClient:     Reduce input groups=8
+13/08/07 05:15:56 INFO mapred.JobClient:     Combine output records=0
+13/08/07 05:15:56 INFO mapred.JobClient:     Physical memory (bytes) snapshot=578850816
+13/08/07 05:15:56 INFO mapred.JobClient:     Reduce output records=8
+13/08/07 05:15:56 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1357373440
+13/08/07 05:15:56 INFO mapred.JobClient:     Map output records=16
+root@ubuntu:/home/Gopal/MapReduce# 
+root@ubuntu:/home/Gopal/MapReduce# 
+root@ubuntu:/home/Gopal/MapReduce# hadoop fs -ls /MR-CompressionOutput
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2013-08-07 05:15 /MR-CompressionOutput/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2013-08-07 05:15 /MR-CompressionOutput/_logs
+-rw-r--r--   1 root supergroup        101 2013-08-07 05:15 /MR-CompressionOutput/part-00000.gz
+root@ubuntu:/home/Gopal/MapReduce# 
+root@ubuntu:/home/Gopal/MapReduce# hadoop fs -cat /MR-CompressionOutput/part-00000.gz
+�A@0���i:�����	~ThҎ���z�E� �����Xǭ�((�=w�9$�q���s(Uby��L�P�<bZ��5�?���,Vroot@ubuntu:/home/Gopal/MapReduce# 
+
+

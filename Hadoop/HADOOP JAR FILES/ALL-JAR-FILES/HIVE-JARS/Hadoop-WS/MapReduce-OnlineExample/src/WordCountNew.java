@@ -1,0 +1,71 @@
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+
+public class WordCountNew {
+
+  public static class TokenizerMapper
+       extends Mapper<Object, Text, Text, IntWritable>{
+
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+
+    public void map(Object key, Text value, Context context
+                    ) throws IOException, InterruptedException {
+      StringTokenizer itr = new StringTokenizer(value.toString());
+      //hadoop is having good market now
+      while (itr.hasMoreTokens()) {//hadoop   itr
+        word.set(itr.nextToken());//           is , having,good,market
+        context.write(word, one);//hadoop,1  is,1 , having,1  good,1
+      }
+    }
+  }
+
+  public static class IntSumReducer
+       extends Reducer<Text,IntWritable,Text,IntWritable> {
+    private IntWritable result = new IntWritable();
+
+    public void reduce(Text key, Iterable<IntWritable> values,
+                       Context context
+                       ) throws IOException, InterruptedException {
+      int sum = 0;//3
+      for (IntWritable val : values) {//1,1,1,1  for(i=0;i<=length()-1;i++)
+        sum += val.get(); //sum = sum+val.get();
+                           //2  =  3+1
+                             
+      
+      }
+      result.set(sum);//4
+      context.write(key, result);//hadoop,4
+    }
+  }
+
+  public static void main(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = new Job(conf, "word count");
+    job.setJarByClass(WordCountNew.class);
+    
+    job.setMapperClass(TokenizerMapper.class);
+    job.setCombinerClass(IntSumReducer.class);
+    job.setReducerClass(IntSumReducer.class);
+    
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
+    
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1])); 
+
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+  }
+}
+// hadooop jar WordCountNew.jar WordCountNew  /user/Gopal/MRInput/Input.txt /user/Gopal/MROutput

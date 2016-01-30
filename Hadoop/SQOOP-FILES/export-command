@@ -1,0 +1,2 @@
+sqoop export --connect jdbc:mysql://db.example.com/foo --table empexport  \
+    --export-dir /Gopal/exportdata

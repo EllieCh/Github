@@ -1,0 +1,69 @@
+SQOOP-AVRO FILE
+===============
+root@ubuntu:/home/Gopal# sqoop import --connect jdbc:mysql://localhost/Gopal_Lab --table emp --target-dir /ImportToolAvro --as-avrodatafile -m 1;
+13/08/06 05:25:44 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+13/08/06 05:25:44 INFO tool.CodeGenTool: Beginning code generation
+13/08/06 05:25:45 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+13/08/06 05:25:45 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+13/08/06 05:25:45 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+13/08/06 05:25:45 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+13/08/06 05:25:47 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/20957b92240a7ca9f536c381f6ca6546/emp.jar
+13/08/06 05:25:47 WARN manager.MySQLManager: It looks like you are importing from mysql.
+13/08/06 05:25:47 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+13/08/06 05:25:47 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+13/08/06 05:25:47 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+13/08/06 05:25:47 INFO mapreduce.ImportJobBase: Beginning import of emp
+13/08/06 05:25:48 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+13/08/06 05:25:57 INFO mapred.JobClient: Running job: job_201308060426_0006
+13/08/06 05:25:58 INFO mapred.JobClient:  map 0% reduce 0%
+13/08/06 05:26:09 INFO mapred.JobClient:  map 100% reduce 0%
+13/08/06 05:26:11 INFO mapred.JobClient: Job complete: job_201308060426_0006
+13/08/06 05:26:11 INFO mapred.JobClient: Counters: 16
+13/08/06 05:26:11 INFO mapred.JobClient:   Job Counters 
+13/08/06 05:26:11 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=10859
+13/08/06 05:26:11 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/08/06 05:26:11 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/08/06 05:26:11 INFO mapred.JobClient:     Launched map tasks=1
+13/08/06 05:26:11 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+13/08/06 05:26:11 INFO mapred.JobClient:   FileSystemCounters
+13/08/06 05:26:11 INFO mapred.JobClient:     HDFS_BYTES_READ=87
+13/08/06 05:26:11 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=70356
+13/08/06 05:26:11 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=665
+13/08/06 05:26:11 INFO mapred.JobClient:   Map-Reduce Framework
+13/08/06 05:26:11 INFO mapred.JobClient:     Map input records=18
+13/08/06 05:26:11 INFO mapred.JobClient:     Physical memory (bytes) snapshot=93831168
+13/08/06 05:26:11 INFO mapred.JobClient:     Spilled Records=0
+13/08/06 05:26:11 INFO mapred.JobClient:     CPU time spent (ms)=1830
+13/08/06 05:26:11 INFO mapred.JobClient:     Total committed heap usage (bytes)=39911424
+13/08/06 05:26:11 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=409632768
+13/08/06 05:26:11 INFO mapred.JobClient:     Map output records=18
+13/08/06 05:26:11 INFO mapred.JobClient:     SPLIT_RAW_BYTES=87
+13/08/06 05:26:11 INFO mapreduce.ImportJobBase: Transferred 665 bytes in 21.17 seconds (31.4124 bytes/sec)
+13/08/06 05:26:11 INFO mapreduce.ImportJobBase: Retrieved 18 records.
+
+
+
+
+
+
+root@ubuntu:/home/Gopal# hadoop fs -ls /ImportToolAvro
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2013-08-06 05:26 /ImportToolAvro/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2013-08-06 05:25 /ImportToolAvro/_logs
+-rw-r--r--   1 root supergroup        665 2013-08-06 05:26 /ImportToolAvro/part-m-00000.avro
+root@ubuntu:/home/Gopal# 
+root@ubuntu:/home/Gopal# hadoop fs -cat /ImportToolAvro/part-m-00000.avro
+Objavro.schema�{"type":"record","name":"emp","doc":"Sqoop import of emp","fields":[{"name":"empid","type":["int","null"],"columnName":"empid","sqlType":"4"},{"name":"ename","type":["string","null"],"columnName":"ename","sqlType":"12"},{"name":"esal","type":["int","null"],"columnName":"esal","sqlType":"4"}],"tableName":"emp"}H|Ls���m5�1�_�$��
+Gopal���Ravi���
+Rajan���
+          Rajeev���
+                     Neeraj���
+Madan���Manohar���Trinath��RamyaSri��
+                                          �
+                                           GopiNath���
+                                                        GopiChand���
+                                                                      GopiKrishnaІ�
+                                                                                     GopiVaraPrasad��ManmohanSingh��
+                                                                                                                        Nandha��
+                                                                                                                                �yNewName��yNewName2���yNewName3��$H|Ls���m5�1�_�root@ubuntu:/home/Gopal# 
+

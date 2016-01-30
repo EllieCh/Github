@@ -1,0 +1,469 @@
+eval -- --query
+import -- --query
+
+mysql> select * from b41;
++-------+-------+--------+
+| empid | ename | esal   |
++-------+-------+--------+
+|   100 | EMP1  |  12000 |
+|   101 | EMP2  |  22000 |
+|   102 | EMP3  |  75000 |
+|   103 | EMP4  | 850000 |
++-------+-------+--------+
+4 rows in set (0.00 sec)
+
+
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --query "select * from b41" -m 1 --target-dir /output;
+14/12/21 19:40:36 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+14/12/21 19:40:36 INFO tool.CodeGenTool: Beginning code generation
+14/12/21 19:40:37 ERROR tool.ImportTool: Encountered IOException running import job: java.io.IOException: Query [select * from b41] must contain '$CONDITIONS' in WHERE clause.
+	at com.cloudera.sqoop.manager.ConnManager.getColumnTypes(ConnManager.java:268)
+	at com.cloudera.sqoop.orm.ClassWriter.getColumnTypes(ClassWriter.java:1226)
+	at com.cloudera.sqoop.orm.ClassWriter.generate(ClassWriter.java:1051)
+	at com.cloudera.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:84)
+	at com.cloudera.sqoop.tool.ImportTool.importTable(ImportTool.java:369)
+	at com.cloudera.sqoop.tool.ImportTool.run(ImportTool.java:455)
+	at com.cloudera.sqoop.Sqoop.run(Sqoop.java:146)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:65)
+	at com.cloudera.sqoop.Sqoop.runSqoop(Sqoop.java:182)
+	at com.cloudera.sqoop.Sqoop.runTool(Sqoop.java:221)
+	at com.cloudera.sqoop.Sqoop.runTool(Sqoop.java:230)
+	at com.cloudera.sqoop.Sqoop.main(Sqoop.java:239)
+
+//error-Java.io.exception
+........i/p not there
+........problem with o/p(but these command can't work here! we have to use where $ $CONDITIONS($CONDITIONS should be part of schema name)
+//whenever we write (...import --query) we have to provide --target-dir
+//without using $CONDITIONS executions cannot possible.by using $CONDITIONS we can acieve parallism.
+//to overcome this problem .
+
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --query "select * from b41 where \$CONDITIONS" -m 1 --target-dir /outputt;
+14/12/21 20:02:04 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+14/12/21 20:02:04 INFO tool.CodeGenTool: Beginning code generation
+14/12/21 20:02:04 INFO manager.SqlManager: Executing SQL statement: select * from b41 where  (1 = 0) 
+14/12/21 20:02:04 INFO manager.SqlManager: Executing SQL statement: select * from b41 where  (1 = 0) 
+14/12/21 20:02:04 INFO manager.SqlManager: Executing SQL statement: select * from b41 where  (1 = 0) 
+14/12/21 20:02:04 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+14/12/21 20:02:04 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+14/12/21 20:02:05 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/dd25af7b6c83227d3730a92e68af28c9/QueryResult.jar
+14/12/21 20:02:05 INFO mapreduce.ImportJobBase: Beginning query import.
+14/12/21 20:02:06 INFO mapred.JobClient: Running job: job_201412211911_0004	//interally when we are using sqoop each and all converted to map& Reduce jobs only.
+14/12/21 20:02:07 INFO mapred.JobClient:  map 0% reduce 0%
+14/12/21 20:02:13 INFO mapred.JobClient:  map 100% reduce 0%
+14/12/21 20:02:14 INFO mapred.JobClient: Job complete: job_201412211911_0004
+14/12/21 20:02:14 INFO mapred.JobClient: Counters: 16
+14/12/21 20:02:14 INFO mapred.JobClient:   Job Counters 
+14/12/21 20:02:14 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=5444
+14/12/21 20:02:14 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/12/21 20:02:14 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/12/21 20:02:14 INFO mapred.JobClient:     Launched map tasks=1
+14/12/21 20:02:14 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+14/12/21 20:02:14 INFO mapred.JobClient:   FileSystemCounters
+14/12/21 20:02:14 INFO mapred.JobClient:     HDFS_BYTES_READ=87
+14/12/21 20:02:14 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=69875
+14/12/21 20:02:14 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=69
+14/12/21 20:02:14 INFO mapred.JobClient:   Map-Reduce Framework
+14/12/21 20:02:14 INFO mapred.JobClient:     Map input records=4
+14/12/21 20:02:14 INFO mapred.JobClient:     Physical memory (bytes) snapshot=108404736
+14/12/21 20:02:14 INFO mapred.JobClient:     Spilled Records=0
+14/12/21 20:02:14 INFO mapred.JobClient:     CPU time spent (ms)=780
+14/12/21 20:02:14 INFO mapred.JobClient:     Total committed heap usage (bytes)=31653888
+14/12/21 20:02:14 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=436158464
+14/12/21 20:02:14 INFO mapred.JobClient:     Map output records=4
+14/12/21 20:02:14 INFO mapred.JobClient:     SPLIT_RAW_BYTES=87
+14/12/21 20:02:14 INFO mapreduce.ImportJobBase: Transferred 69 bytes in 9.2322 seconds (7.4738 bytes/sec)
+14/12/21 20:02:14 INFO mapreduce.ImportJobBase: Retrieved 4 records.
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /outputt/part-m-00000
+100,EMP1,12000.0
+101,EMP2,22000.0
+102,EMP3,75000.0
+103,EMP4,850000.0
+
+//now form these we want o/p of whose salary greater than 22000.
+
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --query "select * from b41 where esal>22000 and  \$CONDITIONS" -m 1 --target-dir /outpu4;
+14/12/21 20:21:30 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+14/12/21 20:21:30 INFO tool.CodeGenTool: Beginning code generation
+14/12/21 20:21:30 INFO manager.SqlManager: Executing SQL statement: select * from b41 where esal>22000 and   (1 = 0) 
+14/12/21 20:21:30 INFO manager.SqlManager: Executing SQL statement: select * from b41 where esal>22000 and   (1 = 0) 
+14/12/21 20:21:30 INFO manager.SqlManager: Executing SQL statement: select * from b41 where esal>22000 and   (1 = 0) 
+14/12/21 20:21:30 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+14/12/21 20:21:30 INFO orm.CompilationManager: Found hadoop core jar at: /usr/lib/hadoop/hadoop-0.20.2-cdh3u5-core.jar
+14/12/21 20:21:31 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/ef2f129e2bb449291be505b9e63c20f0/QueryResult.jar
+14/12/21 20:21:31 INFO mapreduce.ImportJobBase: Beginning query import.
+14/12/21 20:21:36 INFO mapred.JobClient: Running job: job_201412211911_0007
+..............................................................................
+...............................................................................
+14/12/21 20:21:44 INFO mapred.JobClient: Job complete: job_201412211911_0007
+14/12/21 20:21:44 INFO mapred.JobClient: Counters: 16
+14/12/21 20:21:44 INFO mapred.JobClient:   Job Counters 
+14/12/21 20:21:44 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=5407
+.....................................................................................
+....................................................................................
+14/12/21 20:21:44 INFO mapred.JobClient:     Launched map tasks=1
+14/12/21 20:21:44 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=0
+14/12/21 20:21:44 INFO mapred.JobClient:   FileSystemCounters
+.... ..... ........ .............
+14/12/21 20:21:44 INFO mapred.JobClient:   Map-Reduce Framework
+14/12/21 20:21:44 INFO mapred.JobClient:     Map input records=2
+14/12/21 20:21:44 INFO mapreduce.ImportJobBase: Transferred 35 bytes in 12.7081 seconds (2.7541 bytes/sec)
+14/12/21 20:21:44 INFO mapreduce.ImportJobBase: Retrieved 2 records.
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /outpu4/part-m-00000  //now we will be get whose salary greater than 22000.
+102,EMP3,75000.0
+103,EMP4,850000.0
+
+
+
+
+
+//want to JOIN tables using sqoop 
+//With using only where( we can't select the particular criteria
+//import --query(maintain the complete query selct opration also!)
+
+
+//so,we create 2 tables in 
+//mysql -u root -p
+
+
+
+mysql> create database batch42;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Chaitu_Lab         |
+| Gopal_Lab          |
+| NewYearDB          |
+| RK                 |
+| Roja               |
+| aaa                |
+| b41                |
+| b42                |
+| batch17            |
+| batch42            |
+| mysql              |
+| p1                 |
++--------------------+
+13 rows in set (0.00 sec)
+
+mysql> create table emp(empid int primary key,ename varchar(50),esal double);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| empid | int(11)     | NO   | PRI | NULL    |       |
+| ename | varchar(50) | YES  |     | NULL    |       |
+| esal  | double      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into emp values(100,'EMP1',12000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(101,'EMP2',50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(102,'EMP3',70000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp values(103,'EMP4',40000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(104,'EMP5',90000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(105,'EMP6',100000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(106,'EMP7',20000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(106,'EMP7',10000);
+ERROR 1062 (23000): Duplicate entry '106' for key 'PRIMARY'
+mysql> insert into emp values(107,'EMP8',10000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from emp;
++-------+-------+--------+
+| empid | ename | esal   |
++-------+-------+--------+
+|   100 | EMP1  |  12000 |
+|   101 | EMP2  |  50000 |
+|   102 | EMP3  |  70000 |
+|   103 | EMP4  |  40000 |
+|   104 | EMP5  |  90000 |
+|   105 | EMP6  | 100000 |
+|   106 | EMP7  |  20000 |
+|   107 | EMP8  |  10000 |
++-------+-------+--------+
+8 rows in set (0.00 sec)
+
+mysql> create table dept(deptid int primarykey,
+    -> deptname varchar(50),
+    -> deptloc varchar(50),
+    -> empid int,
+    -> FOREIGN KEY(empid) REFFERENCES empid(emp));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primarykey,
+deptname varchar(50),
+deptloc varchar(50),
+empid int,
+FOREIGN KEY(em' at line 1
+mysql> create table dept(deptid int primary key, deptname varchar(50), deptloc varchar(50), empid int, FOREIGN KEY(empid) REFFERENCES empid(emp));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'REFFERENCES empid(emp))' at line 1
+mysql> create table dept(deptid int primary key, deptname varchar(50), deptloc varchar(50), empid int, FOREIGN KEY(empid) REFERENCES empid(emp));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc dept;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptid   | int(11)     | NO   | PRI | NULL    |       |
+| deptname | varchar(50) | YES  |     | NULL    |       |
+| deptloc  | varchar(50) | YES  |     | NULL    |       |
+| empid    | int(11)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into dept values(200,'HR','HYD',10000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> update dept set empid = 100 where deptid=200;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from dept;
++--------+----------+---------+-------+
+| deptid | deptname | deptloc | empid |
++--------+----------+---------+-------+
+|    200 | HR       | HYD     |   100 |
++--------+----------+---------+-------+
+1 row in set (0.00 sec)
+> insert into dept values(200,'HR','HYD',10000);
+Query OK, 1 row affected (0.00 sec)
+.........................mysql> insert into dept values(208,'FD1','NR',406);
+
+mysql> select * from dept;
++--------+----------+---------+-------+
+| deptid | deptname | deptloc | empid |
++--------+----------+---------+-------+
+|    200 | HR       | HYD     |   100 |
+|    201 | R&D      | BAN     |   101 |
+|    202 | SALES    | MUM     |   102 |
+|    203 | ADMIN    | CHN     |   401 |
+|    204 | FINANCE  | PUN     |   402 |
+|    205 | mobile   | Nsk     |   403 |
+|    206 | OT       | MUM     |   404 |
+|    207 | FD       | GOA     |   405 |
+|    208 | FD1      | NR      |   406 |
++--------+----------+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> select * from EMP;
+ERROR 1146 (42S02): Table 'b41.EMP' doesn't exist
+mysql> select * from emp;
++-------+-------+--------+
+| empid | ename | esal   |
++-------+-------+--------+
+|   100 | EMP1  |  12000 |
+|   101 | EMP2  |  50000 |
+|   102 | EMP3  |  70000 |
+|   103 | EMP4  |  40000 |
+|   104 | EMP5  |  90000 |
+|   105 | EMP6  | 100000 |
+|   106 | EMP7  |  20000 |
+|   107 | EMP8  |  10000 |
++-------+-------+--------+
+8 rows in set (0.00 sec)
+
+root@ubuntu:/home/mrinmoy# sqoop eval --connect jdbc:mysql://localhost/b41 --query "select * from emp";
+14/12/21 21:09:49 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+-------------------------------------------------------------
+| empid       | ename                | esal                 | 
+-------------------------------------------------------------
+| 100         | EMP1                 | 12000                | 
+| 101         | EMP2                 | 50000                | 
+| 102         | EMP3                 | 70000                | 
+| 103         | EMP4                 | 40000                | 
+| 104         | EMP5                 | 90000                | 
+| 105         | EMP6                 | 100000               | 
+| 106         | EMP7                 | 20000                | 
+| 107         | EMP8                 | 10000                | 
+-------------------------------------------------------------
+root@ubuntu:/home/mrinmoy# sqoop eval --connect jdbc:mysql://localhost/b41 --query "select * from dept";
+14/12/21 21:10:41 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+---------------------------------------------------------------------------
+| deptid      | deptname             | deptloc              | empid       | 
+---------------------------------------------------------------------------
+| 200         | HR                   | HYD                  | 100         | 
+| 201         | R&D                  | BAN                  | 101         | 
+| 202         | SALES                | MUM                  | 102         | 
+| 203         | ADMIN                | CHN                  | 401         | 
+| 204         | FINANCE              | PUN                  | 402         | 
+| 205         | mobile               | Nsk                  | 403         | 
+| 206         | OT                   | MUM                  | 404         | 
+| 207         | FD                   | GOA                  | 405         | 
+| 208         | FD1                  | NR                   | 406         | 
+---------------------------------------------------------------------------
+//		NOW WE ARE PERFORMIMG JOIN OPERATION;
+
+			INNER JOIN
+------------------------------------------------------------
+
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --query "select e.empid,ename,esal,deptid,deptname,deptloc from emp e JOIN dept d ON(e.empid=d.empid) and \$CONDITIONS" -m 1 --target-dir /INNERJOIN42;
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /INNERJOIN42;
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2014-12-21 21:42 /INNERJOIN42/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2014-12-21 21:42 /INNERJOIN42/_logs
+-rw-r--r--   1 root supergroup         88 2014-12-21 21:42 /INNERJOIN42/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /INNERJOIN42/part-m-00000;
+100,EMP1,12000.0,200,HR,HYD
+101,EMP2,50000.0,201,R&D,BAN
+102,EMP3,70000.0,202,SALES,MUM
+
+
+
+
+
+			LEFT OUTER JOIN
+-------------------------------------------------------------------
+
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --query "select e.empid,ename,esal,deptid,deptname,deptloc from emp e LEFT OUTER JOIN dept d ON(e.empid=d.empid) and \$CONDITIONS" -m 1 --target-dir /LEFTOUTERJOIN42;
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /LEFTOUTERJOIN42;Found 3 items
+-rw-r--r--   1 root supergroup          0 2014-12-21 21:53 /LEFTOUTERJOIN42/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2014-12-21 21:52 /LEFTOUTERJOIN42/_logs
+-rw-r--r--   1 root supergroup        249 2014-12-21 21:52 /LEFTOUTERJOIN42/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /LEFTOUTERJOIN42/part-m-00000;
+100,EMP1,12000.0,200,HR,HYD
+101,EMP2,50000.0,201,R&D,BAN
+102,EMP3,70000.0,202,SALES,MUM
+103,EMP4,40000.0,null,null,null
+104,EMP5,90000.0,null,null,null
+105,EMP6,100000.0,null,null,null
+106,EMP7,20000.0,null,null,null
+107,EMP8,10000.0,null,null,null
+
+
+		RIGHT OUTER JOIN
+-------------------------------------------------------------------------------
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --query "select e.empid,ename,esal,deptid,deptname,deptloc from emp e RIGHT OUTER JOIN dept d ON(e.empid=d.empid) and \$CONDITIONS" -m 1 --target-dir /RIGHTOUTERJOIN42;
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /RIGHTOUTERJOIN42;Found 3 items
+-rw-r--r--   1 root supergroup          0 2014-12-21 21:59 /RIGHTOUTERJOIN42/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2014-12-21 21:59 /RIGHTOUTERJOIN42/_logs
+-rw-r--r--   1 root supergroup        256 2014-12-21 21:59 /RIGHTOUTERJOIN42/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /RIGHTOUTERJOIN42/part-m-00000;
+100,EMP1,12000.0,200,HR,HYD
+101,EMP2,50000.0,201,R&D,BAN
+102,EMP3,70000.0,202,SALES,MUM
+null,null,null,203,ADMIN,CHN
+null,null,null,204,FINANCE,PUN
+null,null,null,205,mobile,Nsk
+null,null,null,206,OT,MUM
+null,null,null,207,FD,GOA
+null,null,null,208,FD1,NR
+
+
+		FULL OUTER JOIN
+------------------------------------------------------------------------------------
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --query "select e.empid,ename,esal,deptid,deptname,deptloc from emp e LEFT OUTER JOIN dept d ON(e.empid=d.empid) UNION select e.empid,ename,esal,deptid,deptname,deptloc from emp e RIGHT OUTER JOIN dept d ON(e.empid=d.empid) and \$CONDITIONS" -m 1 --target-dir /FULLJOIN42;
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /FULLJOIN42;Found 3 items
+-rw-r--r--   1 root supergroup          0 2014-12-21 22:11 /FULLJOIN42/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2014-12-21 22:11 /FULLJOIN42/_logs
+-rw-r--r--   1 root supergroup        417 2014-12-21 22:11 /FULLJOIN42/part-m-00000
+
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /FULLJOIN42/part-m-00000;
+100,EMP1,12000.0,200,HR,HYD
+101,EMP2,50000.0,201,R&D,BAN
+102,EMP3,70000.0,202,SALES,MUM
+103,EMP4,40000.0,null,null,null
+104,EMP5,90000.0,null,null,null
+105,EMP6,100000.0,null,null,null
+106,EMP7,20000.0,null,null,null
+107,EMP8,10000.0,null,null,null
+null,null,null,203,ADMIN,CHN
+null,null,null,204,FINANCE,PUN
+null,null,null,205,mobile,Nsk
+null,null,null,206,OT,MUM
+null,null,null,207,FD,GOA
+null,null,null,208,FD1,NR
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+//WAYS OF IMPORTING DATA RDBMS TO HADOOP!
+
+--1.sequence file
+M.R(binary data)-------->generally get in some file format------>but for get data in binary format as it is we used this command
+
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --table emp --as-sequencefile -m 1 --target-dir /SEQFILE42;
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /SEQFILE42;
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2014-12-21 22:21 /SEQFILE42/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2014-12-21 22:21 /SEQFILE42/_logs
+-rw-r--r--   1 root supergroup        352 2014-12-21 22:21 /SEQFILE42/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /SEQFILE42/part-m-00000;
+SEQ!org.apache.hadoop.io.LongWritableemp��N�Z)���`�T�)dEMP1@�peEMP2@�jfEMP3@�gEMP4@��hEMP5@��iEMP6@�jjEMP7@ӈkEMP8@È
+
+
+--2.AVRO FILE FORMAT
+---------------------------------------------------
+avro component is one of the component of hadoop providing serializable in hadoop !
+[...id:1 , name:'GOpal' , sal:12000]
+(key)..../........value............/
+------------------------------------------------------------------------------
+
+root@ubuntu:/home/mrinmoy# sqoop import --connect jdbc:mysql://localhost/b41 --table emp --as-avrodatafile -m 1 --target-dir /AVROFILE42;
+
+root@ubuntu:/home/mrinmoy# hadoop fs -ls /AVROFILE42;
+Found 3 items
+-rw-r--r--   1 root supergroup          0 2014-12-21 22:29 /AVROFILE42/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2014-12-21 22:29 /AVROFILE42/_logs
+-rw-r--r--   1 root supergroup        513 2014-12-21 22:29 /AVROFILE42/part-m-00000.avro
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /AVROFILE42/part-m-00000;
+cat: File does not exist: /AVROFILE42/part-m-00000
+root@ubuntu:/home/mrinmoy# hadoop fs -cat /AVROFILE42/part-m-00000.avro;
+Objavro.schema�{"type":"record","name":"emp","doc":"Sqoop import of emp","fields":[{"name":"empid","type":["int","null"],"columnName":"empid","sqlType":"4"},{"name":"ename","type":["string","null"],"columnName":"ename","sqlType":"12"},{"name":"esal","type":["double","null"],"columnName":"esal","sqlType":"8"}],"tableName":"emp"}�t�¨\�R���f�Z��EMP1p�@�EMP2j�@�EMP3�@�EMP4��@�EMP5��@�EMP6j�@�EMP7��@�EMP8��@�t�¨\�R���f�Z
+
+--3.codegen-->if we want to see whole code path.
+
+
+
+root@ubuntu:/home/mrinmoy# sqoop codegen --connect jdbc:mysql://localhost/b41 --table emp;
+...........................................................
+.......................................................
+................................
+...............14/12/21 22:34:00 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/59b78e3ba199dedf7825b126acf402cf/emp.jar
+
+root@ubuntu:/home/mirnmoy# cd /tmp/sqoop-root/compile/59b78e3ba199dedf7825b126acf402cf/
+
+root@ubuntu:/tmp/sqoop-root/compile/59b78e3ba199dedf7825b126acf402cf# ls
+emp.class  emp.jar  emp.java
+root@ubuntu:/tmp/sqoop-root/compile/59b78e3ba199dedf7825b126acf402cf# nano emp.java
+--(so now we can see the code in emp.java!)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+						--Sqoop Jobs
+
+--HOW CAN WE MAKE CONNECTION WITH TEREDATA WITH HADOOP?
+--HERE WE FREQUENTLY USED JOB  AGAIN & AGAIN
+--SO AVOID ROUND TRIP, CACHE IS USED eg. --query(we can perform multiple operations) using sqoop jobs!.
+3 table------> joining them --->without exe in 3 command ---> we take in like .sh files.
+
+
+
+
+
+
+
+
